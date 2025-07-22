@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = [
+  "waking-nightmare_core",
+  "waking-nightmare_editor",
+  "waking-nightmare_demo",
+  "waking-nightmare_inputs",
+  "waking-nightmare_kinematics",
+  "waking-nightmare_lighting",
+  "waking-nightmare_rng",
+]
+
+[workspace.package]
+name = "waking-nightmare"
+version = "0.0.1"
+edition = "2024"
+# MSRV. Also update in ci.yml
+rust-version = "1.71.0"
