@@ -5,11 +5,5 @@ edition = "2024"
 # MSRV. Also update in ci.yml
 rust-version = "1.71.0"
 
-[dependencies]
-glutin = "^0.32"
-gl = "^0.14"
-glutin-winit = "0.5.0"
-winit = "0.30.11"
-
 [alias]
 dev = "run --bin watchexec -- -r -e rs -- cargo run"

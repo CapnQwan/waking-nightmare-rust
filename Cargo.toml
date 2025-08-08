@@ -9,10 +9,3 @@ members = [
   "waking-nightmare_lighting",
   "waking-nightmare_rng",
 ]
-
-[workspace.package]
-name = "waking-nightmare"
-version = "0.0.1"
-edition = "2024"
-# MSRV. Also update in ci.yml
-rust-version = "1.71.0"
