@@ -1,10 +1,10 @@
 [package]
-name = "core"
+name = "editor"
 version = "0.0.1"
 edition = "2024"
-rust-version = "1.71.0"
+rust-version = "1.87.0"
 
 [dependencies]
 core = { path = "../core" }
-egui = "0.27"
-eframe = "0.27"
+egui = "0.32.1"
+eframe = "0.32.1"

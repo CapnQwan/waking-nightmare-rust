@@ -1,6 +1,6 @@
 [package]
-name = "waking-nightmare_inputs"
+name = "inputs"
 version = "0.0.1"
 edition = "2024"
 # MSRV. Also update in ci.yml
-rust-version = "1.71.0"
+rust-version = "1.87.0"
