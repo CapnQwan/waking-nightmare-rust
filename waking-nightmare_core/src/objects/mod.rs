@@ -1,2 +1,0 @@
-mod GameObject;
-mod Object;

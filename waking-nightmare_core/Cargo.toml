@@ -1,9 +1,0 @@
-[package]
-name = "waking-nightmare_core"
-version = "0.0.1"
-edition = "2024"
-# MSRV. Also update in ci.yml
-rust-version = "1.71.0"
-
-[alias]
-dev = "run --bin watchexec -- -r -e rs -- cargo run"
