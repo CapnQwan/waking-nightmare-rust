@@ -5,11 +5,11 @@ use eframe::egui;
 
 pub fn init() -> eframe::Result {
   let options = eframe::NativeOptions {
-    viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
+    viewport: egui::ViewportBuilder::default().with_inner_size([1080.0, 720.0]),
     ..Default::default()
   };
   eframe::run_native(
-    "My egui App",
+    "Waking Nightmare Editor",
     options,
     Box::new(|_| {
       // This gives us image support:
@@ -19,26 +19,57 @@ pub fn init() -> eframe::Result {
 }
 
 struct MyApp {
-  name: String,
 }
 
 impl Default for MyApp {
   fn default() -> Self {
     Self {
-      name: "CapnQwan".to_owned(),
     }
   }
 }
 
 impl eframe::App for MyApp {
   fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-    egui::CentralPanel::default().show(ctx, |ui| {
-      ui.heading("My egui Application");
-      ui.horizontal(|ui| {
-        let name_label = ui.label("Your name: ");
-        ui.text_edit_singleline(&mut self.name)
-          .labelled_by(name_label.id);
+
+    egui::SidePanel::left("left_panel")
+      .resizable(true)
+      .default_width(150.0)
+      .width_range(80.0..=200.0)
+      .show(ctx, |ui| {
+        ui.vertical_centered(|ui| {
+          ui.heading("Scene Structure");
+        });
+        egui::ScrollArea::vertical().show(ui, |_ui| {
+            
+        });
       });
+
+    egui::SidePanel::right("right_panel")
+      .resizable(true)
+      .default_width(150.0)
+      .width_range(80.0..=200.0)
+      .show(ctx, |ui| {
+        ui.vertical_centered(|ui| {
+          ui.heading("Inspector");
+        });
+        egui::ScrollArea::vertical().show(ui, |_ui| {
+        });
+      });
+
+    egui::TopBottomPanel::bottom("bottom_panel")
+      .resizable(true)
+      .default_height(150.0)
+      .height_range(80.0..=200.0)
+      .show(ctx, |ui| {
+        ui.vertical_centered(|ui| {
+          ui.heading("Files");
+        });
+        egui::ScrollArea::vertical().show(ui, |_ui| {
+        });
+      });
+
+    egui::CentralPanel::default().show(ctx, |ui| {
+      ui.heading("Scene");
     });
   }
 }

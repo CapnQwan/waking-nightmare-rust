@@ -3,11 +3,11 @@ use super::object_traits::ObjectTraits;
 
 struct Object {
   name: String,
-  id: number,
+  id: u128,
 }
 
 impl Object {
-  fn new(name, id) -> self {
+  fn new(name: String, id: u128) -> self {
     Object { name, id }
   }
 }

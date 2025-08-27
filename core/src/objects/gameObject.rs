@@ -1,6 +1,6 @@
 struct GameObject {
   name: String,
-  id: number,
+  id: u128,
   //transform: transform,
   parent: gameObject,
   //components: component[],
@@ -12,6 +12,7 @@ impl ObjectTraits for GameObject {
     Object {      
       name: self.name,
       id: self.id,
+      parent: self.parent,
     }
   }
 }
