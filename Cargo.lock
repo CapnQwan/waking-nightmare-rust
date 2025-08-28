@@ -404,6 +404,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
+name = "beryllium"
+version = "0.13.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6ee6d43481642e570e0ca4ce19d95e15e1fea4936197eb16bc1f1513837b1f08"
+dependencies = [
+ "bytemuck",
+ "fermium",
+ "objc",
+ "pixel_formats",
+ "zstring",
+]
+
+[[package]]
 name = "bit-set"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -434,6 +447,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "bitfrob"
+version = "1.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4de3bf9292416bc27b97603d1af580e4253138851ce3898f878807b898e90d2d"
+
+[[package]]
 name = "block"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -460,6 +479,12 @@ dependencies = [
  "futures-lite",
  "piper",
 ]
+
+[[package]]
+name = "bool32"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8459737325e57ad10b38dc1af42f9228005dd6a3e9f43bdd76c8ceb6e9c46fc"
 
 [[package]]
 name = "bumpalo"
@@ -605,6 +630,11 @@ dependencies = [
 [[package]]
 name = "core"
 version = "0.0.1"
+dependencies = [
+ "beryllium",
+ "gl",
+ "imagine",
+]
 
 [[package]]
 name = "core-foundation"
@@ -979,6 +1009,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "fast-srgb8"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dd2e7510819d6fbf51a5545c8f922716ecfb14df168a3242f7d33e0239efe6a1"
+
+[[package]]
 name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -991,6 +1027,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e6853b52649d4ac5c0bd02320cddc5ba956bdb407c4b75a2c6b75bf51500f8c"
 dependencies = [
  "simd-adler32",
+]
+
+[[package]]
+name = "fermium"
+version = "22605.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0c600c8c2396ad4229ce7c79dcac0cbe1be5fad1dc61b639573cbddeaed1a661"
+dependencies = [
+ "bool32",
 ]
 
 [[package]]
@@ -1121,6 +1166,15 @@ dependencies = [
  "libc",
  "r-efi",
  "wasi",
+]
+
+[[package]]
+name = "gl"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a94edab108827d67608095e269cf862e60d920f144a5026d3dbcfd8b877fb404"
+dependencies = [
+ "gl_generator",
 ]
 
 [[package]]
@@ -1425,6 +1479,20 @@ dependencies = [
  "num-traits",
  "png",
  "tiff",
+]
+
+[[package]]
+name = "imagine"
+version = "0.5.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "068c2da78be678421d558cde4bef82977be5c18af709656d92974fcd6bcec363"
+dependencies = [
+ "bitfrob",
+ "bytemuck",
+ "miniz_oxide",
+ "pack1",
+ "pixel_formats",
+ "png_filters",
 ]
 
 [[package]]
@@ -2084,6 +2152,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "pack1"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d6e7cd9bd638dc2c831519a0caa1c006cab771a92b1303403a8322773c5b72d6"
+dependencies = [
+ "bytemuck",
+]
+
+[[package]]
 name = "parking"
 version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2168,6 +2245,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "pixel_formats"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "78312b2e968960ded35c4e5f6ef6b00ec47dcb254f3abb725b1d08c6d44198fd"
+dependencies = [
+ "bitfrob",
+ "bytemuck",
+ "fast-srgb8",
+]
+
+[[package]]
 name = "pkg-config"
 version = "0.3.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2185,6 +2273,12 @@ dependencies = [
  "flate2",
  "miniz_oxide",
 ]
+
+[[package]]
+name = "png_filters"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bdad86b89bada24e69d5fdc7626519a32a23f08f48a4ca229db06a1624c5ddd0"
 
 [[package]]
 name = "polling"
@@ -2244,6 +2338,12 @@ name = "profiling"
 version = "1.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3eb8486b569e12e2c32ad3e204dbaba5e4b5b216e9367044f25f1dba42341773"
+
+[[package]]
+name = "ptr_iter"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "331cd2c60ff9d3f52f319b935028b91be5fadb93ca413f408747d91dca3aff28"
 
 [[package]]
 name = "quick-xml"
@@ -2337,7 +2437,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.4.15",
- "windows-sys 0.52.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -3215,7 +3315,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.52.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -4009,6 +4109,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "zstring"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d64ee5f783fceb29945c98a527108dc9f940fc6c339337f6f939f325e25bc68"
+dependencies = [
+ "ptr_iter",
 ]
 
 [[package]]

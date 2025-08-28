@@ -1,5 +1,5 @@
 struct Shader {
-  // Frag
-  // Vertex
-  // Program?
+  vertexShader: GLuint,
+  fragmentShader: GLuint,
+  program: GLuint,
 }
