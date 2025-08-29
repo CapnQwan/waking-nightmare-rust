@@ -4,6 +4,8 @@ rust-version = "1.87.0"
 resolver = "2"
 members = [
   "core",
+  "desktop",
+  "webgl",
   "editor",
   "demos/desktop_demo",
   "demos/webgl_demo",

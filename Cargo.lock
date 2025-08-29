@@ -694,6 +694,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f27ae1dd37df86211c42e150270f82743308803d90a6f6e6651cd730d5e1732f"
 
 [[package]]
+name = "desktop"
+version = "0.0.1"
+dependencies = [
+ "core",
+ "glutin",
+ "winit",
+]
+
+[[package]]
+name = "desktop_demo"
+version = "0.0.1"
+
+[[package]]
 name = "dispatch"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3093,6 +3106,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "webgl"
+version = "0.0.1"
+dependencies = [
+ "core",
+]
+
+[[package]]
 name = "webgl_demo"
 version = "0.0.1"
 
@@ -3101,10 +3121,6 @@ name = "weezl"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a751b3277700db47d3e574514de2eced5e54dc8a5436a3bf7a0b248b2cee16f3"
-
-[[package]]
-name = "wesktop_demo"
-version = "0.0.1"
 
 [[package]]
 name = "wgpu"

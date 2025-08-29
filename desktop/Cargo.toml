@@ -6,3 +6,5 @@ rust-version = "1.87.0"
 
 [dependencies]
 core = { path = "../core" }
+winit = "0.30.12"
+glutin = "0.32.3"
