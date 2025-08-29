@@ -1,11 +1,8 @@
 [package]
-name = "core"
+name = "webgl"
 version = "0.0.1"
 edition = "2024"
 rust-version = "1.87.0"
 
 [dependencies]
-glow = "0.16.0"
-
-[dev-dependencies]
-imagine = "0.5.3"
+core = { path = "../core" }

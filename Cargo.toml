@@ -5,7 +5,8 @@ resolver = "2"
 members = [
   "core",
   "editor",
-  "demos/demo",
+  "demos/desktop_demo",
+  "demos/webgl_demo",
   "modules/inputs",
   "modules/kinematics",
   "modules/lighting",
