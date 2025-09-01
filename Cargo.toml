@@ -5,10 +5,10 @@ resolver = "2"
 members = [
   "core",
   "desktop",
-  "webgl",
+  "wasm",
   "editor",
   "demos/desktop_demo",
-  "demos/webgl_demo",
+  "demos/wasm_demo",
   "modules/inputs",
   "modules/kinematics",
   "modules/lighting",

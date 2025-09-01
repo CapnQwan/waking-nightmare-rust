@@ -1,3 +1,4 @@
+// /src/math/vectors/mod.rs
 pub mod vectors;
 
 pub use Vector2;

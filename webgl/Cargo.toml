@@ -1,8 +1,0 @@
-[package]
-name = "webgl"
-version = "0.0.1"
-edition = "2024"
-rust-version = "1.87.0"
-
-[dependencies]
-core = { path = "../core" }
