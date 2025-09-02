@@ -705,6 +705,9 @@ dependencies = [
 [[package]]
 name = "desktop_demo"
 version = "0.0.1"
+dependencies = [
+ "desktop",
+]
 
 [[package]]
 name = "dispatch"
@@ -780,6 +783,10 @@ dependencies = [
  "core",
  "eframe",
  "egui",
+ "egui-winit",
+ "egui_glow",
+ "glutin",
+ "winit",
 ]
 
 [[package]]
@@ -2974,6 +2981,9 @@ dependencies = [
 [[package]]
 name = "wasm_demo"
 version = "0.0.1"
+dependencies = [
+ "wasm",
+]
 
 [[package]]
 name = "wayland-backend"

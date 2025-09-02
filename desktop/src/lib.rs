@@ -53,5 +53,5 @@ pub fn init() {
   event_loop.set_control_flow(ControlFlow::Wait);
 
   let mut app = App::default();
-  event_loop.run_app(&mut app);
+  let _ = event_loop.run_app(&mut app);
 }

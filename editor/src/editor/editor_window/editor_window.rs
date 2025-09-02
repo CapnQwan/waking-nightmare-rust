@@ -1,46 +1,28 @@
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
-#![allow(rustdoc::missing_crate_level_docs)] // it's an example
-
-use eframe::egui;
+use eframe::{egui, NativeOptions};
 use egui::{
-    Color32, Pos2, Rect,
-    containers::{Frame},
-    emath, epaint,
-    epaint::PathStroke,
-    pos2, vec2,
+  Color32, Pos2, Rect,
+  containers::{Frame},
+  emath, epaint,
+  epaint::PathStroke,
+  pos2, vec2,
 };
 
-//use crate::editor::editor::Editor;
-
-mod editor;
-
-pub fn init() -> eframe::Result {
-  //let editor = Editor::default();
-  //let frame = editor.frame;
-  let options = eframe::NativeOptions {
-    viewport: egui::ViewportBuilder::default().with_inner_size([1080.0, 720.0]),
-    ..Default::default()
-  };
-  eframe::run_native(
-    "Waking Nightmare Editor",
-    options,
-    Box::new(|_| {
-      Ok(Box::<MyApp>::default())
-    }),
-  )
+pub struct EditorFrame {
+  options: NativeOptions,
 }
 
-struct MyApp {
-}
-
-impl Default for MyApp {
+impl Default for EditorFrame {
   fn default() -> Self {
     Self {
+      options: eframe::NativeOptions {
+        viewport: egui::ViewportBuilder::default().with_inner_size([1080.0, 720.0]),
+        ..Default::default()
+      }
     }
   }
 }
 
-impl eframe::App for MyApp {
+impl eframe::App for EditorFrame {
   fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 
     egui::SidePanel::left("left_panel")

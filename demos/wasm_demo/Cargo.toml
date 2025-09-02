@@ -4,3 +4,6 @@ version = "0.0.1"
 edition = "2024"
 # MSRV. Also update in ci.yml
 rust-version = "1.87.0"
+
+[dependencies]
+wasm = { path = "../../wasm" }
