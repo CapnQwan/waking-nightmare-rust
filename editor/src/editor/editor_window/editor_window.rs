@@ -1,4 +1,4 @@
-use eframe::{egui, NativeOptions};
+use eframe::{egui};
 use egui::{
   Color32, Pos2, Rect,
   containers::{Frame},
@@ -7,24 +7,25 @@ use egui::{
   pos2, vec2,
 };
 
-pub struct EditorFrame {
-  options: NativeOptions,
+pub struct EditorWindow {
 }
 
-impl Default for EditorFrame {
+impl Default for EditorWindow {
   fn default() -> Self {
     Self {
-      options: eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default().with_inner_size([1080.0, 720.0]),
-        ..Default::default()
-      }
     }
   }
 }
 
-impl eframe::App for EditorFrame {
-  fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+impl EditorWindow {
+  pub fn render_window(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+    self.render_file_system(ctx, frame);
+    self.render_inspector(ctx, frame);
+    self.render_scene(ctx, frame);
+    self.render_scene_structure(ctx, frame);
+  }
 
+  fn render_scene_structure(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
     egui::SidePanel::left("left_panel")
       .resizable(true)
       .default_width(150.0)
@@ -37,7 +38,9 @@ impl eframe::App for EditorFrame {
             
         });
       });
+  }
 
+  fn render_inspector(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
     egui::SidePanel::right("right_panel")
       .resizable(true)
       .default_width(150.0)
@@ -49,7 +52,9 @@ impl eframe::App for EditorFrame {
         egui::ScrollArea::vertical().show(ui, |_ui| {
         });
       });
+  }
 
+  fn render_file_system(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
     egui::TopBottomPanel::bottom("bottom_panel")
       .resizable(true)
       .default_height(150.0)
@@ -61,7 +66,9 @@ impl eframe::App for EditorFrame {
         egui::ScrollArea::vertical().show(ui, |_ui| {
         });
       });
+  }
 
+  fn render_scene(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
     egui::CentralPanel::default().show(ctx, |ui| {
       Frame::canvas(ui.style()).show(ui, |ui| {
             ui.ctx().request_repaint();

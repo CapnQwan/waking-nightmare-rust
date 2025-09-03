@@ -10,5 +10,5 @@ winit = "0.30.12"
 glutin = "0.32.3"
 egui = "0.32.1"
 egui-winit = "0.32.1"
-egui_glow = "0.32.1"
+egui_glow = { version = "0.32.1", features = ["winit"]}
 eframe = "0.32.1"
