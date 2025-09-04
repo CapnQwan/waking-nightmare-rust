@@ -786,6 +786,8 @@ dependencies = [
  "egui-winit",
  "egui_glow",
  "glutin",
+ "glutin-winit",
+ "log",
  "winit",
 ]
 
