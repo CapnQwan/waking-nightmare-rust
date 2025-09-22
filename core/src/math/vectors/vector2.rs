@@ -1,18 +1,21 @@
+use crate::math::FloatVector;
+
 // vectors/vector2.rs
 use super::vector_traits::Vector;
 
+#[derive(Clone, Copy)]
 pub struct Vector2 {
   pub x: f32,
   pub y: f32,
 }
 
 impl Vector2 {
-  pub fn new(x: f32, y: f32, z: f32) -> Self {
-    Vector2 { x, y, z }
+  pub fn new(x: f32, y: f32) -> Self {
+    Vector2 { x, y }
   }
 }
 
-impl Vector for Vector2 {
+impl FloatVector for Vector2 {
   fn normalize(&mut self) {
     let mag = self.magnitude();
     if mag != 0.0 {
@@ -32,7 +35,9 @@ impl Vector for Vector2 {
       }
     }
   }
+}
 
+impl Vector for Vector2 {
   fn magnitude(&self) -> f32 {
     (self.x * self.x + self.y * self.y).sqrt()
   }

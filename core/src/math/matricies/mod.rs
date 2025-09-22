@@ -1,5 +1,3 @@
-pub mod matricies;
-
-pub use Matrix2x2;
-pub mod Matrix3x3;
-pub mod Matrix4x4;
+mod matrix2x2;
+mod matrix3x3;
+mod matrix4x4;

@@ -1,3 +1,1 @@
-pub mod Quaternion;
-
-pub use Quaternion;
+pub mod quaternion;

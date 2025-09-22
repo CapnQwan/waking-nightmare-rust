@@ -1,39 +1,20 @@
 // vectors/vector2.rs
-use super::vector_traits::VectorInt;
+use super::vector_traits::Vector;
 
+#[derive(Clone, Copy)]
 pub struct Vector2Int {
   pub x: i32,
   pub y: i32,
 }
 
 impl Vector2Int {
-  pub fn new(x: i32, y: i32, z: i32) -> Self {
-    Vector2Int { x, y, z }
+  pub fn new(x: i32, y: i32) -> Self {
+    Vector2Int { x, y }
   }
 }
 
-impl VectorInt for Vector2Int {
-  fn normalize(&mut self) {
-    let mag = self.magnitude();
-    if mag != 0.0 {
-      self.x /= mag;
-      self.y /= mag;
-    }
-  }
-
-  fn normalized(&self) -> Self {
-    let mag = self.magnitude();
-    if mag == 0.0 {
-      *self
-    } else {
-      Vector2Int {
-        x: self.x / mag,
-        y: self.y / mag,
-      }
-    }
-  }
-
-  fn magnitude(&self) -> i32 {
+impl Vector for Vector2Int {
+  fn magnitude(&self) -> f32 {
     (self.x * self.x + self.y * self.y).sqrt()
   }
 }

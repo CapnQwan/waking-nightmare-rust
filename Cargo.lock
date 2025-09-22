@@ -612,7 +612,9 @@ dependencies = [
 name = "core"
 version = "0.0.1"
 dependencies = [
- "glow",
+ "cfg_aliases",
+ "gl",
+ "gl_generator",
  "imagine",
 ]
 
@@ -697,8 +699,13 @@ checksum = "f27ae1dd37df86211c42e150270f82743308803d90a6f6e6651cd730d5e1732f"
 name = "desktop"
 version = "0.0.1"
 dependencies = [
+ "cfg_aliases",
  "core",
+ "gl",
+ "gl_generator",
  "glutin",
+ "glutin-winit",
+ "raw-window-handle",
  "winit",
 ]
 
@@ -1156,6 +1163,15 @@ dependencies = [
  "libc",
  "r-efi",
  "wasi",
+]
+
+[[package]]
+name = "gl"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a94edab108827d67608095e269cf862e60d920f144a5026d3dbcfd8b877fb404"
+dependencies = [
+ "gl_generator",
 ]
 
 [[package]]

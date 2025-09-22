@@ -1,3 +1,5 @@
+use crate::math::FloatVector;
+
 // vectors/vector3.rs
 use super::vector_traits::Vector;
 
@@ -14,7 +16,7 @@ impl Vector3 {
   }
 }
 
-impl Vector for Vector3 {
+impl FloatVector for Vector3 {
   fn normalize(&mut self) {
     let mag = self.magnitude();
     if mag != 0.0 {
@@ -36,7 +38,9 @@ impl Vector for Vector3 {
       }
     }
   }
+}
 
+impl Vector for Vector3 {
   fn magnitude(&self) -> f32 {
     (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
   }
