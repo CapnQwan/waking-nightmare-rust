@@ -16,6 +16,16 @@ impl Vector3 {
   }
 }
 
+impl Default for Vector3 {
+  fn default() -> Self {
+    Vector3 {
+      x: 0.0,
+      y: 0.0,
+      z: 0.0,
+    }
+  }
+}
+
 impl FloatVector for Vector3 {
   fn normalize(&mut self) {
     let mag = self.magnitude();

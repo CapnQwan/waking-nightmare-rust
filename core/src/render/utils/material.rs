@@ -1,3 +1,5 @@
+use crate::render::utils::shader::Shader;
+
 pub struct Material {
   pub shader: Shader,
   pub uniforms: u32, // @todo - not sure what type this should have yet so this is a placeholder

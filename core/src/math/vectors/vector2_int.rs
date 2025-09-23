@@ -13,8 +13,14 @@ impl Vector2Int {
   }
 }
 
+impl Default for Vector2Int {
+  fn default() -> Self {
+    Vector2Int { x: 0, y: 0 }
+  }
+}
+
 impl Vector for Vector2Int {
   fn magnitude(&self) -> f32 {
-    (self.x * self.x + self.y * self.y).sqrt()
+    ((self.x * self.x + self.y * self.y) as f32).sqrt()
   }
 }

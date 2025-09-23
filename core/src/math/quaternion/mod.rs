@@ -1,1 +1,2 @@
-pub mod quaternion;
+mod quaternion;
+pub use quaternion::*;

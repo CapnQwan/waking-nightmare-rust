@@ -15,6 +15,12 @@ impl Vector2 {
   }
 }
 
+impl Default for Vector2 {
+  fn default() -> Self {
+    Vector2 { x: 0.0, y: 0.0 }
+  }
+}
+
 impl FloatVector for Vector2 {
   fn normalize(&mut self) {
     let mag = self.magnitude();

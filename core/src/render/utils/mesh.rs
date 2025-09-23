@@ -1,8 +1,10 @@
+use crate::math::{Vector2, Vector3};
+
 pub struct Mesh {
-  pub triangles: [u32],
-  pub verticies: [Vector3], // Should this be a Vector3 or a f32[]? depends on how
-  pub uvs: [Vector2],       // Refer above
-  pub normals: [Vector3],   // Refer above
+  pub triangles: Vec<u32>,
+  pub verticies: Vec<Vector3>,
+  pub uvs: Vec<Vector2>,
+  pub normals: Vec<Vector3>,
 
   vao: gl::types::GLuint,
   vbo: gl::types::GLuint,

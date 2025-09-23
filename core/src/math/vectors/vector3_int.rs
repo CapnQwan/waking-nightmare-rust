@@ -14,8 +14,14 @@ impl Vector3Int {
   }
 }
 
+impl Default for Vector3Int {
+  fn default() -> Self {
+    Vector3Int { x: 0, y: 0, z: 0 }
+  }
+}
+
 impl Vector for Vector3Int {
   fn magnitude(&self) -> f32 {
-    (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
+    ((self.x * self.x + self.y * self.y + self.z * self.z) as f32).sqrt()
   }
 }
