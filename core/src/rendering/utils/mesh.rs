@@ -20,3 +20,19 @@ impl Mesh {
 
   pub fn draw(&self) {}
 }
+
+// impl Default for Mesh {
+//   fn default() -> Self {
+//     Mesh {
+//       triangles: todo!(),
+//       verticies: todo!(),
+//       uvs: todo!(),
+//       normals: todo!(),
+//       vao: todo!(),
+//       vbo: todo!(),
+//       uvbo: todo!(),
+//       nbo: todo!(),
+//       ibo: todo!(),
+//     }
+//   }
+// }

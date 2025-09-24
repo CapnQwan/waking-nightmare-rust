@@ -1,17 +1,19 @@
+// /src/math/mod.rs
+
 mod math_f32;
 mod math_i32;
 mod math_u32;
 
-mod matricies;
-mod quaternion;
-mod transform;
+mod matrices;
+mod quaternions;
+mod transforms;
 mod vectors;
 
 pub use math_f32::*;
 pub use math_i32::*;
 pub use math_u32::*;
 
-pub use matricies::*;
-pub use quaternion::*;
-pub use transform::*;
+pub use matrices::*;
+pub use quaternions::*;
+pub use transforms::*;
 pub use vectors::*;

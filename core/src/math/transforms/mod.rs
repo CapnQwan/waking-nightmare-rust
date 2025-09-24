@@ -1,3 +1,4 @@
-// /src/math/transform/mod.rs
+// /src/math/transforms/mod.rs
+
 mod transform;
 pub use transform::*;

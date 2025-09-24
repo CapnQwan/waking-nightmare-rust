@@ -20,7 +20,7 @@ pub unsafe fn create_shader(
 }
 
 pub fn create_gl_program(
-  gl: Gles2,
+  gl: &Gles2,
   vertext_shader_source: &[u8],
   fragment_shader_source: &[u8],
 ) -> u32 {
@@ -45,13 +45,19 @@ pub fn create_gl_program(
 }
 
 pub struct Shader {
-  program: u32,
+  pub program: u32,
 }
 
 impl Shader {
-  fn bind(&self, gl: Gles2) {
+  pub fn bind(&self, gl: &Gles2) {
     unsafe {
       gl.UseProgram(self.program);
+    }
+  }
+
+  pub fn destroy(&self, gl: &Gles2) {
+    unsafe {
+      gl.DeleteProgram(self.program);
     }
   }
 }
