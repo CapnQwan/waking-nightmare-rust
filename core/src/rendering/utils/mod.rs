@@ -4,7 +4,5 @@ mod material;
 use material::*;
 mod mesh;
 use mesh::*;
-mod programs;
-use programs::*;
 mod shader;
 use shader::*;

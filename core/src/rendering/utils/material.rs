@@ -22,6 +22,14 @@ impl Material {
     }
   }
 
+  pub fn set_uniform_vec2(&self, gl: &Gles2, name: &str, value: [f32; 2]) {
+    if let Some(&loc) = self.uniforms.get(name) {
+      unsafe {
+        gl.Uniform2fv(loc, 1, value.as_ptr());
+      }
+    }
+  }
+
   pub fn set_uniform_vec3(&self, gl: &Gles2, name: &str, value: [f32; 3]) {
     if let Some(&loc) = self.uniforms.get(name) {
       unsafe {
