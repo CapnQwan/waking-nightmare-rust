@@ -9,8 +9,8 @@ pub struct Material {
 }
 
 impl Material {
-  pub fn utilize(&self, gl: &Gles2) {
-    self.shader.bind(gl);
+  pub fn utilize(&self) {
+    //self.shader.bind(gl);
     // later: set uniforms, bind VAOs, etc.
   }
 

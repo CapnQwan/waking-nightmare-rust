@@ -1,8 +1,8 @@
 mod color;
-use color::*;
+pub use color::*;
 mod material;
-use material::*;
+pub use material::*;
 mod mesh;
-use mesh::*;
+pub use mesh::*;
 mod shader;
-use shader::*;
+pub use shader::*;
