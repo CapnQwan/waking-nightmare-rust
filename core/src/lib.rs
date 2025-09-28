@@ -10,13 +10,4 @@ pub mod gl {
   pub use Gles2 as Gl;
 }
 
-//pub fn run_engine(gl: Context, shader_version: String) {}
-
-pub fn test() {
-  let _vec = Vector3::default();
-  let _quaternion = Quaternion::default();
-  let _transform = Transform::default();
-  let _m2x2 = Matrix2x2::default();
-  let _m3x3 = Matrix3x3::default();
-  let _m4x4 = Matrix4x4::default();
-}
+pub fn run_engine(gl: Context, shader_version: String) {}
