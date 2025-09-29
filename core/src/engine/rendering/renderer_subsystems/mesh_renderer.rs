@@ -1,9 +1,9 @@
 use std::rc::Rc;
 
 use crate::{
+  engine::Mesh,
   gl::Gles2,
   math::{Vector2, Vector3},
-  rendering::utils::Mesh,
 };
 
 pub struct MeshRenderer {

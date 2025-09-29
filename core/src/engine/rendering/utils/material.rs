@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{gl::Gles2, rendering::utils::shader::Shader};
+use crate::{engine::Shader, gl::Gles2};
 
 pub struct Material {
   pub shader: Shader,

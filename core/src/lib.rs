@@ -1,7 +1,7 @@
-use crate::math::{Matrix2x2, Matrix3x3, Matrix4x4, Quaternion, Transform, Vector3};
+pub use crate::engine::EngineContext;
 
+mod engine;
 mod math;
-mod rendering;
 
 pub mod gl {
   #![allow(clippy::all)]
@@ -10,4 +10,6 @@ pub mod gl {
   pub use Gles2 as Gl;
 }
 
-pub fn run_engine(gl: Context, shader_version: String) {}
+pub fn create_engine_instance(gl: gl::Gles2) -> EngineContext {
+  EngineContext::new(gl)
+}

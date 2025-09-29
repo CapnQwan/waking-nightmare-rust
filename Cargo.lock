@@ -701,8 +701,6 @@ version = "0.0.1"
 dependencies = [
  "cfg_aliases",
  "core",
- "gl",
- "gl_generator",
  "glutin",
  "glutin-winit",
  "raw-window-handle",
