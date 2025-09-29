@@ -1,4 +1,5 @@
 use std::error::Error;
+use std::ffi::CString;
 use std::num::NonZeroU32;
 
 use raw_window_handle::HasWindowHandle;
@@ -90,7 +91,7 @@ fn create_gl_context(window: &Window, gl_config: &Config) -> NotCurrentContext {
 
 struct App {
   template: ConfigTemplateBuilder,
-  engine: EngineContext,
+  engine: Option<EngineContext>,
   // NOTE: `AppState` carries the `Window`, thus it should be dropped after everything else.
   state: Option<AppState>,
   gl_context: Option<PossiblyCurrentContext>,
@@ -106,7 +107,7 @@ impl App {
       exit_state: Ok(()),
       gl_context: None,
       state: None,
-      engine: core::create_engine_instance(gl),
+      engine: None,
     }
   }
 }
@@ -172,9 +173,17 @@ impl ApplicationHandler for App {
     let gl_context = self.gl_context.as_ref().unwrap();
     gl_context.make_current(&gl_surface).unwrap();
 
+    let gl = Gles2::load_with(|symbol| {
+      let symbol = CString::new(symbol).unwrap();
+      gl_config
+        .display()
+        .get_proc_address(symbol.as_c_str())
+        .cast()
+    });
+
     self
-      .renderer
-      .get_or_insert_with(|| Renderer::new(&gl_config.display()));
+      .engine
+      .get_or_insert_with(|| create_engine_instance(gl));
 
     // Try setting vsync.
     if let Err(res) =
@@ -274,7 +283,10 @@ impl ApplicationHandler for App {
   fn about_to_wait(&mut self, _event_loop: &ActiveEventLoop) {
     if let Some(AppState { gl_surface, window }) = self.state.as_ref() {
       let gl_context = self.gl_context.as_ref().unwrap();
-      self.engine.render_context.draw();
+      if let Some(engine) = self.engine.as_mut() {
+        engine.render_context.clear();
+        engine.render_context.draw();
+      }
       window.request_redraw();
 
       gl_surface.swap_buffers(gl_context).unwrap();

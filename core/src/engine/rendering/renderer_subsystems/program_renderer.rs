@@ -12,8 +12,11 @@ impl ProgramRenderer {
   }
 
   pub fn bind_program() {}
+
   pub fn bind_attributes() {}
+
   pub fn bind_uniforms() {}
+
   pub fn bind_textures() {}
 
   pub unsafe fn create_shader(

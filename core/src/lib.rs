@@ -1,5 +1,7 @@
 pub use crate::engine::EngineContext;
 
+// @todo - delete later opting for game (project) based assets to keep core clean
+mod assets;
 mod engine;
 mod math;
 

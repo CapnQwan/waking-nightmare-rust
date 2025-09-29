@@ -1,7 +1,8 @@
 use std::{ffi::CStr, rc::Rc};
 
 use crate::{
-  engine::{MeshRenderer, ProgramRenderer},
+  assets::{FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE},
+  engine::{Mesh, MeshRenderer, ProgramRenderer, Shader},
   gl::Gles2,
 };
 
@@ -9,6 +10,8 @@ pub struct RenderContext {
   gl: Rc<Gles2>,
   mesh_renderer: MeshRenderer,
   program_renderer: ProgramRenderer,
+  mesh: Mesh,
+  shader: Shader,
 }
 
 impl RenderContext {
@@ -17,11 +20,17 @@ impl RenderContext {
 
     let mesh_renderer = MeshRenderer::new(Rc::clone(&gl));
     let program_renderer = ProgramRenderer::new(Rc::clone(&gl));
+    let mesh = Mesh::new();
+
+    let program = program_renderer.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+    let shader = Shader::new(0, program);
 
     Self {
       gl,
       mesh_renderer,
       program_renderer,
+      mesh,
+      shader,
     }
   }
 
@@ -32,9 +41,13 @@ impl RenderContext {
     }
   }
 
-  pub fn draw(&self) {
-    // Switch to
-    let _x: f32 = 5.0;
+  pub fn draw(&mut self) {
+    // self.program_renderer.
+
+    if self.mesh.has_changed() {
+      self.mesh_renderer.bind_mesh_buffers(&mut self.mesh);
+    }
+    self.mesh_renderer.draw_mesh(&self.mesh);
   }
 
   pub fn resize(&self, width: i32, height: i32) {
