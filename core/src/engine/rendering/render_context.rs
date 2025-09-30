@@ -31,19 +31,6 @@ impl RenderContext {
     let program = program_renderer.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
     let shader = Shader::new(0, program);
 
-    unsafe {
-      let color_attrib = gl.GetAttribLocation(program, b"color\0".as_ptr() as *const _);
-      gl.VertexAttribPointer(
-        color_attrib as gl::types::GLuint,
-        3,
-        gl::FLOAT,
-        0,
-        5 * std::mem::size_of::<f32>() as gl::types::GLsizei,
-        (2 * std::mem::size_of::<f32>()) as *const () as *const _,
-      );
-      gl.EnableVertexAttribArray(color_attrib as gl::types::GLuint);
-    }
-
     Self {
       gl,
       mesh_renderer,
