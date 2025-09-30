@@ -1,6 +1,6 @@
 mod cube;
-use cube::*;
+pub use cube::*;
 mod plane;
-use plane::*;
+pub use plane::*;
 mod triangle;
-use triangle::*;
+pub use triangle::*;

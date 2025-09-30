@@ -1,5 +1,5 @@
 #[rustfmt::skip]
-pub static CUBE_VERTEX_DATA: [f32; 24] = [
+pub const CUBE_VERTEX_DATA: [f32; 24] = [
 	-0.5, 0.5, -0.5,
 	0.5,  0.5, -0.5,
 	0.5, -0.5, -0.5,

@@ -1,7 +1,10 @@
 use std::{ffi::CStr, rc::Rc};
 
 use crate::{
-  assets::{FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE},
+  assets::{
+    FRAGMENT_SHADER_SOURCE, PLANE_TRIANGLES, PLANE_VERTEX_DATA, PLANE_VERTICIES,
+    VERTEX_SHADER_SOURCE,
+  },
   engine::{Mesh, MeshRenderer, ProgramRenderer, Shader},
   gl::Gles2,
 };
@@ -20,10 +23,26 @@ impl RenderContext {
 
     let mesh_renderer = MeshRenderer::new(Rc::clone(&gl));
     let program_renderer = ProgramRenderer::new(Rc::clone(&gl));
-    let mesh = Mesh::new();
+
+    let mut mesh = Mesh::new();
+    mesh.set_vertices(PLANE_VERTICIES.to_vec());
+    mesh.set_triangles(PLANE_TRIANGLES.to_vec());
 
     let program = program_renderer.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
     let shader = Shader::new(0, program);
+
+    unsafe {
+      let color_attrib = gl.GetAttribLocation(program, b"color\0".as_ptr() as *const _);
+      gl.VertexAttribPointer(
+        color_attrib as gl::types::GLuint,
+        3,
+        gl::FLOAT,
+        0,
+        5 * std::mem::size_of::<f32>() as gl::types::GLsizei,
+        (2 * std::mem::size_of::<f32>()) as *const () as *const _,
+      );
+      gl.EnableVertexAttribArray(color_attrib as gl::types::GLuint);
+    }
 
     Self {
       gl,
