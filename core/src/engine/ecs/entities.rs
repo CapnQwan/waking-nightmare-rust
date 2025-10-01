@@ -1,2 +1,2 @@
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-struct Entity(u32);
+pub struct Entity(pub u32);

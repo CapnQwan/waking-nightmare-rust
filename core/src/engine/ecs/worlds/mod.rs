@@ -1,2 +1,0 @@
-mod world;
-use world::*;

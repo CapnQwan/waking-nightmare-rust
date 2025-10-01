@@ -20,7 +20,7 @@ use glutin::surface::{Surface, SwapInterval, WindowSurface};
 use glutin_winit::{DisplayBuilder, GlWindow};
 
 use core::gl::Gles2;
-use core::{EngineContext, create_engine_instance};
+use core::{Core, create_engine_instance};
 
 enum GlDisplayCreationState {
   /// The display was not build yet.
@@ -91,7 +91,7 @@ fn create_gl_context(window: &Window, gl_config: &Config) -> NotCurrentContext {
 
 struct App {
   template: ConfigTemplateBuilder,
-  engine: Option<EngineContext>,
+  engine: Option<Core>,
   // NOTE: `AppState` carries the `Window`, thus it should be dropped after everything else.
   state: Option<AppState>,
   gl_context: Option<PossiblyCurrentContext>,
@@ -284,8 +284,8 @@ impl ApplicationHandler for App {
     if let Some(AppState { gl_surface, window }) = self.state.as_ref() {
       let gl_context = self.gl_context.as_ref().unwrap();
       if let Some(engine) = self.engine.as_mut() {
-        engine.render_context.clear();
-        engine.render_context.draw();
+        engine.render_ctx.clear();
+        engine.render_ctx.draw();
       }
       window.request_redraw();
 
