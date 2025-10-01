@@ -1,2 +1,2 @@
-// Should this be a trait?
-pub struct Component {}
+trait Component: 'static {}
+impl<T: 'static> Component for T {}
