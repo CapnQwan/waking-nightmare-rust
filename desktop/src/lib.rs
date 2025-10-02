@@ -284,8 +284,7 @@ impl ApplicationHandler for App {
     if let Some(AppState { gl_surface, window }) = self.state.as_ref() {
       let gl_context = self.gl_context.as_ref().unwrap();
       if let Some(engine) = self.engine.as_mut() {
-        engine.render_ctx.clear();
-        engine.render_ctx.draw();
+        engine.update();
       }
       window.request_redraw();
 

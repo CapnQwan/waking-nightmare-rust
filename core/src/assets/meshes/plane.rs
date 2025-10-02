@@ -1,4 +1,4 @@
-use crate::math::Vector3;
+use math::Vector3;
 
 #[rustfmt::skip]
 pub const PLANE_VERTEX_DATA: [f32; 12] = [

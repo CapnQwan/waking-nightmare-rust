@@ -1,4 +1,4 @@
-use crate::math::{Quaternion, Vector3};
+use crate::{Quaternion, Vector3};
 
 #[derive(Clone, Copy)]
 pub struct Transform {

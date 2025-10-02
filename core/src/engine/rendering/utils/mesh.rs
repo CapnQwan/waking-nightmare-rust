@@ -1,4 +1,4 @@
-use crate::math::{Vector2, Vector3};
+use math::{Vector2, Vector3};
 
 pub struct Mesh {
   pub(crate) triangles: Vec<u32>,

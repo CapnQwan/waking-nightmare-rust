@@ -1,7 +1,6 @@
-use crate::math::FloatVector;
+use crate::{FloatVector, Vector};
 
 // vectors/vector2.rs
-use super::vector_traits::Vector;
 
 #[derive(Clone, Copy)]
 pub struct Vector2 {

@@ -1,10 +1,8 @@
 use std::rc::Rc;
 
-use crate::{
-  engine::Mesh,
-  gl::Gles2,
-  math::{Vector2, Vector3},
-};
+use math::{Vector2, Vector3};
+
+use crate::{engine::Mesh, gl::Gles2};
 
 pub struct MeshRenderer {
   gl: Rc<Gles2>,

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod math_f32;
 mod math_i32;
 mod math_u32;

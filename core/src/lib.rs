@@ -3,10 +3,10 @@ pub use crate::engine::Core;
 // @todo - delete later opting for game (project) based assets to keep core clean
 mod assets;
 mod engine;
-mod math;
 mod traits;
 
 pub mod gl {
+  #![allow(unsafe_op_in_unsafe_fn)]
   #![allow(clippy::all)]
   include!(concat!(env!("OUT_DIR"), "/gl_bindings.rs"));
 

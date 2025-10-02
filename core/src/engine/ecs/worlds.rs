@@ -38,4 +38,20 @@ impl World {
   pub fn get_component_mut<T: Component>(&mut self, e: Entity) -> Option<&mut T> {
     self.components.get_component_mut::<T>(e)
   }
+
+  pub fn add_resource<T: 'static>(&mut self, resource: T) {
+    self.resources.add_resource::<T>(resource);
+  }
+
+  pub fn get_resource<T: 'static>(&self) -> Option<&T> {
+    self.resources.get_resource::<T>()
+  }
+
+  pub fn get_mut_resource<T: 'static>(&mut self) -> Option<&mut T> {
+    self.resources.get_mut_resource::<T>()
+  }
+
+  pub fn update_resources(&mut self) {
+    self.resources.update_resources();
+  }
 }

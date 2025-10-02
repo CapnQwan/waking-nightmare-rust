@@ -616,6 +616,7 @@ dependencies = [
  "gl",
  "gl_generator",
  "imagine",
+ "math",
 ]
 
 [[package]]
@@ -1658,6 +1659,10 @@ checksum = "62bb907fe88d54d8d9ce32a3cceab4218ed2f6b7d35617cafe9adf84e43919cb"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "math"
+version = "0.0.1"
 
 [[package]]
 name = "memchr"

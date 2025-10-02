@@ -1,15 +1,12 @@
 use std::{ffi::CStr, rc::Rc};
 
 use crate::{
-  assets::{
-    FRAGMENT_SHADER_SOURCE, PLANE_TRIANGLES, PLANE_VERTEX_DATA, PLANE_VERTICIES,
-    VERTEX_SHADER_SOURCE,
-  },
+  assets::{FRAGMENT_SHADER_SOURCE, PLANE_TRIANGLES, PLANE_VERTICIES, VERTEX_SHADER_SOURCE},
   engine::{Mesh, MeshRenderer, ProgramRenderer, Shader},
   gl::Gles2,
 };
 
-pub struct RenderContext {
+pub struct RenderSystem {
   gl: Rc<Gles2>,
   mesh_renderer: MeshRenderer,
   program_renderer: ProgramRenderer,
@@ -17,7 +14,7 @@ pub struct RenderContext {
   shader: Shader,
 }
 
-impl RenderContext {
+impl RenderSystem {
   pub fn new(gl: Gles2) -> Self {
     let gl = Rc::new(gl);
 
