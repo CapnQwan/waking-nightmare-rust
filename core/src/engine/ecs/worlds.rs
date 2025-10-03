@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use math::Transform;
+
 use crate::engine::{Component, Components, Entity, Resources};
 
 pub struct World {
@@ -17,9 +19,16 @@ impl World {
     }
   }
 
-  pub fn spawn(&mut self) -> Entity {
+  pub fn spawn_entity(&mut self) -> Entity {
     let e = Entity(self.next_id);
     self.next_id += 1;
+    e
+  }
+
+  pub fn spawn_object(&mut self) -> Entity {
+    let e = Entity(self.next_id);
+    self.next_id += 1;
+    self.add_component::<Transform>(e, Transform::default());
     e
   }
 
@@ -31,12 +40,20 @@ impl World {
     self.storage::<T>().insert(e, comp);
   }
 
-  pub fn get_component<T: Component>(&self, e: Entity) -> Option<&T> {
+  pub fn get_component<T: Component>(&self, e: &Entity) -> Option<&T> {
     self.components.get_component::<T>(e)
   }
 
-  pub fn get_component_mut<T: Component>(&mut self, e: Entity) -> Option<&mut T> {
+  pub fn get_component_mut<T: Component>(&mut self, e: &Entity) -> Option<&mut T> {
     self.components.get_component_mut::<T>(e)
+  }
+
+  pub fn get_components<T: Component>(&self) -> Option<&HashMap<Entity, T>> {
+    self.components.get_components::<T>()
+  }
+
+  pub fn get_components_mut<T: Component>(&mut self) -> Option<&mut HashMap<Entity, T>> {
+    self.components.get_components_mut::<T>()
   }
 
   pub fn add_resource<T: 'static>(&mut self, resource: T) {

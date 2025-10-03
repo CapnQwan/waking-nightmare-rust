@@ -6,7 +6,7 @@ use crate::{
   gl::Gles2,
 };
 
-pub struct RenderSystem {
+pub struct Renderer {
   gl: Rc<Gles2>,
   mesh_renderer: MeshRenderer,
   program_renderer: ProgramRenderer,
@@ -14,7 +14,7 @@ pub struct RenderSystem {
   shader: Shader,
 }
 
-impl RenderSystem {
+impl Renderer {
   pub fn new(gl: Gles2) -> Self {
     let gl = Rc::new(gl);
 

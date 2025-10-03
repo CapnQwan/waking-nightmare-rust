@@ -37,7 +37,7 @@ impl Components {
     self.storage::<T>().insert(e, comp);
   }
 
-  pub fn get_component<T: Component>(&self, e: Entity) -> Option<&T> {
+  pub fn get_component<T: Component>(&self, e: &Entity) -> Option<&T> {
     self
       .components
       .get(&TypeId::of::<T>())
@@ -45,12 +45,26 @@ impl Components {
       .and_then(|map| map.get(&e))
   }
 
-  pub fn get_component_mut<T: Component>(&mut self, e: Entity) -> Option<&mut T> {
+  pub fn get_component_mut<T: Component>(&mut self, e: &Entity) -> Option<&mut T> {
     self
       .components
       .get_mut(&TypeId::of::<T>())
       .and_then(|boxed| boxed.downcast_mut::<HashMap<Entity, T>>())
       .and_then(|map| map.get_mut(&e))
+  }
+
+  pub fn get_components<T: Component>(&self) -> Option<&HashMap<Entity, T>> {
+    self
+      .components
+      .get(&TypeId::of::<T>())
+      .and_then(|boxed| boxed.downcast_ref::<HashMap<Entity, T>>())
+  }
+
+  pub fn get_components_mut<T: Component>(&mut self) -> Option<&mut HashMap<Entity, T>> {
+    self
+      .components
+      .get_mut(&TypeId::of::<T>())
+      .and_then(|boxed| boxed.downcast_mut::<HashMap<Entity, T>>())
   }
 
   pub fn destory(e: Entity) {}

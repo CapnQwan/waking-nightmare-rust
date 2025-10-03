@@ -1,22 +1,22 @@
 use std::time::Instant;
 
-use crate::traits::SystemUpdate;
+use crate::traits::Update;
 
-pub struct TimeSystem {
+pub struct Time {
   previous_frame: Instant,
   delta_time: f32,
 }
 
-impl TimeSystem {
+impl Time {
   pub fn new() -> Self {
-    TimeSystem {
+    Time {
       previous_frame: Instant::now(),
       delta_time: 0.0,
     }
   }
 }
 
-impl SystemUpdate for TimeSystem {
+impl Update for Time {
   fn update(&mut self) {
     let now = Instant::now();
     let duration = now.duration_since(self.previous_frame);
