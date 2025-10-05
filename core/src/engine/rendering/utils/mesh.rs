@@ -1,6 +1,8 @@
 use math::{Vector2, Vector3};
 
 pub struct Mesh {
+  id: Option<u32>,
+
   pub(crate) triangles: Vec<u32>,
   pub(crate) verticies: Vec<Vector3>,
   pub(crate) uvs: Vec<Vector2>,
@@ -24,6 +26,7 @@ impl Mesh {
     let nbo: gl::types::GLuint = 0;
 
     Mesh {
+      id: None,
       triangles: Vec::new(),
       verticies: Vec::new(),
       uvs: Vec::new(),
@@ -55,6 +58,15 @@ impl Mesh {
 
   pub fn has_changed(&self) -> bool {
     self.has_changed
+  }
+
+  pub fn id(&self) -> Option<u32> {
+    self.id
+  }
+
+  pub fn set_id(&mut self, id: u32) -> &mut Self {
+    self.id = Some(id);
+    self
   }
 
   pub fn set_vertices(&mut self, verticies: Vec<Vector3>) -> &mut Self {

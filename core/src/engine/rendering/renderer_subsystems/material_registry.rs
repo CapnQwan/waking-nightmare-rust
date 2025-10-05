@@ -1,6 +1,13 @@
+use std::collections::HashMap;
+
+use crate::engine::Material;
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+pub struct MaterialId(u32);
+
 pub struct MaterialRegistry {
   next_id: u32,
-  materials: HashMap<u32, Material>,
+  materials: HashMap<MaterialId, Material>,
 }
 
 impl MaterialRegistry {
@@ -11,14 +18,15 @@ impl MaterialRegistry {
     }
   }
 
-  pub fn register_material(&mut self, material: Material) -> MaterialId {
-    let id = self.next_id;
+  pub fn register_material(&mut self, mut material: Material) -> MaterialId {
+    let id = MaterialId(self.next_id);
+    material.set_id(id);
     self.materials.insert(id, material);
     self.next_id += 1;
-    MaterialId(id)
+    id
   }
 
   pub fn get_material(&self, id: MaterialId) -> Option<&Material> {
-    self.materials.get(&id.0)
+    self.materials.get(&id)
   }
 }

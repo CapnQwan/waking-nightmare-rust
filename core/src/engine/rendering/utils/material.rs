@@ -1,8 +1,12 @@
 use std::collections::HashMap;
 
-use crate::{engine::Shader, gl::Gles2};
+use crate::{
+  engine::{MaterialId, Shader},
+  gl::Gles2,
+};
 
 pub struct Material {
+  id: Option<MaterialId>,
   pub shader: Shader,
   pub uniforms: HashMap<String, i32>,
   pub attributes: HashMap<String, i32>,
@@ -12,6 +16,15 @@ impl Material {
   pub fn utilize(&self) {
     //self.shader.bind(gl);
     // later: set uniforms, bind VAOs, etc.
+  }
+
+  pub fn id(&self) -> Option<MaterialId> {
+    self.id
+  }
+
+  pub fn set_id(&mut self, id: MaterialId) -> &mut Self {
+    self.id = Some(id);
+    self
   }
 
   pub fn set_uniform_f32(&self, gl: &Gles2, name: &str, value: f32) {
