@@ -1,39 +1,40 @@
 use std::{ffi::CStr, rc::Rc};
 
 use crate::{
-  assets::{FRAGMENT_SHADER_SOURCE, PLANE_TRIANGLES, PLANE_VERTICIES, VERTEX_SHADER_SOURCE},
-  engine::{Mesh, MeshRenderer, Program, ProgramRenderer},
+  engine::{
+    MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
+    ProgramRegistry, ProgramRenderer, RenderComponent,
+  },
   gl::Gles2,
+  traits::Registry,
 };
 
 pub struct Renderer {
   gl: Rc<Gles2>,
+  material_renderer: MaterialRenderer,
+  material_registry: MaterialRegistry,
   mesh_renderer: MeshRenderer,
+  mesh_registry: MeshRegistry,
   program_renderer: ProgramRenderer,
-  mesh: Mesh,
-  shader: Program,
+  program_registry: ProgramRegistry,
 }
 
 impl Renderer {
   pub fn new(gl: Gles2) -> Self {
     let gl = Rc::new(gl);
 
+    let material_renderer = MaterialRenderer::new(Rc::clone(&gl));
     let mesh_renderer = MeshRenderer::new(Rc::clone(&gl));
     let program_renderer = ProgramRenderer::new(Rc::clone(&gl));
 
-    let mut mesh = Mesh::new();
-    mesh.set_vertices(PLANE_VERTICIES.to_vec());
-    mesh.set_triangles(PLANE_TRIANGLES.to_vec());
-
-    let program = program_renderer.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
-    let shader = Program::new(0, program);
-
     Self {
       gl,
+      material_renderer,
       mesh_renderer,
       program_renderer,
-      mesh,
-      shader,
+      material_registry: MaterialRegistry::new(),
+      mesh_registry: MeshRegistry::new(),
+      program_registry: ProgramRegistry::new(),
     }
   }
 
@@ -44,13 +45,20 @@ impl Renderer {
     }
   }
 
-  pub fn draw(&mut self) {
-    // self.program_renderer.
+  pub fn draw(&mut self, render_component: &RenderComponent) {
+    let (Some(material), Some(mesh)) = (
+      self
+        .material_registry
+        .get_mut(&render_component.material_id),
+      self.mesh_registry.get_mut(&render_component.mesh_id),
+    ) else {
+      return;
+    };
 
-    if self.mesh.has_changed() {
-      self.mesh_renderer.bind_mesh_buffers(&mut self.mesh);
+    if mesh.has_changed() {
+      self.mesh_renderer.bind_mesh_buffers(mesh);
     }
-    self.mesh_renderer.draw_mesh(&self.mesh);
+    self.mesh_renderer.draw_mesh(mesh);
   }
 
   pub fn resize(&self, width: i32, height: i32) {

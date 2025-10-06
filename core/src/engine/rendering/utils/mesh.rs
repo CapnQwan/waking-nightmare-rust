@@ -1,7 +1,9 @@
 use math::{Vector2, Vector3};
 
+use crate::engine::MeshId;
+
 pub struct Mesh {
-  id: Option<u32>,
+  id: Option<MeshId>,
 
   pub(crate) triangles: Vec<u32>,
   pub(crate) verticies: Vec<Vector3>,
@@ -60,11 +62,11 @@ impl Mesh {
     self.has_changed
   }
 
-  pub fn id(&self) -> Option<u32> {
+  pub fn id(&self) -> Option<MeshId> {
     self.id
   }
 
-  pub fn set_id(&mut self, id: u32) -> &mut Self {
+  pub fn set_id(&mut self, id: MeshId) -> &mut Self {
     self.id = Some(id);
     self
   }

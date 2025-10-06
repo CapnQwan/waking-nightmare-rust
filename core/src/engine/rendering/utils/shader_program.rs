@@ -1,5 +1,7 @@
+use crate::engine::ProgramId;
+
 pub struct Program {
-  id: Option<u32>,
+  id: Option<ProgramId>,
   pub program: u32,
 }
 
@@ -8,11 +10,11 @@ impl Program {
     Program { id: None, program }
   }
 
-  pub fn id(&self) -> Option<u32> {
+  pub fn id(&self) -> Option<ProgramId> {
     self.id
   }
 
-  pub fn set_id(&mut self, id: u32) -> &mut Self {
+  pub fn set_id(&mut self, id: ProgramId) -> &mut Self {
     self.id = Some(id);
     self
   }

@@ -30,7 +30,6 @@ impl Core {
   pub fn draw(&mut self) {
     if let Some(renderer) = self.world.get_mut_resource::<Renderer>() {
       renderer.clear();
-      renderer.draw();
     }
   }
 }

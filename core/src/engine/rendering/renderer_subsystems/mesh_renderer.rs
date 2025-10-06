@@ -4,9 +4,6 @@ use math::{Vector2, Vector3};
 
 use crate::{engine::Mesh, gl::Gles2};
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub struct MeshId(pub u32);
-
 pub struct MeshRenderer {
   gl: Rc<Gles2>,
 }

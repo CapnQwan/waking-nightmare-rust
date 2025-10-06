@@ -1,20 +1,26 @@
 use math::Transform;
 
-use crate::engine::{Renderer, World};
+use crate::engine::{MaterialId, MeshId, Renderer, World};
 
-struct MeshRenderer {
-  mesh_id: u32,
-  material_id: u32,
+pub struct RenderComponent {
+  pub mesh_id: MeshId,
+  pub material_id: MaterialId,
 }
 
 pub fn mesh_render_system(world: &mut World) {
-  let Some(renderer) = world.get_resource::<Renderer>() else {
-    return;
+  let renderer = match world.get_mut_resource::<Renderer>() {
+    Some(r) => r,
+    None => return,
   };
 
-  for (entity, mesh_renderer) in world.get_components::<MeshRenderer>().unwrap() {
+  let render_components: Vec<(_, _)> = match world.get_components::<RenderComponent>() {
+    Some(iter) => iter.into_iter().collect(),
+    None => return,
+  };
+
+  for (entity, render_component) in render_components {
     if let Some(transform) = world.get_component::<Transform>(entity) {
-      //renderer.draw_mesh(mesh_renderer.mesh_id, &transform);
+      renderer.draw(render_component);
     }
   }
 }
