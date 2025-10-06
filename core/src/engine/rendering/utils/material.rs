@@ -1,13 +1,13 @@
 use std::collections::HashMap;
 
 use crate::{
-  engine::{MaterialId, Shader},
+  engine::{MaterialId, Program},
   gl::Gles2,
 };
 
 pub struct Material {
   id: Option<MaterialId>,
-  pub shader: Shader,
+  pub shader: Program,
   pub uniforms: HashMap<String, i32>,
   pub attributes: HashMap<String, i32>,
 }

@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+use crate::engine::Program;
+
 pub struct ProgramRegistry {
   next_id: u32,
   programs: HashMap<u32, Program>,

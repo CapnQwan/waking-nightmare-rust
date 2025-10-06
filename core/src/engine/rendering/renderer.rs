@@ -2,7 +2,7 @@ use std::{ffi::CStr, rc::Rc};
 
 use crate::{
   assets::{FRAGMENT_SHADER_SOURCE, PLANE_TRIANGLES, PLANE_VERTICIES, VERTEX_SHADER_SOURCE},
-  engine::{Mesh, MeshRenderer, ProgramRenderer, Shader},
+  engine::{Mesh, MeshRenderer, Program, ProgramRenderer},
   gl::Gles2,
 };
 
@@ -11,7 +11,7 @@ pub struct Renderer {
   mesh_renderer: MeshRenderer,
   program_renderer: ProgramRenderer,
   mesh: Mesh,
-  shader: Shader,
+  shader: Program,
 }
 
 impl Renderer {
@@ -26,7 +26,7 @@ impl Renderer {
     mesh.set_triangles(PLANE_TRIANGLES.to_vec());
 
     let program = program_renderer.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
-    let shader = Shader::new(0, program);
+    let shader = Program::new(0, program);
 
     Self {
       gl,
