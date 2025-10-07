@@ -11,9 +11,10 @@ pub struct Core {
 impl Core {
   pub fn new(gl: Gles2) -> Self {
     let mut world = World::new();
+    let (_, resources) = world.split_borrow();
 
-    world.add_resource(Time::new());
-    world.add_resource(Renderer::new(gl));
+    resources.add_resource(Time::new());
+    resources.add_resource(Renderer::new(gl));
 
     Core {
       world,
@@ -28,7 +29,8 @@ impl Core {
   }
 
   pub fn draw(&mut self) {
-    if let Some(renderer) = self.world.get_mut_resource::<Renderer>() {
+    let (_, resources) = self.world.split_borrow();
+    if let Some(renderer) = resources.get_mut_resource::<Renderer>() {
       renderer.clear();
     }
   }
