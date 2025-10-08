@@ -1,9 +1,11 @@
+use std::f32::consts::PI;
+
 use math::Matrix4x4;
 
 pub struct Camera {
   // @todo iplement a way of outputing different cameras to different outputs (gl_context, render_texture...)
   //output: OutputId?
-  field_of_view: u16,
+  field_of_view: f32,
   near: f32,
   far: f32,
   view_matrix: Matrix4x4,
@@ -11,7 +13,7 @@ pub struct Camera {
 }
 
 impl Camera {
-  pub fn new(field_of_view: u16, near: f32, far: f32) -> Self {
+  pub fn new(field_of_view: f32, near: f32, far: f32) -> Self {
     Camera {
       field_of_view,
       near,
@@ -21,11 +23,30 @@ impl Camera {
     }
   }
 
-  pub fn calculate_projection_matrix(&mut self) {}
+  pub fn calculate_projection_matrix(&mut self) -> Matrix4x4 {
+    // @todo implement a way of getting the aspect ratio from the output item
+    //let aspect_ratio = view_port._width / view_port._height;
+    let aspect_ratio = 1920.0 / 1080.0;
+
+    let fov_rad = (self.field_of_view * PI) / 180.0;
+    let f = 1.0 / f32::tan(fov_rad / 2.0);
+    let range_inv = 1.0 / (self.near - self.far);
+
+    // prettier-ignore
+    let mut projection_matrix = Matrix4x4::default();
+    projection_matrix[0][0] = f / aspect_ratio;
+    projection_matrix[1][1] = f;
+    projection_matrix[2][2] = (self.near + self.far) * range_inv;
+    projection_matrix[2][3] = -1.0;
+    projection_matrix[3][2] = 2.0 * self.near * self.far * range_inv;
+    projection_matrix[3][3] = 0.0;
+
+    projection_matrix
+  }
 }
 
 impl Default for Camera {
   fn default() -> Camera {
-    Self::new(45, 0.1, 1000.0)
+    Self::new(45.0, 0.1, 1000.0)
   }
 }
