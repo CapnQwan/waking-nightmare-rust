@@ -1,7 +1,6 @@
-use std::f32::consts::PI;
-
 use math::Matrix4x4;
 
+// @todo - Added support for orthographic cameras
 pub struct Camera {
   // @todo iplement a way of outputing different cameras to different outputs (gl_context, render_texture...)
   //output: OutputId?
@@ -14,28 +13,62 @@ pub struct Camera {
 
 impl Camera {
   pub fn new(field_of_view: f32, near: f32, far: f32) -> Self {
-    Camera {
+    let mut camera = Camera {
       field_of_view,
       near,
       far,
-      view_matrix,
-      projection_matrix,
-    }
+      view_matrix: Matrix4x4::default(),
+      projection_matrix: Matrix4x4::default(),
+    };
+
+    camera.update_projection();
+    camera
   }
 
-  pub fn calculate_projection_matrix(&mut self) -> Matrix4x4 {
+  pub fn view_matrix(&self) -> &Matrix4x4 {
+    &self.view_matrix
+  }
+
+  pub fn projection_matrix(&self) -> &Matrix4x4 {
+    &self.projection_matrix
+  }
+
+  pub fn set_view_matrix(&mut self, view: Matrix4x4) {
+    self.view_matrix = view;
+  }
+
+  pub fn set_field_of_view(&mut self, field_of_view: f32) {
+    self.field_of_view = field_of_view;
+    self.update_projection();
+  }
+
+  pub fn set_near(&mut self, near: f32) {
+    self.near = near;
+    self.update_projection();
+  }
+
+  pub fn set_far(&mut self, far: f32) {
+    self.far = far;
+    self.update_projection();
+  }
+
+  pub fn update_projection(&mut self) {
+    self.projection_matrix = self.calculate_perspective_projection_matrix();
+  }
+
+  pub fn calculate_perspective_projection_matrix(&mut self) -> Matrix4x4 {
     // @todo implement a way of getting the aspect ratio from the output item
     //let aspect_ratio = view_port._width / view_port._height;
     let aspect_ratio = 1920.0 / 1080.0;
 
-    let fov_rad = (self.field_of_view * PI) / 180.0;
-    let f = 1.0 / f32::tan(fov_rad / 2.0);
+    let fov_rad = self.field_of_view.to_radians();
+    let focal_scale = 1.0 / f32::tan(fov_rad / 2.0);
     let range_inv = 1.0 / (self.near - self.far);
 
     // prettier-ignore
     let mut projection_matrix = Matrix4x4::default();
-    projection_matrix[0][0] = f / aspect_ratio;
-    projection_matrix[1][1] = f;
+    projection_matrix[0][0] = focal_scale / aspect_ratio;
+    projection_matrix[1][1] = focal_scale;
     projection_matrix[2][2] = (self.near + self.far) * range_inv;
     projection_matrix[2][3] = -1.0;
     projection_matrix[3][2] = 2.0 * self.near * self.far * range_inv;

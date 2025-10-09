@@ -2,6 +2,7 @@
 use std::ops::{Deref, DerefMut};
 
 /** A row major 2x2 matrix */
+#[derive(Clone, Copy)]
 pub struct Matrix2x2(pub [[f32; 2]; 2]);
 
 impl Matrix2x2 {
