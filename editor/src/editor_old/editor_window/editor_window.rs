@@ -1,12 +1,10 @@
-use crate::editor::editor::Editor;
+use crate::editor_old::editor::Editor;
 
-pub struct EditorWindow {
-}
+pub struct EditorWindow {}
 
 impl Default for EditorWindow {
   fn default() -> Self {
-    Self {
-    }
+    Self {}
   }
 }
 
@@ -27,9 +25,7 @@ impl EditorWindow {
         ui.vertical_centered(|ui| {
           ui.heading("Scene Structure");
         });
-        egui::ScrollArea::vertical().show(ui, |_ui| {
-            
-        });
+        egui::ScrollArea::vertical().show(ui, |_ui| {});
       });
   }
 
@@ -55,8 +51,7 @@ impl EditorWindow {
         ui.vertical_centered(|ui| {
           ui.heading("Files");
         });
-        egui::ScrollArea::vertical().show(ui, |_ui| {
-        });
+        egui::ScrollArea::vertical().show(ui, |_ui| {});
       });
   }
 
