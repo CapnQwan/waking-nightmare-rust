@@ -7,8 +7,8 @@ use glutin_winit::DisplayBuilder;
 
 use crate::desktop_app::App;
 
-mod desktop_app;
-mod window_context;
+pub mod desktop_app;
+pub mod window_context;
 
 pub fn init() {
   let event_loop = EventLoop::new().unwrap();

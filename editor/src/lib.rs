@@ -2,6 +2,10 @@
 #![allow(rustdoc::missing_crate_level_docs)] // it's an example
 
 use core::gl::Gl;
+use desktop::window_context::{create_gl_context, gl_config_picker};
+use glutin::config::{Config, ConfigTemplateBuilder};
+use glutin::context::PossiblyCurrentContext;
+use glutin::prelude::NotCurrentGlContext;
 use glutin_winit::DisplayBuilder;
 use winit::window::Window;
 
@@ -32,33 +36,23 @@ pub fn init() {
   // )
 }
 
-fn create_gl_window() -> (Window, Gl) {
+fn create_gl_window() -> (Window, Config) {
   let event_loop = EventLoop::new().unwrap();
 
+  let template = ConfigTemplateBuilder::new().with_alpha_size(8);
   let display_builder =
     DisplayBuilder::new().with_window_attributes(Some(Window::default_attributes()));
 
-  let (window, gl_config) =
-    match display_builder
-      .clone()
-      .build(event_loop, self.template.clone(), gl_config_picker)
-    {
-      Ok((window, gl_config)) => (window.unwrap(), gl_config),
-      Err(err) => {
-        self.exit_state = Err(err);
-        event_loop.exit();
-        return;
-      }
-    };
+  let (window_opt, gl_config) = display_builder
+    .clone()
+    .build(&event_loop, template.clone(), gl_config_picker)
+    .expect("Error creating context");
 
-  println!("Picked a config with {} samples", gl_config.num_samples());
-
-  // Mark the display as initialized to not recreate it on resume, since the
-  // display is valid until we explicitly destroy it.
-  self.gl_display = GlDisplayCreationState::Init;
-
-  // Create gl context.
-  self.gl_context = Some(create_gl_context(&window, &gl_config).treat_as_possibly_current());
+  let window = window_opt.unwrap();
 
   (window, gl_config)
+}
+
+fn new_gl_context(window: &Window, gl_config: &Config) -> PossiblyCurrentContext {
+  Some(create_gl_context(window, gl_config).treat_as_possibly_current()).unwrap()
 }
