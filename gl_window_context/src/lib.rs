@@ -12,7 +12,7 @@ use winit::event_loop::EventLoop;
 use winit::window::Window;
 
 use glutin::config::Config;
-use glutin::display::GetGlDisplay;
+use glutin::display::{Display, GetGlDisplay};
 
 use glutin_winit::DisplayBuilder;
 use glutin_winit::GlWindow;
@@ -96,11 +96,19 @@ impl GlWindowContext {
     &self.window
   }
 
-  pub fn get_context(&self) -> &Window {
-    &self.window
+  pub fn get_config(&self) -> &Config {
+    &self.config
   }
 
-  pub fn get_surface(&self) -> &Window {
-    &self.window
+  pub fn get_context(&self) -> &PossiblyCurrentContext {
+    &self.context
+  }
+
+  pub fn get_surface(&self) -> &Surface<WindowSurface> {
+    &self.surface
+  }
+
+  pub fn display(&self) -> Display {
+    self.config.display()
   }
 }

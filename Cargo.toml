@@ -1,6 +1,6 @@
 [workspace]
 edition = "2024"
-rust-version = "1.87.0"
+rust-version = "1.90.0"
 resolver = "2"
 members = [
   "math",
