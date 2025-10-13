@@ -1,8 +1,13 @@
+use std::ffi::CString;
+use std::num::NonZeroU32;
+use std::sync::Arc;
+
 use glutin::config::ConfigTemplateBuilder;
 use glutin::context::PossiblyCurrentContext;
 use glutin::prelude::{GlDisplay, NotCurrentGlContext};
-use glutin::surface::{Surface, WindowSurface};
+use glutin::surface::{GlSurface, Surface, WindowSurface};
 
+use glwn::gl::Gl;
 use winit::event_loop::EventLoop;
 use winit::window::Window;
 
@@ -17,13 +22,14 @@ use crate::gl_context::create_gl_context;
 
 mod gl_config;
 mod gl_context;
-mod window_attributes;
 
 pub struct GlWindowContext {
   window: Window,
   config: Config,
   context: PossiblyCurrentContext,
   surface: Surface<WindowSurface>,
+  // Note: Switch to Arc for mutli threaded resource loading?
+  gl: Arc<Gl>,
 }
 
 impl GlWindowContext {
@@ -37,8 +43,6 @@ impl GlWindowContext {
       .expect("Failed to build GL window");
     let window = window_opt.unwrap();
 
-    let context = create_gl_context(&window, &config).treat_as_possibly_current();
-
     let attrs = window.build_surface_attributes(Default::default()).unwrap();
     let surface = unsafe {
       config
@@ -47,11 +51,56 @@ impl GlWindowContext {
         .unwrap()
     };
 
+    let context = create_gl_context(&window, &config)
+      .make_current(&surface)
+      .expect("Failed to make context current");
+
+    let gl = Gl::load_with(|symbol| {
+      let symbol = CString::new(symbol).unwrap();
+      config.display().get_proc_address(symbol.as_c_str()).cast()
+    });
+
     Self {
       window,
       config,
       context,
       surface,
+      gl: Arc::new(gl),
     }
+  }
+}
+
+impl GlWindowContext {
+  pub fn get_gl_instance(&self) -> Arc<Gl> {
+    Arc::clone(&self.gl)
+  }
+
+  pub fn resize(&self, width: NonZeroU32, height: NonZeroU32) {
+    self.surface.resize(&self.context, width, height);
+    unsafe {
+      self
+        .gl
+        .Viewport(0, 0, width.get() as i32, height.get() as i32);
+    }
+  }
+
+  pub fn request_redraw(&self) {
+    self.window.request_redraw();
+  }
+
+  pub fn swap_buffers(&self) {
+    let _ = self.surface.swap_buffers(&self.context);
+  }
+
+  pub fn get_window(&self) -> &Window {
+    &self.window
+  }
+
+  pub fn get_context(&self) -> &Window {
+    &self.window
+  }
+
+  pub fn get_surface(&self) -> &Window {
+    &self.window
   }
 }

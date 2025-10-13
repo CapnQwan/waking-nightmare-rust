@@ -1,9 +1,8 @@
 use std::collections::HashMap;
 
-use crate::{
-  engine::{MaterialId, Program},
-  gl::Gles2,
-};
+use glwn::gl::Gl;
+
+use crate::engine::{MaterialId, Program};
 
 pub struct Material {
   id: Option<MaterialId>,
@@ -27,7 +26,7 @@ impl Material {
     self
   }
 
-  pub fn set_uniform_f32(&self, gl: &Gles2, name: &str, value: f32) {
+  pub fn set_uniform_f32(&self, gl: &Gl, name: &str, value: f32) {
     if let Some(&loc) = self.uniforms.get(name) {
       unsafe {
         gl.Uniform1f(loc, value);
@@ -35,7 +34,7 @@ impl Material {
     }
   }
 
-  pub fn set_uniform_vec2(&self, gl: &Gles2, name: &str, value: [f32; 2]) {
+  pub fn set_uniform_vec2(&self, gl: &Gl, name: &str, value: [f32; 2]) {
     if let Some(&loc) = self.uniforms.get(name) {
       unsafe {
         gl.Uniform2fv(loc, 1, value.as_ptr());
@@ -43,7 +42,7 @@ impl Material {
     }
   }
 
-  pub fn set_uniform_vec3(&self, gl: &Gles2, name: &str, value: [f32; 3]) {
+  pub fn set_uniform_vec3(&self, gl: &Gl, name: &str, value: [f32; 3]) {
     if let Some(&loc) = self.uniforms.get(name) {
       unsafe {
         gl.Uniform3fv(loc, 1, value.as_ptr());

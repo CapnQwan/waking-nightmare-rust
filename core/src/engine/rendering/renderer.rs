@@ -1,16 +1,17 @@
-use std::{ffi::CStr, rc::Rc};
+use std::{ffi::CStr, sync::Arc};
+
+use glwn::gl::Gl;
 
 use crate::{
   engine::{
-    MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
-    ProgramRegistry, ProgramRenderer, RenderComponent,
+    MaterialRegistry, MaterialRenderer, MeshRegistry, MeshRenderer, ProgramRegistry,
+    ProgramRenderer, RenderComponent,
   },
-  gl::Gles2,
   traits::Registry,
 };
 
 pub struct Renderer {
-  gl: Rc<Gles2>,
+  gl: Arc<Gl>,
   material_renderer: MaterialRenderer,
   material_registry: MaterialRegistry,
   mesh_renderer: MeshRenderer,
@@ -20,12 +21,10 @@ pub struct Renderer {
 }
 
 impl Renderer {
-  pub fn new(gl: Gles2) -> Self {
-    let gl = Rc::new(gl);
-
-    let material_renderer = MaterialRenderer::new(Rc::clone(&gl));
-    let mesh_renderer = MeshRenderer::new(Rc::clone(&gl));
-    let program_renderer = ProgramRenderer::new(Rc::clone(&gl));
+  pub fn new(gl: Arc<Gl>) -> Self {
+    let material_renderer = MaterialRenderer::new(gl.clone());
+    let mesh_renderer = MeshRenderer::new(gl.clone());
+    let program_renderer = ProgramRenderer::new(gl.clone());
 
     Self {
       gl,

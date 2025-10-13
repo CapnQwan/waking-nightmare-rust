@@ -4,6 +4,7 @@ rust-version = "1.87.0"
 resolver = "2"
 members = [
   "math",
+  "glwn",
   "gl_window_context",
   "core",
   "desktop",

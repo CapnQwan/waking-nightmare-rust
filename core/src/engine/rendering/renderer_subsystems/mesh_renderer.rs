@@ -1,15 +1,16 @@
-use std::rc::Rc;
+use std::sync::Arc;
 
+use glwn::gl::Gl;
 use math::{Vector2, Vector3};
 
-use crate::{engine::Mesh, gl::Gles2};
+use crate::engine::Mesh;
 
 pub struct MeshRenderer {
-  gl: Rc<Gles2>,
+  gl: Arc<Gl>,
 }
 
 impl MeshRenderer {
-  pub fn new(gl: Rc<Gles2>) -> Self {
+  pub fn new(gl: Arc<Gl>) -> Self {
     Self { gl }
   }
 

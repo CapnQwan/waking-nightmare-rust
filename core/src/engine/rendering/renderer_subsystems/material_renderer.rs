@@ -1,13 +1,13 @@
-use std::rc::Rc;
+use std::sync::Arc;
 
-use crate::gl::Gles2;
+use glwn::gl::Gl;
 
 pub struct MaterialRenderer {
-  gl: Rc<Gles2>,
+  gl: Arc<Gl>,
 }
 
 impl MaterialRenderer {
-  pub fn new(gl: Rc<Gles2>) -> Self {
+  pub fn new(gl: Arc<Gl>) -> Self {
     MaterialRenderer { gl }
   }
 }

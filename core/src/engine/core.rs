@@ -1,7 +1,8 @@
-use crate::{
-  engine::{Renderer, Systems, Time, World},
-  gl::Gles2,
-};
+use std::sync::Arc;
+
+use glwn::gl::Gl;
+
+use crate::engine::{Renderer, Systems, Time, World};
 
 pub struct Core {
   world: World,
@@ -9,7 +10,7 @@ pub struct Core {
 }
 
 impl Core {
-  pub fn new(gl: Gles2) -> Self {
+  pub fn new(gl: Arc<Gl>) -> Self {
     let mut world = World::new();
     let (_, resources) = world.split_borrow();
 
