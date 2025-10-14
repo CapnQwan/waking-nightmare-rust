@@ -1,11 +1,6 @@
 use math::Transform;
 
-use crate::engine::{MaterialId, MeshId, Renderer, World};
-
-pub struct RenderComponent {
-  pub mesh_id: MeshId,
-  pub material_id: MaterialId,
-}
+use crate::engine::{RenderComponent, Renderer, World};
 
 pub fn mesh_render_system(world: &mut World) {
   let (components, resources) = world.split_borrow();

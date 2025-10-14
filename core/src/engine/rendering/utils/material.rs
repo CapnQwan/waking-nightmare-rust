@@ -6,12 +6,21 @@ use crate::engine::{MaterialId, Program};
 
 pub struct Material {
   id: Option<MaterialId>,
-  pub shader: Program,
+  pub program: Program,
   pub uniforms: HashMap<String, i32>,
   pub attributes: HashMap<String, i32>,
 }
 
 impl Material {
+  pub fn new(program: Program) -> Self {
+    Material {
+      id: None,
+      program,
+      uniforms: HashMap::new(),
+      attributes: HashMap::new(),
+    }
+  }
+
   pub fn utilize(&self) {
     //self.shader.bind(gl);
     // later: set uniforms, bind VAOs, etc.
