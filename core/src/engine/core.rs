@@ -26,7 +26,6 @@ impl Core {
   pub fn update(&mut self) {
     self.world.update_resources();
     self.systems.update(&mut self.world);
-    self.draw()
   }
 
   pub fn draw(&mut self) {

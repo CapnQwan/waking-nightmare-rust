@@ -21,11 +21,14 @@ impl EguiGlowSupport {
     let glow_ctx = Arc::new(glow_ctx);
 
     // --- egui setup ---
-    let ctx = EguiContext::default();
-    let state = EguiWinit::new(&ctx, ViewportId::ROOT, window, None);
+    let ctx: EguiContext = EguiContext::default();
+    // `egui_winit::State::new` takes an owned `Context`, so clone here to
+    // avoid moving `ctx` out of this function (Context is cheaply cloneable).
+    let state = EguiWinit::new(ctx.clone(), ViewportId::ROOT, window, None, None, None);
 
     // --- egui_glow painter ---
-    let painter = Painter::new(glow_ctx.clone(), "", Some(ShaderVersion::Default), false)
+    // @todo - update the ShaderVersion based on the current output type (WASM / DESKTOP)
+    let painter = Painter::new(glow_ctx.clone(), "", Some(ShaderVersion::Es300), false)
       .expect("Failed to create egui glow painter");
 
     Self {
@@ -39,7 +42,7 @@ impl EguiGlowSupport {
   /// Begin a new egui frame.
   pub fn begin_frame(&mut self, window: &Window) {
     let raw_input = self.state.take_egui_input(window);
-    self.ctx.begin_frame(raw_input);
+    self.ctx.begin_pass(raw_input);
   }
 
   /// Run egui UI logic.
@@ -54,13 +57,11 @@ impl EguiGlowSupport {
       textures_delta,
       shapes,
       ..
-    } = self.ctx.end_frame();
+    } = self.ctx.end_pass();
 
-    self
-      .state
-      .handle_platform_output(window, &self.ctx, platform_output);
+    self.state.handle_platform_output(window, platform_output);
 
-    let paint_jobs = self.ctx.tessellate(shapes);
+    let paint_jobs = self.ctx.tessellate(shapes, self.ctx.pixels_per_point());
 
     let size = window.inner_size();
     unsafe {

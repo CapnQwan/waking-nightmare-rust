@@ -59,6 +59,7 @@ impl ApplicationHandler for App {
 
   fn about_to_wait(&mut self, _event_loop: &ActiveEventLoop) {
     self.engine.update();
+    self.engine.draw();
     self.window_context.request_redraw();
     self.window_context.swap_buffers();
   }
