@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use glwn::gl::Gl;
-use log::info;
 
 use crate::{
   assets::{CUBE_TRIANGLES, CUBE_VERTICIES, FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE},
