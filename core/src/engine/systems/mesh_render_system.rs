@@ -1,6 +1,6 @@
 use math::Transform;
 
-use crate::engine::{RenderComponent, Renderer, World};
+use crate::engine::{RenderCommand, RenderComponent, Renderer, World};
 
 pub fn mesh_render_system(world: &mut World) {
   let (components, resources) = world.split_borrow();
@@ -17,7 +17,11 @@ pub fn mesh_render_system(world: &mut World) {
 
   for (entity, render_component) in render_components {
     if let Some(transform) = components.get_component::<Transform>(entity) {
-      renderer.draw(render_component);
+      renderer.queue_draw(RenderCommand::new(
+        render_component.mesh_id,
+        render_component.material_id,
+        transform.clone(),
+      ));
     }
   }
 }

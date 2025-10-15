@@ -62,6 +62,7 @@ impl Core {
     let (_, resources) = self.world.split_borrow();
     if let Some(renderer) = resources.get_mut_resource::<Renderer>() {
       renderer.clear();
+      renderer.draw();
     }
   }
 }

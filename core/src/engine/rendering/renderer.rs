@@ -1,15 +1,32 @@
 use std::{ffi::CStr, sync::Arc};
 
 use glwn::gl::Gl;
-use log::info;
+use math::Transform;
 
 use crate::{
   engine::{
-    MaterialRegistry, MaterialRenderer, MeshRegistry, MeshRenderer, ProgramRegistry,
-    ProgramRenderer, RenderComponent,
+    MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
+    ProgramRegistry, ProgramRenderer, RenderComponent,
   },
   traits::Registry,
 };
+
+#[derive(Clone, Copy)]
+pub struct RenderCommand {
+  mesh_id: MeshId,
+  material_id: MaterialId,
+  transform: Transform,
+}
+
+impl RenderCommand {
+  pub fn new(mesh_id: MeshId, material_id: MaterialId, transform: Transform) -> Self {
+    RenderCommand {
+      mesh_id,
+      material_id,
+      transform,
+    }
+  }
+}
 
 /** @todo
  * would it be better to switch the registries and maybe even the renderers to
@@ -31,6 +48,7 @@ pub struct Renderer {
   mesh_registry: MeshRegistry,
   program_renderer: ProgramRenderer,
   program_registry: ProgramRegistry,
+  queued_render_calls: Vec<RenderCommand>,
 }
 
 impl Renderer {
@@ -47,22 +65,35 @@ impl Renderer {
       material_registry: MaterialRegistry::new(),
       mesh_registry: MeshRegistry::new(),
       program_registry: ProgramRegistry::new(),
+      queued_render_calls: Vec::new(),
     }
   }
 
-  pub fn clear(&self) {
+  pub fn clear(&self) -> &Self {
     unsafe {
       self.gl.ClearColor(1.0, 1.0, 1.0, 1.0);
       self.gl.Clear(gl::COLOR_BUFFER_BIT);
+      self
     }
   }
 
-  pub fn draw(&mut self, render_component: &RenderComponent) {
+  pub fn queue_draw(&mut self, render_command: RenderCommand) {
+    //self.queued_render_calls.insert(index, element);
+    self.queued_render_calls.push(render_command);
+  }
+
+  pub fn draw(&mut self) {
+    let queued_render_calls = self.queued_render_calls.clone();
+    for render_command in &queued_render_calls {
+      self.execute_draw_command(render_command);
+    }
+    self.queued_render_calls.clear();
+  }
+
+  fn execute_draw_command(&mut self, render_command: &RenderCommand) {
     let (Some(material), Some(mesh)) = (
-      self
-        .material_registry
-        .get_mut(&render_component.material_id),
-      self.mesh_registry.get_mut(&render_component.mesh_id),
+      self.material_registry.get_mut(&render_command.material_id),
+      self.mesh_registry.get_mut(&render_command.mesh_id),
     ) else {
       return;
     };
@@ -73,7 +104,6 @@ impl Renderer {
     }
 
     if mesh.has_changed() {
-      info!("BINDING BUFFERS");
       self.mesh_renderer.bind_mesh_buffers(mesh);
     }
     self.mesh_renderer.draw_mesh(mesh);

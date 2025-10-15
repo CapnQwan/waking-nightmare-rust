@@ -1,5 +1,6 @@
 use crate::engine::{MaterialId, MeshId};
 
+#[derive(Clone, Copy)]
 pub struct RenderComponent {
   pub mesh_id: MeshId,
   pub material_id: MaterialId,

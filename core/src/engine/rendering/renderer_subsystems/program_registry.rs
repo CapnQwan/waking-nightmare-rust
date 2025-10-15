@@ -18,11 +18,9 @@ impl Registry<ProgramId, Program> for ProgramRegistry {
     }
   }
 
-  fn register(&mut self, mut program: Program) -> ProgramId {
+  fn register(&mut self, program: Program) -> ProgramId {
     let id = ProgramId(self.next_id);
     self.next_id += 1;
-
-    program.set_id(id);
     self.programs.insert(id, program);
     id
   }
