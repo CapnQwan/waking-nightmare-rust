@@ -2,20 +2,20 @@ use std::collections::HashMap;
 
 use glwn::gl::Gl;
 
-use crate::engine::{MaterialId, Program};
+use crate::engine::{MaterialId, ProgramId};
 
 pub struct Material {
   id: Option<MaterialId>,
-  pub program: Program,
+  pub program_id: ProgramId,
   pub uniforms: HashMap<String, i32>,
   pub attributes: HashMap<String, i32>,
 }
 
 impl Material {
-  pub fn new(program: Program) -> Self {
+  pub fn new(program_id: ProgramId) -> Self {
     Material {
       id: None,
-      program,
+      program_id,
       uniforms: HashMap::new(),
       attributes: HashMap::new(),
     }
@@ -28,6 +28,10 @@ impl Material {
 
   pub fn id(&self) -> Option<MaterialId> {
     self.id
+  }
+
+  pub fn program(&self) -> &ProgramId {
+    &self.program_id
   }
 
   pub fn set_id(&mut self, id: MaterialId) -> &mut Self {

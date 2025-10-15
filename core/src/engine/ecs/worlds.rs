@@ -20,18 +20,18 @@ impl World {
   }
 
   pub fn spawn_entity(&mut self) -> Entity {
-    let e = Entity(self.next_id);
+    let entity = Entity(self.next_id);
     self.next_id += 1;
-    e
+    entity
   }
 
   pub fn spawn_object(&mut self) -> Entity {
-    let e = Entity(self.next_id);
+    let entity = Entity(self.next_id);
     self.next_id += 1;
     self
       .components
-      .add_component::<Transform>(e, Transform::default());
-    e
+      .add_component::<Transform>(entity, Transform::default());
+    entity
   }
 
   pub fn storage<T: Component>(&mut self) -> &mut HashMap<Entity, T> {

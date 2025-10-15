@@ -28,10 +28,10 @@ impl Registry<ProgramId, Program> for ProgramRegistry {
   }
 
   fn get(&self, id: &ProgramId) -> Option<&Program> {
-    todo!()
+    self.programs.get(id)
   }
 
   fn get_mut(&mut self, id: &ProgramId) -> Option<&mut Program> {
-    todo!()
+    self.programs.get_mut(id)
   }
 }

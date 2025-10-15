@@ -1,13 +1,12 @@
 use std::sync::Arc;
 
 use glwn::gl::Gl;
+use log::info;
 
 use crate::{
-  assets::{
-    CUBE_TRIANGLES, CUBE_VERTEX_DATA, CUBE_VERTICIES, FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE,
-  },
+  assets::{CUBE_TRIANGLES, CUBE_VERTICIES, FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE},
   engine::{
-    Material, MaterialId, Mesh, MeshId, Program, RenderComponent, Renderer, Systems, Time, World,
+    Material, Mesh, Program, RenderComponent, Renderer, Systems, Time, World, mesh_render_system,
   },
   traits::Registry,
 };
@@ -20,37 +19,36 @@ pub struct Core {
 impl Core {
   pub fn new(gl: Arc<Gl>) -> Self {
     let mut world = World::new();
+    let object = world.spawn_object();
     let (components, resources) = world.split_borrow();
 
-    let renderer = Renderer::new(gl);
-
     resources.add_resource(Time::new());
-    resources.add_resource(renderer);
+    resources.add_resource(Renderer::new(gl));
 
-    let object = world.spawn_object();
+    let renderer = resources.get_mut_resource::<Renderer>().unwrap();
 
-    let program_renderer = renderer.program_renderer();
-    let program_registry = renderer.program_registry();
-    let material_renderer = renderer.material_renderer();
-    let material_registry = renderer.material_registry();
-    let mesh_renderer = renderer.mesh_renderer();
-    let mesh_registry = renderer.mesh_registry();
+    let program = {
+      let glum_program = renderer
+        .program_renderer_mut()
+        .create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+      Program::new(glum_program)
+    };
+    let program_id = { renderer.program_registry_mut().register(program) };
 
-    let glum_program =
-      program_renderer.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
-    let program = Program::new(glum_program);
-    let program_id = program_registry.register(program);
-    let mesh = Mesh::new();
-    mesh.verticies = CUBE_VERTICIES.to_vec();
-    mesh.triangles = CUBE_TRIANGLES.to_vec();
-    let mesh_id = mesh_registry.register(mesh);
-    let material = Material::new(program);
-    let material_id = material_registry.register(material);
+    let mut mesh = Mesh::new();
+    mesh
+      .set_vertices(CUBE_VERTICIES.to_vec())
+      .set_triangles(CUBE_TRIANGLES.to_vec());
+    let mesh_id = { renderer.mesh_registry_mut().register(mesh) };
+
+    let material = Material::new(program_id);
+    let material_id = { renderer.material_registry_mut().register(material) };
 
     let render_component = RenderComponent::new(mesh_id, material_id);
     components.add_component(object, render_component);
 
-    let systems = Systems::new();
+    let mut systems = Systems::new();
+    systems.add_system(mesh_render_system);
 
     Core { world, systems }
   }

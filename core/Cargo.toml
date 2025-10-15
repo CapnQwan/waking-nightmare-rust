@@ -8,6 +8,8 @@ rust-version = "1.90.0"
 glwn = { path = "../glwn" }
 math = { path = "../math" }
 gl = "0.14.0"
+log = "0.4"
+env_logger = "0.11" 
 
 [dev-dependencies]
 imagine = "0.5.3"

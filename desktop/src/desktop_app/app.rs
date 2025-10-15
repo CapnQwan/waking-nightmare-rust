@@ -4,7 +4,7 @@ use winit::event::{KeyEvent, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, EventLoop};
 use winit::keyboard::{Key, NamedKey};
 
-use core::Core;
+use core::{Core, create_engine_instance};
 use std::num::NonZeroU32;
 
 pub struct App {
@@ -15,7 +15,7 @@ pub struct App {
 impl App {
   pub fn new(event_loop: &EventLoop<()>) -> Self {
     let window_context = GlWindowContext::new(event_loop);
-    let engine = Core::new(window_context.get_gl_instance());
+    let engine = create_engine_instance(window_context.get_gl_instance());
 
     Self {
       window_context,

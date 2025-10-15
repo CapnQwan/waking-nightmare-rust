@@ -1,6 +1,7 @@
 use std::{ffi::CStr, sync::Arc};
 
 use glwn::gl::Gl;
+use log::info;
 
 use crate::{
   engine::{
@@ -66,7 +67,13 @@ impl Renderer {
       return;
     };
 
+    let program = self.program_registry.get(material.program()).unwrap();
+    unsafe {
+      self.gl.UseProgram(program.program());
+    }
+
     if mesh.has_changed() {
+      info!("BINDING BUFFERS");
       self.mesh_renderer.bind_mesh_buffers(mesh);
     }
     self.mesh_renderer.draw_mesh(mesh);
