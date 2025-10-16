@@ -1,4 +1,4 @@
-use crate::{Matrix4x4, Quaternion, Vector3};
+use crate::{FloatVector, Matrix4x4, Quaternion, Vector3};
 
 #[derive(Clone, Copy)]
 pub struct Transform {
@@ -14,7 +14,19 @@ impl Transform {
     self.position
   }
 
-  fn set_position(&mut self, position: Vector3) -> &mut Self {
+  pub fn rotation(&self) -> Quaternion {
+    self.rotation
+  }
+
+  pub fn scale(&self) -> Vector3 {
+    self.scale
+  }
+
+  pub fn world_matrix(&self) -> Matrix4x4 {
+    self.world_matrix
+  }
+
+  pub fn set_position(&mut self, position: Vector3) -> &mut Self {
     self.position = position;
     self.is_dirty = true;
     self
@@ -38,8 +50,33 @@ impl Transform {
     self
   }
 
-  pub fn update_world_martix(&mut self) -> &mut Self {
+  pub fn set_rotation(&mut self, rotation: Quaternion) -> &mut Self {
+    self.rotation = rotation;
+    self.is_dirty = true;
     self
+  }
+
+  pub fn update_world_matrix(&mut self) -> &mut Self {
+    if self.is_dirty {
+      self.world_matrix = Matrix4x4::transform_matrix(*self);
+      self.is_dirty = false;
+    }
+    self
+  }
+
+  pub fn forward(&self) -> Vector3 {
+    let m = Matrix4x4::rotation_from_quaternion(self.rotation);
+    Vector3::new(m[2][0], m[2][1], m[2][2]).normalized()
+  }
+
+  pub fn up(&self) -> Vector3 {
+    let m = Matrix4x4::rotation_from_quaternion(self.rotation);
+    Vector3::new(m[1][0], m[1][1], m[1][2]).normalized()
+  }
+
+  pub fn right(&self) -> Vector3 {
+    let m = Matrix4x4::rotation_from_quaternion(self.rotation);
+    Vector3::new(m[0][0], m[0][1], m[0][2]).normalized()
   }
 }
 
@@ -48,7 +85,7 @@ impl Default for Transform {
     Transform {
       position: Vector3::default(),
       rotation: Quaternion::default(),
-      scale: Vector3::default(),
+      scale: Vector3::one(),
       world_matrix: Matrix4x4::default(),
       is_dirty: true,
     }

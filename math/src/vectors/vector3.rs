@@ -12,6 +12,10 @@ impl Vector3 {
   pub fn new(x: f32, y: f32, z: f32) -> Self {
     Vector3 { x, y, z }
   }
+
+  pub fn one() -> Vector3 {
+    Vector3::new(1.0, 1.0, 1.0)
+  }
 }
 
 impl Default for Vector3 {

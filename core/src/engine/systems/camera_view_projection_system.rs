@@ -13,7 +13,8 @@ pub fn camera_view_projection_system(world: &mut World) {
   };
 
   for (entity, camera) in cameras {
-    if let Some(transform) = transforms.get_component_mut(entity) {
+    if let Some(transform) = transforms.get_mut(entity) {
+      transform.update_world_martix();
       camera.update_projection();
       // You could also update the camera's view matrix using `transform` here
     }
