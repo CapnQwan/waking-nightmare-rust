@@ -8,6 +8,7 @@ pub struct Camera {
   near: f32,
   far: f32,
   view_matrix: Matrix4x4,
+  is_projection_dirty: bool,
   projection_matrix: Matrix4x4,
 }
 
@@ -18,6 +19,7 @@ impl Camera {
       near,
       far,
       view_matrix: Matrix4x4::default(),
+      is_projection_dirty: true,
       projection_matrix: Matrix4x4::default(),
     };
 
@@ -39,21 +41,24 @@ impl Camera {
 
   pub fn set_field_of_view(&mut self, field_of_view: f32) {
     self.field_of_view = field_of_view;
-    self.update_projection();
+    self.is_projection_dirty = true;
   }
 
   pub fn set_near(&mut self, near: f32) {
     self.near = near;
-    self.update_projection();
+    self.is_projection_dirty = true;
   }
 
   pub fn set_far(&mut self, far: f32) {
     self.far = far;
-    self.update_projection();
+    self.is_projection_dirty = true;
   }
 
   pub fn update_projection(&mut self) {
-    self.projection_matrix = self.calculate_perspective_projection_matrix();
+    if self.is_projection_dirty {
+      self.projection_matrix = self.calculate_perspective_projection_matrix();
+      self.is_projection_dirty = false;
+    }
   }
 
   pub fn calculate_perspective_projection_matrix(&mut self) -> Matrix4x4 {

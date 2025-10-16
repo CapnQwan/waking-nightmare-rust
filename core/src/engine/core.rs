@@ -5,7 +5,8 @@ use glwn::gl::Gl;
 use crate::{
   assets::{CUBE_TRIANGLES, CUBE_VERTICIES, FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE},
   engine::{
-    Material, Mesh, Program, RenderComponent, Renderer, Systems, Time, World, mesh_render_system,
+    Camera, Material, Mesh, Program, RenderComponent, Renderer, Systems, Time, World,
+    camera_view_projection_system, mesh_render_system,
   },
   traits::Registry,
 };
@@ -18,6 +19,7 @@ pub struct Core {
 impl Core {
   pub fn new(gl: Arc<Gl>) -> Self {
     let mut world = World::new();
+    let camera = world.spawn_object();
     let object = world.spawn_object();
     let (components, resources) = world.split_borrow();
 
@@ -45,9 +47,11 @@ impl Core {
 
     let render_component = RenderComponent::new(mesh_id, material_id);
     components.add_component(object, render_component);
+    components.add_component(camera, Camera::default());
 
     let mut systems = Systems::new();
     systems.add_system(mesh_render_system);
+    systems.add_system(camera_view_projection_system);
 
     Core { world, systems }
   }

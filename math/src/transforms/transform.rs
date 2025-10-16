@@ -37,6 +37,10 @@ impl Transform {
     self.is_dirty = true;
     self
   }
+
+  pub fn update_world_martix(&mut self) -> &mut Self {
+    self
+  }
 }
 
 impl Default for Transform {
