@@ -71,3 +71,25 @@ impl Components {
 
   pub fn destory_all(e: Entity) {}
 }
+
+macro_rules! get_components_mut {
+  ($components:expr, $($ty:ty),+ $(,)?) => {{
+    use std::any::TypeId;
+    let ids = [$(TypeId::of::<$ty>()),+];
+    // Ensure all types are distinct at runtime
+    if ids.len() != ids.iter().collect::<std::collections::HashSet<_>>().len() {
+      None
+    } else {
+      unsafe {
+        Some((
+          $(
+            {
+              let ptr = $components as *mut _;
+              (*ptr).storage::<$ty>()
+            },
+          )+
+        ))
+      }
+    }
+  }};
+}

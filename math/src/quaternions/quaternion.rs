@@ -1,3 +1,5 @@
+use crate::Matrix4x4;
+
 #[derive(Clone, Copy)]
 pub struct Quaternion {
   pub w: f32,
@@ -40,6 +42,15 @@ impl Quaternion {
       x: self.w * other.x + self.x * other.w + self.y * other.z - self.z * other.y,
       y: self.w * other.y - self.x * other.z + self.y * other.w + self.z * other.x,
       z: self.w * other.z + self.x * other.y - self.y * other.x + self.z * other.w,
+    }
+  }
+
+  pub fn conjugate(&self) -> Self {
+    Self {
+      w: self.w,
+      x: -self.x,
+      y: -self.y,
+      z: -self.z,
     }
   }
 

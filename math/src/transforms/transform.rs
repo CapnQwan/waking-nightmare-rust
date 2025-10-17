@@ -26,6 +26,10 @@ impl Transform {
     self.world_matrix
   }
 
+  pub fn is_dirty(&self) -> bool {
+    self.is_dirty
+  }
+
   pub fn set_position(&mut self, position: Vector3) -> &mut Self {
     self.position = position;
     self.is_dirty = true;
@@ -62,6 +66,14 @@ impl Transform {
       self.is_dirty = false;
     }
     self
+  }
+
+  pub fn inverse_matrix(&self) -> Matrix4x4 {
+    let inv_rotation = self.rotation.conjugate();
+    let inv_translation =
+      Matrix4x4::translation_from_values(-self.position.x, -self.position.y, -self.position.z);
+    let rotation_matrix = Matrix4x4::rotation_from_quaternion(inv_rotation);
+    rotation_matrix.multiply(&inv_translation)
   }
 
   pub fn forward(&self) -> Vector3 {

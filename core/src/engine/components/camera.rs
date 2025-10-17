@@ -1,4 +1,4 @@
-use math::Matrix4x4;
+use math::{Matrix4x4, Transform};
 
 // @todo - Added support for orthographic cameras
 pub struct Camera {
@@ -58,6 +58,12 @@ impl Camera {
     if self.is_projection_dirty {
       self.projection_matrix = self.calculate_perspective_projection_matrix();
       self.is_projection_dirty = false;
+    }
+  }
+
+  pub fn update_view_matrix(&mut self, transform: Transform) {
+    if transform.is_dirty() {
+      self.view_matrix = transform.inverse_matrix();
     }
   }
 
