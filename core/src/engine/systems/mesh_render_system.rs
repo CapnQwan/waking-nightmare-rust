@@ -26,6 +26,7 @@ pub fn mesh_render_system(world: &mut World) {
           render_component.mesh_id,
           render_component.material_id,
           transform.clone(),
+          *camera.position(),
           *camera.view_matrix(),
           *camera.projection_matrix(),
         ));

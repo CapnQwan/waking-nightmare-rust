@@ -1,4 +1,4 @@
-use math::{Matrix4x4, Transform};
+use math::{Matrix4x4, Transform, Vector3};
 
 // @todo - Added support for orthographic cameras
 pub struct Camera {
@@ -11,6 +11,9 @@ pub struct Camera {
   is_projection_dirty: bool,
   projection_matrix: Matrix4x4,
   view_projection_matrix: Matrix4x4,
+  // @todo - do some more research as to whether the position is needed or
+  // if this can just be extracted
+  position: Vector3,
 }
 
 impl Camera {
@@ -23,10 +26,15 @@ impl Camera {
       is_projection_dirty: true,
       projection_matrix: Matrix4x4::default(),
       view_projection_matrix: Matrix4x4::default(),
+      position: Vector3::one(),
     };
 
     camera.update_projection();
     camera
+  }
+
+  pub fn position(&self) -> &Vector3 {
+    &self.position
   }
 
   pub fn view_matrix(&self) -> &Matrix4x4 {
@@ -70,6 +78,7 @@ impl Camera {
 
   pub fn update_view_matrix(&mut self, transform: Transform) {
     if transform.is_dirty() {
+      self.position = transform.position();
       self.view_matrix = transform.inverse_matrix();
       self.update_view_projection_matrix();
     }

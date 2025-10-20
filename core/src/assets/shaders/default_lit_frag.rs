@@ -40,6 +40,6 @@ void main() {
 
   // Combine components
   vec3 color = ambient + diffuse + specular;
-  fragColor = vec4(0.5);
+  fragColor = vec4(color, 1.0);
 }
 \0";

@@ -16,6 +16,10 @@ impl Vector3 {
   pub fn one() -> Vector3 {
     Vector3::new(1.0, 1.0, 1.0)
   }
+
+  pub fn to_array(&self) -> [f32; 3] {
+    [self.x, self.y, self.z]
+  }
 }
 
 impl Default for Vector3 {

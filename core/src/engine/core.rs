@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use glwn::gl::Gl;
+use math::{Transform, Vector3};
 
 use crate::{
   assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
@@ -54,6 +55,8 @@ impl Core {
     let render_component = RenderComponent::new(mesh_id, material_id);
     components.add_component(object, render_component);
     components.add_component(camera, Camera::default());
+    let camera_transform = components.get_component_mut::<Transform>(&camera).unwrap();
+    camera_transform.set_position(Vector3::new(0.0, 0.0, -5.0));
 
     let mut systems = Systems::new();
     systems.add_system(mesh_render_system);

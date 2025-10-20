@@ -8,13 +8,14 @@ use crate::{
   traits::Registry,
 };
 use glwn::gl::Gl;
-use math::{Matrix4x4, Transform};
+use math::{Matrix4x4, Transform, Vector3};
 
 #[derive(Clone, Copy)]
 pub struct RenderCommand {
   mesh_id: MeshId,
   material_id: MaterialId,
   transform: Transform,
+  camera_position: Vector3,
   view_matrix: Matrix4x4,
   projection_matrix: Matrix4x4,
 }
@@ -24,6 +25,7 @@ impl RenderCommand {
     mesh_id: MeshId,
     material_id: MaterialId,
     transform: Transform,
+    camera_position: Vector3,
     view_matrix: Matrix4x4,
     projection_matrix: Matrix4x4,
   ) -> Self {
@@ -31,6 +33,7 @@ impl RenderCommand {
       mesh_id,
       material_id,
       transform,
+      camera_position,
       view_matrix,
       projection_matrix,
     }
@@ -106,10 +109,15 @@ impl Renderer {
       return;
     };
 
+    // @todo - move bulk of this logic out of the draw execution
+
     // @todo - improve this as materials get developed more to be handled cleaner and more
     // effcient as some of this data doesn't need to be recalculated and re handled between
     // draw calls
-    material.set_uniform("uViewPosition", UniformValue::Vec3([0.0, 0.0, 5.0]));
+    material.set_uniform(
+      "uViewPosition",
+      UniformValue::Vec3(render_command.camera_position.to_array()),
+    );
     material.set_uniform(
       "uModelMatrix",
       UniformValue::Mat4(render_command.transform.world_matrix().as_column_major()),
