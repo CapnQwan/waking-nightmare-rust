@@ -10,6 +10,7 @@ pub struct Camera {
   view_matrix: Matrix4x4,
   is_projection_dirty: bool,
   projection_matrix: Matrix4x4,
+  view_projection_matrix: Matrix4x4,
 }
 
 impl Camera {
@@ -21,6 +22,7 @@ impl Camera {
       view_matrix: Matrix4x4::default(),
       is_projection_dirty: true,
       projection_matrix: Matrix4x4::default(),
+      view_projection_matrix: Matrix4x4::default(),
     };
 
     camera.update_projection();
@@ -33,6 +35,10 @@ impl Camera {
 
   pub fn projection_matrix(&self) -> &Matrix4x4 {
     &self.projection_matrix
+  }
+
+  pub fn view_projection_matrix(&self) -> &Matrix4x4 {
+    &self.view_projection_matrix
   }
 
   pub fn set_view_matrix(&mut self, view: Matrix4x4) {
@@ -57,6 +63,7 @@ impl Camera {
   pub fn update_projection(&mut self) {
     if self.is_projection_dirty {
       self.projection_matrix = self.calculate_perspective_projection_matrix();
+      self.update_view_projection_matrix();
       self.is_projection_dirty = false;
     }
   }
@@ -64,7 +71,12 @@ impl Camera {
   pub fn update_view_matrix(&mut self, transform: Transform) {
     if transform.is_dirty() {
       self.view_matrix = transform.inverse_matrix();
+      self.update_view_projection_matrix();
     }
+  }
+
+  pub fn update_view_projection_matrix(&mut self) {
+    self.view_projection_matrix = self.view_matrix.multiply(&self.projection_matrix);
   }
 
   pub fn calculate_perspective_projection_matrix(&mut self) -> Matrix4x4 {

@@ -7,17 +7,6 @@ precision mediump float;
 in vec3 vNormal;
 in vec3 vPosition;
 
-// @todo - add support for lit materials
-// uniform vec3 uLightPosition;
-// uniform vec3 uLightAmbient;
-// uniform vec3 uLightDiffuse;
-// uniform vec3 uLightSpecular;
-
-// uniform vec3 uMaterialAmbient;
-// uniform vec3 uMaterialDiffuse;
-// uniform vec3 uMaterialSpecular;
-// uniform float uMaterialShininess;
-
 uniform vec3 uViewPosition;
 
 out vec4 fragColor;
@@ -51,6 +40,6 @@ void main() {
 
   // Combine components
   vec3 color = ambient + diffuse + specular;
-  fragColor = vec4(color, 1.0);
+  fragColor = vec4(0.5);
 }
 \0";

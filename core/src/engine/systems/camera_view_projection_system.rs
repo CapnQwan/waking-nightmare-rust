@@ -5,10 +5,7 @@ use crate::engine::{Camera, World};
 pub fn camera_view_projection_system(world: &mut World) {
   let (components, _) = world.split_borrow();
 
-  let cameras_opt = components.get_components_mut::<Camera>();
-  let transforms_opt = components.get_components_mut::<Transform>();
-
-  let (Some(cameras), Some(transforms)) = (cameras_opt, transforms_opt) else {
+  let Some((cameras, transforms)) = components.get_two_mut::<Camera, Transform>() else {
     return;
   };
 

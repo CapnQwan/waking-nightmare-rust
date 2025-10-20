@@ -3,7 +3,7 @@ use std::sync::Arc;
 use glwn::gl::Gl;
 
 use crate::{
-  assets::{CUBE_TRIANGLES, CUBE_VERTICIES, FRAGMENT_SHADER_SOURCE, VERTEX_SHADER_SOURCE},
+  assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
   engine::{
     Camera, Material, Mesh, Program, RenderComponent, Renderer, Systems, Time, World,
     camera_view_projection_system, mesh_render_system,
@@ -16,6 +16,12 @@ pub struct Core {
   systems: Systems,
 }
 
+/**
+ * @TODO
+ * Move all component / entity / system binding to seperate functions.
+ * Add logic for parsing and saving worlds to some format.
+ *  - Maybe just storing all the component data as .rs might be easiest?
+ */
 impl Core {
   pub fn new(gl: Arc<Gl>) -> Self {
     let mut world = World::new();
@@ -31,7 +37,7 @@ impl Core {
     let program = {
       let glum_program = renderer
         .program_renderer_mut()
-        .create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+        .create_gl_program(LIT_VERTEX_SHADER_SOURCE, LIT_FRAGMENT_SHADER_SOURCE);
       Program::new(glum_program)
     };
     let program_id = { renderer.program_registry_mut().register(program) };

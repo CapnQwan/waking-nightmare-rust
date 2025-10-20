@@ -1,29 +1,38 @@
 use std::{ffi::CStr, sync::Arc};
 
-use glwn::gl::Gl;
-use math::Transform;
-
 use crate::{
   engine::{
     MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
-    ProgramRegistry, ProgramRenderer, RenderComponent,
+    ProgramRegistry, ProgramRenderer, UniformValue,
   },
   traits::Registry,
 };
+use glwn::gl::Gl;
+use math::{Matrix4x4, Transform};
 
 #[derive(Clone, Copy)]
 pub struct RenderCommand {
   mesh_id: MeshId,
   material_id: MaterialId,
   transform: Transform,
+  view_matrix: Matrix4x4,
+  projection_matrix: Matrix4x4,
 }
 
 impl RenderCommand {
-  pub fn new(mesh_id: MeshId, material_id: MaterialId, transform: Transform) -> Self {
+  pub fn new(
+    mesh_id: MeshId,
+    material_id: MaterialId,
+    transform: Transform,
+    view_matrix: Matrix4x4,
+    projection_matrix: Matrix4x4,
+  ) -> Self {
     RenderCommand {
       mesh_id,
       material_id,
       transform,
+      view_matrix,
+      projection_matrix,
     }
   }
 }
@@ -78,7 +87,6 @@ impl Renderer {
   }
 
   pub fn queue_draw(&mut self, render_command: RenderCommand) {
-    //self.queued_render_calls.insert(index, element);
     self.queued_render_calls.push(render_command);
   }
 
@@ -98,7 +106,28 @@ impl Renderer {
       return;
     };
 
-    let program = self.program_registry.get(material.program()).unwrap();
+    // @todo - improve this as materials get developed more to be handled cleaner and more
+    // effcient as some of this data doesn't need to be recalculated and re handled between
+    // draw calls
+    material.set_uniform("uViewPosition", UniformValue::Vec3([0.0, 0.0, 5.0]));
+    material.set_uniform(
+      "uModelMatrix",
+      UniformValue::Mat4(render_command.transform.world_matrix().as_column_major()),
+    );
+    material.set_uniform(
+      "uViewMatrix",
+      UniformValue::Mat4(render_command.view_matrix.as_column_major()),
+    );
+    material.set_uniform(
+      "uProjectionMatrix",
+      UniformValue::Mat4(render_command.projection_matrix.as_column_major()),
+    );
+
+    let program = self.program_registry.get(material.program_id()).unwrap();
+    /** @todo - add caching to reflections */
+    let reflection = self.program_renderer.reflect_program(program.program());
+    self.material_renderer.bind_material(material, &reflection);
+
     unsafe {
       self.gl.UseProgram(program.program());
     }

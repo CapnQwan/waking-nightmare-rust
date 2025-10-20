@@ -5,6 +5,12 @@ use crate::{engine::Program, traits::Registry};
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ProgramId(u32);
 
+impl ProgramId {
+  pub fn to_u32(&self) -> u32 {
+    self.0
+  }
+}
+
 pub struct ProgramRegistry {
   next_id: u32,
   programs: HashMap<ProgramId, Program>,

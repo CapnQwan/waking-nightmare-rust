@@ -67,29 +67,41 @@ impl Components {
       .and_then(|boxed| boxed.downcast_mut::<HashMap<Entity, T>>())
   }
 
-  pub fn destory(e: Entity) {}
+  /** @todo - implement a way of destroying a certain struct for an entity */
+  pub fn destory(e: Entity) {
+    todo!()
+  }
 
-  pub fn destory_all(e: Entity) {}
-}
+  /** @todo - implement a way of destorying all components for the entity */
+  pub fn destory_all(e: Entity) {
+    todo!()
+  }
 
-macro_rules! get_components_mut {
-  ($components:expr, $($ty:ty),+ $(,)?) => {{
-    use std::any::TypeId;
-    let ids = [$(TypeId::of::<$ty>()),+];
-    // Ensure all types are distinct at runtime
-    if ids.len() != ids.iter().collect::<std::collections::HashSet<_>>().len() {
-      None
-    } else {
-      unsafe {
-        Some((
-          $(
-            {
-              let ptr = $components as *mut _;
-              (*ptr).storage::<$ty>()
-            },
-          )+
-        ))
-      }
+  /**
+   * @TODO
+   * This could get annoying and cumbersome adding heaps of different functions for getting
+   * 2, 3, 4... borrows at once as the engine grows, Need to test and learn if there is a
+   * more flexible and managable way of doing this in rust
+   */
+  pub fn get_two_mut<A: Component, B: Component>(
+    &mut self,
+  ) -> Option<(&mut HashMap<Entity, A>, &mut HashMap<Entity, B>)> {
+    use std::ptr::addr_of_mut;
+
+    let id_a = TypeId::of::<A>();
+    let id_b = TypeId::of::<B>();
+
+    if id_a == id_b {
+      // Same type, cannot safely borrow mutably twice
+      return None;
     }
-  }};
+
+    // Get raw pointers to each storage (creating them if needed)
+    let a_ptr = self as *mut Self;
+    let storage_a = unsafe { (*a_ptr).storage::<A>() as *mut HashMap<Entity, A> };
+    let storage_b = unsafe { (*a_ptr).storage::<B>() as *mut HashMap<Entity, B> };
+
+    // SAFETY: Different component types live in different HashMaps
+    unsafe { Some((&mut *storage_a, &mut *storage_b)) }
+  }
 }
