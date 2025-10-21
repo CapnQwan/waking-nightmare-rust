@@ -1,5 +1,5 @@
 // /src/math/matricies/matrix3x3.rs
-use std::ops::{Deref, DerefMut};
+use std::{fmt::Display, ops::{Deref, DerefMut}};
 
 /** A row major 3x3 matrix */
 #[derive(Clone, Copy)]
@@ -50,5 +50,18 @@ impl Default for Matrix3x3 {
       [0.0, 1.0, 0.0], 
       [0.0, 0.0, 1.0]
     ])
+  }
+}
+
+impl Display for Matrix3x3 {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    for i in 0..3 {
+      writeln!(
+        f,
+        "[{:>8.3}, {:>8.3}, {:>8.3}]",
+        self[i][0], self[i][1], self[i][2]
+      )?;
+    }
+    Ok(())
   }
 }

@@ -19,8 +19,7 @@ void main() {
   vec3 uMaterialAmbient = vec3(0.2);
   vec3 uMaterialDiffuse = vec3(0.8);
   vec3 uMaterialSpecular = vec3(1.0);
-  float uMaterialShininess = 0.5;
-
+  float uMaterialShininess = 16.0;
 
   vec3 normal = normalize(vNormal);
   vec3 lightDir = normalize(uLightPosition - vPosition);
@@ -38,8 +37,10 @@ void main() {
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterialShininess);
   vec3 specular = uLightSpecular * uMaterialSpecular * spec;
 
-  // Combine components
+  // Combine
   vec3 color = ambient + diffuse + specular;
-  fragColor = vec4(color, 1.0);
+  //fragColor = vec4(color, 1.0);
+  fragColor = vec4(normalize(vNormal) * 0.5 + 0.5, 1.0); // normals to color
+  //fragColor = vec4(abs(vPosition), 1.0); // positions to color
 }
 \0";

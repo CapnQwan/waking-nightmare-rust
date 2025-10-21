@@ -77,11 +77,9 @@ impl Camera {
   }
 
   pub fn update_view_matrix(&mut self, transform: Transform) {
-    if transform.is_dirty() {
-      self.position = transform.position();
-      self.view_matrix = transform.inverse_matrix();
-      self.update_view_projection_matrix();
-    }
+    self.position = transform.position();
+    self.view_matrix = transform.inverse_matrix();
+    self.update_view_projection_matrix();
   }
 
   pub fn update_view_projection_matrix(&mut self) {
@@ -101,9 +99,9 @@ impl Camera {
     let mut projection_matrix = Matrix4x4::default();
     projection_matrix[0][0] = focal_scale / aspect_ratio;
     projection_matrix[1][1] = focal_scale;
-    projection_matrix[2][2] = (self.near + self.far) * range_inv;
+    projection_matrix[2][2] = (self.far + self.near) * range_inv;
     projection_matrix[2][3] = -1.0;
-    projection_matrix[3][2] = 2.0 * self.near * self.far * range_inv;
+    projection_matrix[3][2] = 2.0 * self.far * self.near * range_inv;
     projection_matrix[3][3] = 0.0;
 
     projection_matrix

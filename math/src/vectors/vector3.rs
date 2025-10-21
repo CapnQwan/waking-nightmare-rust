@@ -42,7 +42,7 @@ impl FloatVector for Vector3 {
     }
   }
 
-  fn normalized(&self) -> Self {
+  fn normalized(&self) -> Vector3 {
     let mag = self.magnitude();
     if mag == 0.0 {
       *self

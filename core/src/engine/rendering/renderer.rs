@@ -1,7 +1,10 @@
 use std::{ffi::CStr, sync::Arc};
 
 use crate::{
-  assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
+  assets::{
+    CUBE_NORMALS, CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE,
+    LIT_VERTEX_SHADER_SOURCE,
+  },
   engine::{
     Camera, Material, MaterialId, MaterialRegistry, MaterialRenderer, Mesh, MeshId, MeshRegistry,
     MeshRenderer, Program, ProgramRegistry, ProgramRenderer, RenderComponent, UniformValue,
@@ -85,8 +88,8 @@ impl Renderer {
 
   pub fn clear(&self) -> &Self {
     unsafe {
-      self.gl.ClearColor(1.0, 1.0, 1.0, 1.0);
-      self.gl.Clear(gl::COLOR_BUFFER_BIT);
+      self.gl.ClearColor(0.2, 0.2, 0.2, 1.0);
+      self.gl.Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
       self
     }
   }
@@ -107,7 +110,8 @@ impl Renderer {
     let mut mesh = Mesh::new();
     mesh
       .set_vertices(CUBE_VERTICIES.to_vec())
-      .set_triangles(CUBE_TRIANGLES.to_vec());
+      .set_triangles(CUBE_TRIANGLES.to_vec())
+      .set_normals(CUBE_NORMALS.to_vec());
     //let mesh_id = { self.mesh_registry_mut().register(mesh) };
 
     let mut material = Material::new(program_id);
@@ -119,17 +123,30 @@ impl Renderer {
 
     let mut camera = Camera::default();
     let mut camera_transform = Transform::default();
-    camera_transform.set_position(Vector3::new(0.0, 0.0, 5.0));
+    camera_transform.set_position(Vector3::new(0.0, 0.0, -5.0));
     camera_transform.update_world_matrix();
     camera.update_projection();
     camera.update_view_matrix(camera_transform);
 
+    log::info!("draw");
+
     let model_matrix = render_component_transform.world_matrix();
+    log::info!("{}", model_matrix);
     let view_matrix = camera.view_matrix().clone();
+    log::info!("{}", view_matrix);
     let projection_matrix = camera.projection_matrix();
+    log::info!("{}", projection_matrix);
 
     let model_view = view_matrix * model_matrix;
+    log::info!("{}", model_view);
     let normal_matrix = model_view.inverse().transpose().to_matrix3x3();
+    log::info!("{}", normal_matrix);
+    log::info!(
+      "{} {} {}",
+      camera_transform.position().x,
+      camera_transform.position().y,
+      camera_transform.position().z
+    );
 
     // @todo - move bulk of this logic out of the draw execution
 
@@ -157,6 +174,7 @@ impl Renderer {
       UniformValue::Mat3(normal_matrix.as_column_major()),
     );
 
+    // Once all of the uniforms are set we tell the material to bind all of the materials
     let program = self.program_registry.get(material.program_id()).unwrap();
     // @todo - add caching to reflections
     let reflection = self.program_renderer.reflect_program(program.program());

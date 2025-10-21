@@ -4,7 +4,7 @@ pub const LIT_VERTEX_SHADER_SOURCE: &[u8] = b"
 precision mediump float;
 
 layout(location = 0) in vec3 aPosition;
-layout(location = 1) in vec3 aNormal;
+layout(location = 2) in vec3 aNormal;
 
 out vec3 vNormal;
 out vec3 vPosition;
@@ -15,9 +15,12 @@ uniform mat4 uViewMatrix;
 uniform mat4 uProjectionMatrix;
 
 void main() {
+  // gl_Position = vec4(aPosition, 1.0);
+  // vNormal = normalize(aNormal);
+  // vPosition = aPosition;
   mat4 modelViewMatrix = uViewMatrix * uModelMatrix;
   gl_Position = uProjectionMatrix * modelViewMatrix * vec4(aPosition, 1.0);
-  vNormal = normalize(uNormalMatrix * aNormal);
-  vPosition = (modelViewMatrix * vec4(aPosition, 1.0)).xyz;
+  vNormal = normalize(uNormalMatrix * aNormal); // Works but flickers?
+  vPosition = (modelViewMatrix * vec4(aPosition, 1.0)).xyz; // Works but flickers
 }
 \0";

@@ -1,5 +1,5 @@
 // /src/math/matricies/matrix4x4.rs
-use std::ops::{Deref, DerefMut, Mul};
+use std::{fmt::Display, ops::{Deref, DerefMut, Mul}};
 
 use crate::{Matrix, Matrix3x3, Quaternion, Transform, Vector3};
 
@@ -295,5 +295,18 @@ impl Mul for Matrix4x4 {
 impl Default for Matrix4x4 {
   fn default() -> Self {
     Matrix4x4::identity()
+  }
+}
+
+impl Display for Matrix4x4 {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    for i in 0..4 {
+      writeln!(
+        f,
+        "[{:>8.3}, {:>8.3}, {:>8.3}, {:>8.3}]",
+        self[i][0], self[i][1], self[i][2], self[i][3]
+      )?;
+    }
+    Ok(())
   }
 }
