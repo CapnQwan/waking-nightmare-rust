@@ -1,9 +1,10 @@
 use std::{ffi::CStr, sync::Arc};
 
 use crate::{
+  assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
   engine::{
-    MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
-    ProgramRegistry, ProgramRenderer, UniformValue,
+    Camera, Material, MaterialId, MaterialRegistry, MaterialRenderer, Mesh, MeshId, MeshRegistry,
+    MeshRenderer, Program, ProgramRegistry, ProgramRenderer, RenderComponent, UniformValue,
   },
   traits::Registry,
 };
@@ -20,6 +21,7 @@ pub struct RenderCommand {
   projection_matrix: Matrix4x4,
 }
 
+/** @todo - update so camera_id is passed instead opting for retrieving the camera from the ECS */
 impl RenderCommand {
   pub fn new(
     mesh_id: MeshId,
@@ -94,11 +96,85 @@ impl Renderer {
   }
 
   pub fn draw(&mut self) {
-    let queued_render_calls = self.queued_render_calls.clone();
-    for render_command in &queued_render_calls {
-      self.execute_draw_command(render_command);
+    let program = {
+      let glum_program = self
+        .program_renderer_mut()
+        .create_gl_program(LIT_VERTEX_SHADER_SOURCE, LIT_FRAGMENT_SHADER_SOURCE);
+      Program::new(glum_program)
+    };
+    let program_id = { self.program_registry_mut().register(program) };
+
+    let mut mesh = Mesh::new();
+    mesh
+      .set_vertices(CUBE_VERTICIES.to_vec())
+      .set_triangles(CUBE_TRIANGLES.to_vec());
+    //let mesh_id = { self.mesh_registry_mut().register(mesh) };
+
+    let mut material = Material::new(program_id);
+    //let material_id = { self.material_registry_mut().register(material) };
+
+    //let render_component = RenderComponent::new(mesh_id, material_id);
+    let mut render_component_transform = Transform::default();
+    render_component_transform.update_world_matrix();
+
+    let mut camera = Camera::default();
+    let mut camera_transform = Transform::default();
+    camera_transform.set_position(Vector3::new(0.0, 0.0, 5.0));
+    camera_transform.update_world_matrix();
+    camera.update_projection();
+    camera.update_view_matrix(camera_transform);
+
+    let model_matrix = render_component_transform.world_matrix();
+    let view_matrix = camera.view_matrix().clone();
+    let projection_matrix = camera.projection_matrix();
+
+    let model_view = view_matrix * model_matrix;
+    let normal_matrix = model_view.inverse().transpose().to_matrix3x3();
+
+    // @todo - move bulk of this logic out of the draw execution
+
+    // @todo - improve this as materials get developed more to be handled cleaner and more
+    // effcient as some of this data doesn't need to be recalculated and re handled between
+    // draw calls
+    material.set_uniform(
+      "uViewPosition",
+      UniformValue::Vec3(camera_transform.position().to_array()),
+    );
+    material.set_uniform(
+      "uModelMatrix",
+      UniformValue::Mat4(model_matrix.as_column_major()),
+    );
+    material.set_uniform(
+      "uViewMatrix",
+      UniformValue::Mat4(view_matrix.as_column_major()),
+    );
+    material.set_uniform(
+      "uProjectionMatrix",
+      UniformValue::Mat4(projection_matrix.as_column_major()),
+    );
+    material.set_uniform(
+      "uNormalMatrix",
+      UniformValue::Mat3(normal_matrix.as_column_major()),
+    );
+
+    let program = self.program_registry.get(material.program_id()).unwrap();
+    // @todo - add caching to reflections
+    let reflection = self.program_renderer.reflect_program(program.program());
+    self.material_renderer.bind_material(&material, &reflection);
+
+    unsafe {
+      self.gl.UseProgram(program.program());
     }
-    self.queued_render_calls.clear();
+
+    if mesh.has_changed() {
+      self.mesh_renderer.bind_mesh_buffers(&mut mesh);
+    }
+    self.mesh_renderer.draw_mesh(&mesh);
+    // let queued_render_calls = self.queued_render_calls.clone();
+    // for render_command in &queued_render_calls {
+    //   self.execute_draw_command(render_command);
+    // }
+    // self.queued_render_calls.clear();
   }
 
   fn execute_draw_command(&mut self, render_command: &RenderCommand) {
@@ -108,6 +184,13 @@ impl Renderer {
     ) else {
       return;
     };
+
+    let model_matrix = render_command.transform.world_matrix();
+    let view_matrix = render_command.view_matrix;
+    let projection_matrix = render_command.projection_matrix;
+
+    let model_view = view_matrix * model_matrix;
+    let normal_matrix = model_view.inverse().transpose().to_matrix3x3();
 
     // @todo - move bulk of this logic out of the draw execution
 
@@ -120,19 +203,23 @@ impl Renderer {
     );
     material.set_uniform(
       "uModelMatrix",
-      UniformValue::Mat4(render_command.transform.world_matrix().as_column_major()),
+      UniformValue::Mat4(model_matrix.as_column_major()),
     );
     material.set_uniform(
       "uViewMatrix",
-      UniformValue::Mat4(render_command.view_matrix.as_column_major()),
+      UniformValue::Mat4(view_matrix.as_column_major()),
     );
     material.set_uniform(
       "uProjectionMatrix",
-      UniformValue::Mat4(render_command.projection_matrix.as_column_major()),
+      UniformValue::Mat4(projection_matrix.as_column_major()),
+    );
+    material.set_uniform(
+      "uNormalMatrix",
+      UniformValue::Mat3(normal_matrix.as_column_major()),
     );
 
     let program = self.program_registry.get(material.program_id()).unwrap();
-    /** @todo - add caching to reflections */
+    // @todo - add caching to reflections
     let reflection = self.program_renderer.reflect_program(program.program());
     self.material_renderer.bind_material(material, &reflection);
 

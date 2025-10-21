@@ -19,11 +19,11 @@ impl Matrix3x3 {
   }
 
   #[rustfmt::skip]
-  fn to_column_major_arr(&self) -> [f32; 9] {
+  pub fn as_column_major(&self) -> [[f32; 3]; 3] {
     [
-      self[0][0], self[1][0], self[2][0], 
-      self[0][1], self[1][1], self[2][1], 
-      self[0][2], self[1][2], self[2][2], 
+      [self[0][0], self[1][0], self[2][0]], 
+      [self[0][1], self[1][1], self[2][1]], 
+      [self[0][2], self[1][2], self[2][2]], 
     ]
   }
 }
