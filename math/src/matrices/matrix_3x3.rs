@@ -55,6 +55,7 @@ impl Default for Matrix3x3 {
 
 impl Display for Matrix3x3 {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    writeln!(f,"")?;
     for i in 0..3 {
       writeln!(
         f,

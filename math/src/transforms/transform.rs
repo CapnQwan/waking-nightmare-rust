@@ -73,7 +73,7 @@ impl Transform {
     let rotation_matrix = Matrix4x4::rotation_from_quaternion(inv_rotation);
     let inv_translation =
       Matrix4x4::translation_from_values(-self.position.x, -self.position.y, -self.position.z);
-    inv_translation.multiply(&rotation_matrix)
+    rotation_matrix.multiply(&inv_translation)
   }
 
   pub fn forward(&self) -> Vector3 {

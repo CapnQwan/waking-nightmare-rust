@@ -26,7 +26,7 @@ impl Camera {
       is_projection_dirty: true,
       projection_matrix: Matrix4x4::default(),
       view_projection_matrix: Matrix4x4::default(),
-      position: Vector3::one(),
+      position: Vector3::default(),
     };
 
     camera.update_projection();
@@ -100,8 +100,8 @@ impl Camera {
     projection_matrix[0][0] = focal_scale / aspect_ratio;
     projection_matrix[1][1] = focal_scale;
     projection_matrix[2][2] = (self.far + self.near) * range_inv;
-    projection_matrix[2][3] = -1.0;
-    projection_matrix[3][2] = 2.0 * self.far * self.near * range_inv;
+    projection_matrix[2][3] = 2.0 * self.far * self.near * range_inv;
+    projection_matrix[3][2] = -1.0;
     projection_matrix[3][3] = 0.0;
 
     projection_matrix

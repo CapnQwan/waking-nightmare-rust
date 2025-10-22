@@ -300,6 +300,7 @@ impl Default for Matrix4x4 {
 
 impl Display for Matrix4x4 {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    writeln!(f,"")?;
     for i in 0..4 {
       writeln!(
         f,

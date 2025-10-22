@@ -15,8 +15,6 @@ impl MaterialRenderer {
 
   pub fn bind_material(&self, material: &Material, reflection: &ShaderReflection) {
     unsafe {
-      self.gl.UseProgram(material.program_id().to_u32());
-
       for (name, value) in &material.uniforms {
         if let Some(uniform) = reflection.uniforms.get(name) {
           match value {

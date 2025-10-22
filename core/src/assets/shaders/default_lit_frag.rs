@@ -39,8 +39,8 @@ void main() {
 
   // Combine
   vec3 color = ambient + diffuse + specular;
-  //fragColor = vec4(color, 1.0);
-  fragColor = vec4(normalize(vNormal) * 0.5 + 0.5, 1.0); // normals to color
+  fragColor = vec4(color, 1.0);
+  //fragColor = vec4(normalize(vNormal) * 0.5 + 0.5, 1.0); // normals to color
   //fragColor = vec4(abs(vPosition), 1.0); // positions to color
 }
 \0";

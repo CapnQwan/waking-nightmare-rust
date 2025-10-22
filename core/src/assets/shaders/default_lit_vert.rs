@@ -15,12 +15,9 @@ uniform mat4 uViewMatrix;
 uniform mat4 uProjectionMatrix;
 
 void main() {
-  // gl_Position = vec4(aPosition, 1.0);
-  // vNormal = normalize(aNormal);
-  // vPosition = aPosition;
   mat4 modelViewMatrix = uViewMatrix * uModelMatrix;
   gl_Position = uProjectionMatrix * modelViewMatrix * vec4(aPosition, 1.0);
-  vNormal = normalize(uNormalMatrix * aNormal); // Works but flickers?
-  vPosition = (modelViewMatrix * vec4(aPosition, 1.0)).xyz; // Works but flickers
+  vNormal = normalize(uNormalMatrix * aNormal);
+  vPosition = (modelViewMatrix * vec4(aPosition, 1.0)).xyz;
 }
 \0";
