@@ -1,4 +1,4 @@
-use std::{ffi::CStr, sync::Arc};
+use std::sync::Arc;
 
 use crate::{
   engine::{
@@ -164,55 +164,16 @@ impl Renderer {
     }
   }
 
-  fn get_gl_string(&self, variant: gl::types::GLenum) -> Option<&'static CStr> {
-    unsafe {
-      let s = self.gl.GetString(variant);
-      (!s.is_null()).then(|| CStr::from_ptr(s.cast()))
-    }
-  }
-
-  pub fn program_registry(&self) -> &ProgramRegistry {
-    &self.program_registry
-  }
-
   pub fn program_registry_mut(&mut self) -> &mut ProgramRegistry {
     &mut self.program_registry
-  }
-
-  pub fn program_renderer(&self) -> &ProgramRenderer {
-    &self.program_renderer
   }
 
   pub fn program_renderer_mut(&mut self) -> &mut ProgramRenderer {
     &mut self.program_renderer
   }
 
-  pub fn material_renderer(&self) -> &MaterialRenderer {
-    &self.material_renderer
-  }
-
-  pub fn material_renderer_mut(&mut self) -> &mut MaterialRenderer {
-    &mut self.material_renderer
-  }
-
-  pub fn material_registry(&self) -> &MaterialRegistry {
-    &self.material_registry
-  }
-
   pub fn material_registry_mut(&mut self) -> &mut MaterialRegistry {
     &mut self.material_registry
-  }
-
-  pub fn mesh_renderer(&self) -> &MeshRenderer {
-    &self.mesh_renderer
-  }
-
-  pub fn mesh_renderer_mut(&mut self) -> &mut MeshRenderer {
-    &mut self.mesh_renderer
-  }
-
-  pub fn mesh_registry(&self) -> &MeshRegistry {
-    &self.mesh_registry
   }
 
   pub fn mesh_registry_mut(&mut self) -> &mut MeshRegistry {

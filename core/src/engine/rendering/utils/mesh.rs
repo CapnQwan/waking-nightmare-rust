@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use math::{Vector2, Vector3};
 
 use crate::engine::MeshId;

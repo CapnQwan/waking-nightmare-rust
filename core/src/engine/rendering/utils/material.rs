@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use std::collections::HashMap;
 
 use crate::engine::{MaterialId, ProgramId};
@@ -22,11 +23,6 @@ impl Material {
       program_id,
       uniforms: HashMap::new(),
     }
-  }
-
-  pub fn utilize(&self) {
-    //self.shader.bind(gl);
-    // later: set uniforms, bind VAOs, etc.
   }
 
   pub fn id(&self) -> Option<MaterialId> {

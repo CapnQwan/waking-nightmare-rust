@@ -1,13 +1,13 @@
 use std::sync::Arc;
 
 use glwn::gl::Gl;
-use math::{Quaternion, Transform, Vector3};
+use math::{Transform, Vector3};
 
 use crate::{
   assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
   engine::{
     Camera, Material, Mesh, Program, RenderComponent, Renderer, Systems, Time, World,
-    camera_view_projection_system, mesh_render_system,
+    camera_view_projection_system, mesh_render_system, temp_example_system,
   },
   traits::Registry,
 };
@@ -61,6 +61,7 @@ impl Core {
     let mut systems = Systems::new();
     systems.add_system(mesh_render_system);
     systems.add_system(camera_view_projection_system);
+    systems.add_system(temp_example_system);
 
     Core { world, systems }
   }
@@ -68,26 +69,6 @@ impl Core {
   pub fn update(&mut self) {
     self.world.update_resources();
     self.systems.update(&mut self.world);
-
-    let (components, _) = self.world.split_borrow();
-
-    let Some((render_components, transforms)) =
-      components.get_two_mut::<RenderComponent, Transform>()
-    else {
-      return;
-    };
-
-    for (entity, _) in render_components {
-      if let Some(transform) = transforms.get_mut(entity) {
-        let x = transform.position().x;
-        transform.set_x(if x > 5.0 { -5.0 } else { x + 0.01 });
-        let rotation = transform
-          .rotation()
-          .multiply(Quaternion::identity().rotate_roll(0.001));
-        transform.set_rotation(rotation);
-        transform.update_world_matrix();
-      }
-    }
   }
 
   pub fn draw(&mut self) {

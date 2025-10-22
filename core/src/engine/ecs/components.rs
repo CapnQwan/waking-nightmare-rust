@@ -86,8 +86,6 @@ impl Components {
   pub fn get_two_mut<A: Component, B: Component>(
     &mut self,
   ) -> Option<(&mut HashMap<Entity, A>, &mut HashMap<Entity, B>)> {
-    use std::ptr::addr_of_mut;
-
     let id_a = TypeId::of::<A>();
     let id_b = TypeId::of::<B>();
 
