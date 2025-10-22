@@ -1,18 +1,14 @@
 use std::{ffi::CStr, sync::Arc};
 
 use crate::{
-  assets::{
-    CUBE_NORMALS, CUBE_TRIANGLES, CUBE_VERTICIES, FRAGMENT_SHADER_SOURCE,
-    LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE, VERTEX_SHADER_SOURCE,
-  },
   engine::{
-    Camera, Material, MaterialId, MaterialRegistry, MaterialRenderer, Mesh, MeshId, MeshRegistry,
-    MeshRenderer, Program, ProgramRegistry, ProgramRenderer, RenderComponent, UniformValue,
+    MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
+    ProgramRegistry, ProgramRenderer, UniformValue,
   },
   traits::Registry,
 };
 use glwn::gl::Gl;
-use math::{Matrix4x4, Quaternion, Transform, Vector3};
+use math::{Matrix4x4, Transform, Vector3};
 
 #[derive(Clone, Copy)]
 pub struct RenderCommand {
@@ -99,91 +95,11 @@ impl Renderer {
   }
 
   pub fn draw(&mut self) {
-    let program = {
-      let glum_program = self
-        .program_renderer_mut()
-        //.create_gl_program(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
-        .create_gl_program(LIT_VERTEX_SHADER_SOURCE, LIT_FRAGMENT_SHADER_SOURCE);
-      Program::new(glum_program)
-    };
-    let program_id = { self.program_registry_mut().register(program) };
-
-    let mut mesh = Mesh::new();
-    mesh
-      .set_vertices(CUBE_VERTICIES.to_vec())
-      .set_triangles(CUBE_TRIANGLES.to_vec())
-      .set_normals(CUBE_NORMALS.to_vec());
-    //let mesh_id = { self.mesh_registry_mut().register(mesh) };
-
-    let mut material = Material::new(program_id);
-    //let material_id = { self.material_registry_mut().register(material) };
-
-    //let render_component = RenderComponent::new(mesh_id, material_id);
-    let mut render_component_transform = Transform::default();
-    render_component_transform.set_position(Vector3::new(2.0, 0.0, 0.0));
-    render_component_transform.update_world_matrix();
-
-    let mut camera = Camera::default();
-    let mut camera_transform = Transform::default();
-    camera_transform.set_position(Vector3::new(0.0, 0.0, 5.0));
-    camera_transform.update_world_matrix();
-    camera.update_projection();
-    camera.update_view_matrix(camera_transform);
-
-    log::info!("draw");
-
-    let model_matrix = render_component_transform.world_matrix();
-    let view_matrix = camera.view_matrix().clone();
-    let projection_matrix = camera.projection_matrix();
-
-    let model_view = view_matrix * model_matrix;
-    let normal_matrix = model_view.inverse().transpose().to_matrix3x3();
-
-    // @todo - move bulk of this logic out of the draw execution
-
-    // @todo - improve this as materials get developed more to be handled cleaner and more
-    // effcient as some of this data doesn't need to be recalculated and re handled between
-    // draw calls
-    material.set_uniform(
-      "uViewPosition",
-      UniformValue::Vec3(camera_transform.position().to_array()),
-    );
-    material.set_uniform(
-      "uModelMatrix",
-      UniformValue::Mat4(model_matrix.as_column_major()),
-    );
-    material.set_uniform(
-      "uViewMatrix",
-      UniformValue::Mat4(view_matrix.as_column_major()),
-    );
-    material.set_uniform(
-      "uProjectionMatrix",
-      UniformValue::Mat4(projection_matrix.as_column_major()),
-    );
-    material.set_uniform(
-      "uNormalMatrix",
-      UniformValue::Mat3(normal_matrix.as_column_major()),
-    );
-
-    // Once all of the uniforms are set we tell the material to bind all of the materials
-    let program = self.program_registry.get(material.program_id()).unwrap();
-    // Activate the actual GL program handle before setting uniforms
-    unsafe {
-      self.gl.UseProgram(program.program());
+    let queued_render_calls = self.queued_render_calls.clone();
+    for render_command in &queued_render_calls {
+      self.execute_draw_command(render_command);
     }
-    // @todo - add caching to reflections
-    let reflection = self.program_renderer.reflect_program(program.program());
-    self.material_renderer.bind_material(&material, &reflection);
-
-    if mesh.has_changed() {
-      self.mesh_renderer.bind_mesh_buffers(&mut mesh);
-    }
-    self.mesh_renderer.draw_mesh(&mesh);
-    // let queued_render_calls = self.queued_render_calls.clone();
-    // for render_command in &queued_render_calls {
-    //   self.execute_draw_command(render_command);
-    // }
-    // self.queued_render_calls.clear();
+    self.queued_render_calls.clear();
   }
 
   fn execute_draw_command(&mut self, render_command: &RenderCommand) {

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use glwn::gl::Gl;
-use math::{Transform, Vector3};
+use math::{Quaternion, Transform, Vector3};
 
 use crate::{
   assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
@@ -26,8 +26,8 @@ pub struct Core {
 impl Core {
   pub fn new(gl: Arc<Gl>) -> Self {
     let mut world = World::new();
-    // let camera = world.spawn_object();
-    // let object = world.spawn_object();
+    let camera = world.spawn_object();
+    let object = world.spawn_object();
     let (components, resources) = world.split_borrow();
 
     resources.add_resource(Time::new());
@@ -35,28 +35,28 @@ impl Core {
 
     let renderer = resources.get_mut_resource::<Renderer>().unwrap();
 
-    // let program = {
-    //   let glum_program = renderer
-    //     .program_renderer_mut()
-    //     .create_gl_program(LIT_VERTEX_SHADER_SOURCE, LIT_FRAGMENT_SHADER_SOURCE);
-    //   Program::new(glum_program)
-    // };
-    // let program_id = { renderer.program_registry_mut().register(program) };
+    let program = {
+      let glum_program = renderer
+        .program_renderer_mut()
+        .create_gl_program(LIT_VERTEX_SHADER_SOURCE, LIT_FRAGMENT_SHADER_SOURCE);
+      Program::new(glum_program)
+    };
+    let program_id = { renderer.program_registry_mut().register(program) };
 
-    // let mut mesh = Mesh::new();
-    // mesh
-    //   .set_vertices(CUBE_VERTICIES.to_vec())
-    //   .set_triangles(CUBE_TRIANGLES.to_vec());
-    // let mesh_id = { renderer.mesh_registry_mut().register(mesh) };
+    let mut mesh = Mesh::new();
+    mesh
+      .set_vertices(CUBE_VERTICIES.to_vec())
+      .set_triangles(CUBE_TRIANGLES.to_vec());
+    let mesh_id = { renderer.mesh_registry_mut().register(mesh) };
 
-    // let material = Material::new(program_id);
-    // let material_id = { renderer.material_registry_mut().register(material) };
+    let material = Material::new(program_id);
+    let material_id = { renderer.material_registry_mut().register(material) };
 
-    // let render_component = RenderComponent::new(mesh_id, material_id);
-    // components.add_component(object, render_component);
-    // components.add_component(camera, Camera::default());
-    // let camera_transform = components.get_component_mut::<Transform>(&camera).unwrap();
-    // camera_transform.set_position(Vector3::new(0.0, 0.0, -5.0));
+    let render_component = RenderComponent::new(mesh_id, material_id);
+    components.add_component(object, render_component);
+    components.add_component(camera, Camera::default());
+    let camera_transform = components.get_component_mut::<Transform>(&camera).unwrap();
+    camera_transform.set_position(Vector3::new(0.0, 0.0, 5.0));
 
     let mut systems = Systems::new();
     systems.add_system(mesh_render_system);
@@ -68,6 +68,26 @@ impl Core {
   pub fn update(&mut self) {
     self.world.update_resources();
     self.systems.update(&mut self.world);
+
+    let (components, _) = self.world.split_borrow();
+
+    let Some((render_components, transforms)) =
+      components.get_two_mut::<RenderComponent, Transform>()
+    else {
+      return;
+    };
+
+    for (entity, _) in render_components {
+      if let Some(transform) = transforms.get_mut(entity) {
+        let x = transform.position().x;
+        transform.set_x(if x > 5.0 { -5.0 } else { x + 0.01 });
+        let rotation = transform
+          .rotation()
+          .multiply(Quaternion::identity().rotate_roll(0.001));
+        transform.set_rotation(rotation);
+        transform.update_world_matrix();
+      }
+    }
   }
 
   pub fn draw(&mut self) {
