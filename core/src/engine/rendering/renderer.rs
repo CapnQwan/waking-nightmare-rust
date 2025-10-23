@@ -82,11 +82,10 @@ impl Renderer {
     }
   }
 
-  pub fn clear(&self) -> &Self {
+  pub fn clear(&self) {
     unsafe {
       self.gl.ClearColor(0.2, 0.2, 0.2, 1.0);
       self.gl.Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-      self
     }
   }
 
@@ -95,6 +94,7 @@ impl Renderer {
   }
 
   pub fn draw(&mut self) {
+    // @Todo - replace unneccarcary clone (maybe drain?)
     let queued_render_calls = self.queued_render_calls.clone();
     for render_command in &queued_render_calls {
       self.execute_draw_command(render_command);

@@ -68,12 +68,12 @@ impl Components {
   }
 
   /** @todo - implement a way of destroying a certain struct for an entity */
-  pub fn destory(e: Entity) {
+  pub fn destroy(e: Entity) {
     todo!()
   }
 
-  /** @todo - implement a way of destorying all components for the entity */
-  pub fn destory_all(e: Entity) {
+  /** @todo - implement a way of destroying all components for the entity */
+  pub fn destroy_all(e: Entity) {
     todo!()
   }
 
