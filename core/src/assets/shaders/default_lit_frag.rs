@@ -1,4 +1,5 @@
-// @todo - replace this with loading glsl files instead
+// @Todo
+// replace this with loading glsl files instead
 pub const LIT_FRAGMENT_SHADER_SOURCE: &[u8] = b"
 #version 300 es
 precision mediump float;

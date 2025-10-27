@@ -10,6 +10,13 @@ pub struct World {
   resources: Resources,
 }
 
+// @Todo
+// Implement a way of destroying entities
+//
+// @Note
+// When implementing a way of destorying entities consider adding a way of
+// prioratizing using destroyed entities when creating new entities over just using
+// a new entity
 impl World {
   pub fn new() -> Self {
     Self {
@@ -47,6 +54,8 @@ impl World {
     self.resources.add_resource::<T>(resource);
   }
 
+  // @Todo
+  // Add threading support
   pub fn update_resources(&mut self) {
     self.resources.update_resources();
   }

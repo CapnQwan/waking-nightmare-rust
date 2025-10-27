@@ -1,8 +1,11 @@
 use math::{Matrix4x4, Transform, Vector3};
 
-// @todo - Added support for orthographic cameras
+// @Todo
+// Added support for orthographic cameras
 pub struct Camera {
-  // @todo iplement a way of outputing different cameras to different outputs (gl_context, render_texture...)
+  // @Todo
+  // iplement a way of outputing different cameras to different outputs
+  // (gl_context, render_texture...)
   //output: OutputId?
   field_of_view: f32,
   near: f32,
@@ -11,7 +14,8 @@ pub struct Camera {
   is_projection_dirty: bool,
   projection_matrix: Matrix4x4,
   view_projection_matrix: Matrix4x4,
-  // @todo - do some more research as to whether the position is needed or
+  // @Todo
+  // do some more research as to whether the position is needed or
   // if this can just be extracted
   position: Vector3,
 }
@@ -87,8 +91,9 @@ impl Camera {
   }
 
   pub fn calculate_perspective_projection_matrix(&mut self) -> Matrix4x4 {
-    // @todo implement a way of getting the aspect ratio from the output item
-    //let aspect_ratio = view_port._width / view_port._height;
+    // @Todo
+    // implement a way of getting the aspect ratio from the output item
+    // let aspect_ratio = view_port._width / view_port._height;
     let aspect_ratio = 1920.0 / 1080.0;
 
     let fov_rad = self.field_of_view.to_radians();

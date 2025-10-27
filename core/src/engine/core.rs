@@ -17,12 +17,12 @@ pub struct Core {
   systems: Systems,
 }
 
-/**
- * @TODO
- * Move all component / entity / system binding to seperate functions.
- * Add logic for parsing and saving worlds to some format.
- *  - Maybe just storing all the component data as .rs might be easiest?
- */
+// @Todo
+// Move all component / entity / system binding to seperate functions.
+// Add logic for parsing and saving worlds to some format. Maybe just
+// storing all the component data as .rs might be easiest and fastest?
+// Need to test perf
+
 impl Core {
   pub fn new(gl: Arc<Gl>) -> Self {
     let mut world = World::new();

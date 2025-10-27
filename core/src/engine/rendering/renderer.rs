@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{mem, sync::Arc};
 
 use crate::{
   engine::{
@@ -20,7 +20,9 @@ pub struct RenderCommand {
   projection_matrix: Matrix4x4,
 }
 
-/** @todo - update so camera_id is passed instead opting for retrieving the camera from the ECS */
+// @Todo
+// update so camera_id is passed instead of all the different matricies
+// opting for retrieving the camera from the ECS
 impl RenderCommand {
   pub fn new(
     mesh_id: MeshId,
@@ -41,18 +43,17 @@ impl RenderCommand {
   }
 }
 
-/** @todo
- * would it be better to switch the registries and maybe even the renderers to
- * be a hash map with a look up or something like that?
- *
- * Maybe this would be better depending on how the engine continues to develop
- * for example if a texture registry or other registries end up being added this
- * idea might be better.
- *
- * Maybe even seperating this logic off so that all Assets are stored in a seperate struct
- * might be better that way other non redering assets like audio can be stored all in one clean
- * little abstraction
- */
+// @Todo / Note
+// would it be better to switch the registries and maybe even the renderers to
+// be stored in some sort of registry to make development and itteration easier?
+//
+// Maybe this would be better depending on how the engine continues to develop
+// for example if a texture registry or other registries end up being added this
+// idea might be better.
+//
+// Maybe even seperating this logic off so that all Assets are stored in a seperate struct
+// might be better that way other non redering assets like audio can be stored all in one clean
+// little abstraction
 pub struct Renderer {
   gl: Arc<Gl>,
   material_renderer: MaterialRenderer,
@@ -94,12 +95,10 @@ impl Renderer {
   }
 
   pub fn draw(&mut self) {
-    // @Todo - replace unneccarcary clone (maybe drain?)
-    let queued_render_calls = self.queued_render_calls.clone();
+    let queued_render_calls = mem::take(&mut self.queued_render_calls);
     for render_command in &queued_render_calls {
       self.execute_draw_command(render_command);
     }
-    self.queued_render_calls.clear();
   }
 
   fn execute_draw_command(&mut self, render_command: &RenderCommand) {
@@ -117,11 +116,13 @@ impl Renderer {
     let model_view = view_matrix * model_matrix;
     let normal_matrix = model_view.inverse().transpose().to_matrix3x3();
 
-    // @todo - move bulk of this logic out of the draw execution
+    // @Todo
+    // move bulk of this logic out of the draw execution
 
-    // @todo - improve this as materials get developed more to be handled cleaner and more
-    // effcient as some of this data doesn't need to be recalculated and re handled between
-    // draw calls
+    // @Todo
+    // improve this as materials get developed more to be handled cleaner
+    // and more effciently as some of this data doesn't need to be recalculated and
+    // between draw calls
     material.set_uniform(
       "uViewPosition",
       UniformValue::Vec3(render_command.camera_position.to_array()),
@@ -144,11 +145,12 @@ impl Renderer {
     );
 
     let program = self.program_registry.get(material.program_id()).unwrap();
-    // Activate the actual GL program handle before setting uniforms
     unsafe {
       self.gl.UseProgram(program.program());
     }
-    // @todo - add caching to reflections
+
+    // @Note
+    // add caching to reflections?
     let reflection = self.program_renderer.reflect_program(program.program());
     self.material_renderer.bind_material(material, &reflection);
 

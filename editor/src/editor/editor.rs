@@ -42,7 +42,8 @@ impl Editor {
   }
 
   fn draw(&mut self) {
-    // @todo - Only update when the game is running
+    // @Todo
+    // Only update when the game is running
     self.engine.update();
 
     let window = self.window_context.get_window();

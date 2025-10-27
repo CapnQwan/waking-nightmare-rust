@@ -8,6 +8,23 @@ use crate::engine::Entity;
 pub trait Component: 'static {}
 impl<T: 'static> Component for T {}
 
+// @Note
+// Initial implementation utilizies a HashMap just for the ease of setup and quick
+// iterations istead of having to implementing a component mask or something similar
+//
+// This is slow at iterating over each component not that practicle for systems
+// as the memory allocation of hashmap data is speratically stored in the heap opting
+// for a vec would be better as it's stored contiguously in the heap
+//
+// @Todo
+// Update this to utilize a Vec instead as this will be more practicle for iterating
+// over components in systems
+//
+// @PerfTest / Research
+// Look into / test some other options for storing components such as a sparse set as
+// just using a vec come with the drawback of having to store blank sets of data as
+// each entity will be treated as if it has every possible component on it to keep the
+// vector indicies correct
 pub struct Components {
   components: HashMap<TypeId, Box<dyn Any>>,
 }
@@ -67,22 +84,22 @@ impl Components {
       .and_then(|boxed| boxed.downcast_mut::<HashMap<Entity, T>>())
   }
 
-  /** @todo - implement a way of destroying a certain struct for an entity */
+  // @Todo
+  // implement a way of destroying a certain struct for an entity
   pub fn destroy(e: Entity) {
     todo!()
   }
 
-  /** @todo - implement a way of destroying all components for the entity */
+  // @Todo
+  // implement a way of destroying all components for the entity */
   pub fn destroy_all(e: Entity) {
     todo!()
   }
 
-  /**
-   * @TODO
-   * This could get annoying and cumbersome adding heaps of different functions for getting
-   * 2, 3, 4... borrows at once as the engine grows, Need to test and learn if there is a
-   * more flexible and managable way of doing this in rust
-   */
+  // @Todo
+  // This could get annoying and cumbersome adding heaps of different functions
+  // for getting 2, 3, 4... borrows at once as the engine grows, Need to test and
+  // learn if there is a more flexible and managable way of doing this in rust
   pub fn get_two_mut<A: Component, B: Component>(
     &mut self,
   ) -> Option<(&mut HashMap<Entity, A>, &mut HashMap<Entity, B>)> {

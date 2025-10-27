@@ -5,7 +5,9 @@ use glwn::gl::Gl;
 
 pub use crate::engine::Core;
 
-// @todo - delete later opting for game (project) based assets to keep core clean
+// @Todo
+// Delete mod assets once some sort of asset load / project folder support
+// has been implemented
 mod assets;
 mod engine;
 mod traits;

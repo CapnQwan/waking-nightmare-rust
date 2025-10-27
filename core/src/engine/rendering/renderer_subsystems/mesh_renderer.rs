@@ -29,10 +29,10 @@ impl MeshRenderer {
 
   pub fn bind_mesh_buffers(&self, mesh: &mut Mesh) {
     unsafe {
-      // @perf_test - does the GenVertexArrays need to run every time the mesh is bound?
+      // @PerfTest
+      // does the GenVertexArrays need to run every time the mesh is bound?
       // How much of an impact does it have to render times?
 
-      // Generate and bind VAO
       self.gl.GenVertexArrays(1, &mut mesh.vao);
       self.gl.BindVertexArray(mesh.vao);
 
@@ -107,7 +107,6 @@ impl MeshRenderer {
         gl::STATIC_DRAW,
       );
 
-      // Unbind VAO
       self.gl.BindVertexArray(0);
     }
 

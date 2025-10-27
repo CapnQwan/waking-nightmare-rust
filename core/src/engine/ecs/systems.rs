@@ -4,7 +4,8 @@ pub struct Systems {
   systems: Vec<Box<dyn FnMut(&mut World)>>,
 }
 
-// @todo - add a way of organizing the execution order of the systems
+// @Todo
+// Add a way of organizing the execution order of the systems
 impl Systems {
   pub fn new() -> Self {
     Systems {
@@ -20,6 +21,8 @@ impl Systems {
     self
   }
 
+  // @Todo
+  // Add threading support
   pub fn update(&mut self, world: &mut World) {
     for system in &mut self.systems {
       system(world);

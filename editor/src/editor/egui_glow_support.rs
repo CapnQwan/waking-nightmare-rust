@@ -27,7 +27,8 @@ impl EguiGlowSupport {
     let state = EguiWinit::new(ctx.clone(), ViewportId::ROOT, window, None, None, None);
 
     // --- egui_glow painter ---
-    // @todo - update the ShaderVersion based on the current output type (WASM / DESKTOP)
+    // @Todo
+    // Update the ShaderVersion based on the current output type (WASM / DESKTOP)
     let painter = Painter::new(glow_ctx.clone(), "", Some(ShaderVersion::Es300), false)
       .expect("Failed to create egui glow painter");
 
