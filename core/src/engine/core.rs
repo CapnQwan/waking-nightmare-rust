@@ -1,0 +1,81 @@
+use std::sync::Arc;
+
+use glwn::gl::Gl;
+use math::{Transform, Vector3};
+
+use crate::{
+  assets::{CUBE_TRIANGLES, CUBE_VERTICIES, LIT_FRAGMENT_SHADER_SOURCE, LIT_VERTEX_SHADER_SOURCE},
+  engine::{
+    Camera, Material, Mesh, Program, RenderComponent, Renderer, Systems, Time, World,
+    camera_view_projection_system, mesh_render_system, temp_example_system,
+  },
+  traits::Registry,
+};
+
+pub struct Core {
+  world: World,
+  systems: Systems,
+}
+
+// @Todo
+// Move all component / entity / system binding to seperate functions.
+// Add logic for parsing and saving worlds to some format. Maybe just
+// storing all the component data as .rs might be easiest and fastest?
+// Need to test perf
+
+impl Core {
+  pub fn new(gl: Arc<Gl>) -> Self {
+    let mut world = World::new();
+    let camera = world.spawn_object();
+    let object = world.spawn_object();
+    let (components, resources) = world.split_borrow();
+
+    resources.add_resource(Time::new());
+    resources.add_resource(Renderer::new(gl));
+
+    let renderer = resources.get_mut_resource::<Renderer>().unwrap();
+
+    let program = {
+      let glum_program = renderer
+        .program_renderer_mut()
+        .create_gl_program(LIT_VERTEX_SHADER_SOURCE, LIT_FRAGMENT_SHADER_SOURCE);
+      Program::new(glum_program)
+    };
+    let program_id = { renderer.program_registry_mut().register(program) };
+
+    let mut mesh = Mesh::new();
+    mesh
+      .set_vertices(CUBE_VERTICIES.to_vec())
+      .set_triangles(CUBE_TRIANGLES.to_vec());
+    let mesh_id = { renderer.mesh_registry_mut().register(mesh) };
+
+    let material = Material::new(program_id);
+    let material_id = { renderer.material_registry_mut().register(material) };
+
+    let render_component = RenderComponent::new(mesh_id, material_id);
+    components.add_component(object, render_component);
+    components.add_component(camera, Camera::default());
+    let camera_transform = components.get_component_mut::<Transform>(&camera).unwrap();
+    camera_transform.set_position(Vector3::new(0.0, 0.0, 5.0));
+
+    let mut systems = Systems::new();
+    systems.add_system(mesh_render_system);
+    systems.add_system(camera_view_projection_system);
+    systems.add_system(temp_example_system);
+
+    Core { world, systems }
+  }
+
+  pub fn update(&mut self) {
+    self.world.update_resources();
+    self.systems.update(&mut self.world);
+  }
+
+  pub fn draw(&mut self) {
+    let (_, resources) = self.world.split_borrow();
+    if let Some(renderer) = resources.get_mut_resource::<Renderer>() {
+      renderer.clear();
+      renderer.draw();
+    }
+  }
+}

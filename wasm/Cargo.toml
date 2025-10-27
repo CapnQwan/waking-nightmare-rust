@@ -2,7 +2,7 @@
 name = "wasm"
 version = "0.0.1"
 edition = "2024"
-rust-version = "1.87.0"
+rust-version = "1.90.0"
 
 [build]
 target = "wasm32-unknown-unknown"
