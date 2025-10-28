@@ -1,7 +1,3 @@
-// A small, generic trait for implementing a registry / container that
-// stores items of type `T` and returns identifiers of type `ID` to look
-// them up later.
-//
 // @Note
 // Add deletion logic? if neccarsary
 //
@@ -9,7 +5,12 @@
 // Something to keep in mind if adding deletion logic maybe adding
 // some sort of implementation for reusing IDs of deleted items once
 // they have been free
-//
+
+/**
+  A small, generic trait for implementing a registry / container that
+  stores items of type `T` and returns identifiers of type `ID` to look
+  them up later.
+*/
 pub trait Registry<ID, T> {
   fn new() -> Self;
   fn register(&mut self, item: T) -> ID;

@@ -1,22 +1,24 @@
-use std::collections::HashMap;
-
 use math::Transform;
 
-use crate::engine::{Component, Components, Entity, Resources};
+use crate::engine::{Components, Entity, Resources};
 
+/**
+  The World is the heart of the ECS (Entity, Component, System), It's able to create new entities and stores all of the components and recourses for the ECS
+
+  @Todo
+  Implement a way of destroying entities
+
+  @Note
+  When implementing a way of destorying entities consider adding a way of
+  prioratizing using destroyed entities when creating new entities over just using
+  a new entity
+*/
 pub struct World {
   next_id: u32,
   components: Components,
   resources: Resources,
 }
 
-// @Todo
-// Implement a way of destroying entities
-//
-// @Note
-// When implementing a way of destorying entities consider adding a way of
-// prioratizing using destroyed entities when creating new entities over just using
-// a new entity
 impl World {
   pub fn new() -> Self {
     Self {
@@ -32,26 +34,20 @@ impl World {
     entity
   }
 
+  // @Todo
+  // Delete this once the editor / project parsing has been implemented opting for the spawn
+  // entity method to take in a Set of components that initially get set to the entity instead
   pub fn spawn_object(&mut self) -> Entity {
-    let entity = Entity(self.next_id);
-    self.next_id += 1;
+    let entity = self.spawn_entity();
     self
       .components
       .add_component::<Transform>(entity, Transform::default());
     entity
   }
 
-  pub fn storage<T: Component>(&mut self) -> &mut HashMap<Entity, T> {
-    self.components.storage::<T>()
-  }
-
   pub fn split_borrow(&mut self) -> (&mut Components, &mut Resources) {
     let (components, resources) = (&mut self.components, &mut self.resources);
     (components, resources)
-  }
-
-  pub fn add_resource<T: 'static>(&mut self, resource: T) {
-    self.resources.add_resource::<T>(resource);
   }
 
   // @Todo
