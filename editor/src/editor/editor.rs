@@ -23,6 +23,7 @@ impl Editor {
   pub fn new(event_loop: &EventLoop<()>) -> Self {
     let window_context = GlWindowContext::new(event_loop);
     let window = window_context.get_window();
+    window.set_maximized(true);
 
     let engine = create_engine_instance(window_context.get_gl_instance());
 

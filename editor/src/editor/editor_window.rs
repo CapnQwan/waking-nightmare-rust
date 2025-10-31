@@ -17,12 +17,13 @@ impl EditorWindow {
   fn render_scene_structure(&mut self, ctx: &egui::Context) {
     egui::SidePanel::left("left_panel")
       .resizable(true)
-      .default_width(150.0)
-      .width_range(80.0..=200.0)
+      .default_width(250.0)
+      .width_range(1.0..=800.0)
       .show(ctx, |ui| {
         ui.vertical_centered(|ui| {
-          ui.heading("Scene Structure");
+          ui.heading("World Structure");
         });
+        ui.vertical(|ui| {});
         egui::ScrollArea::vertical().show(ui, |_ui| {});
       });
   }
@@ -30,8 +31,8 @@ impl EditorWindow {
   fn render_inspector(&mut self, ctx: &egui::Context) {
     egui::SidePanel::right("right_panel")
       .resizable(true)
-      .default_width(150.0)
-      .width_range(80.0..=200.0)
+      .default_width(250.0)
+      .width_range(10.0..=800.0)
       .show(ctx, |ui| {
         ui.vertical_centered(|ui| {
           ui.heading("Inspector");
@@ -43,8 +44,8 @@ impl EditorWindow {
   fn render_file_system(&mut self, ctx: &egui::Context) {
     egui::TopBottomPanel::bottom("bottom_panel")
       .resizable(true)
-      .default_height(150.0)
-      .height_range(80.0..=200.0)
+      .default_height(350.0)
+      .height_range(350.0..=800.0)
       .show(ctx, |ui| {
         ui.vertical_centered(|ui| {
           ui.heading("Files");
