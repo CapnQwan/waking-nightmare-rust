@@ -5,9 +5,9 @@ edition = "2024"
 rust-version = "1.90.0"
 
 [dependencies]
-gl_window_context = { path = "../gl_window_context" }
-glwn = { path = "../glwn" }
-core = { path = "../core" }
+gl_window_context = { path = "../../graphics/gl_window_context" }
+glwn = { path = "../../graphics/glwn" }
+core = { path = "../../applications/core" }
 winit = "0.30.12"
 glutin = "0.32.3"
 glutin-winit = "0.5.0"

@@ -3,17 +3,17 @@ edition = "2024"
 rust-version = "1.90.0"
 resolver = "2"
 members = [
-  "core",
-  "desktop",
-  "editor",
-  "events",
-  "glwn",
-  "gl_window_context",
-  "math",
-  "wasm",
+  "applications/core",
+  "applications/editor",
+  "builds/desktop",
+  "builds/wasm",
   "demos/desktop_demo",
   "demos/wasm_demo",
+  "graphics/glwn",
+  "graphics/gl_window_context",
+  "math",
   "modules/inputs",
   "modules/kinematics",
   "modules/lighting",
+  "systems/events",
 ]

@@ -5,8 +5,8 @@ edition = "2024"
 rust-version = "1.90.0"
 
 [dependencies]
-glwn = { path = "../glwn" }
-math = { path = "../math" }
+glwn = { path = "../../graphics/glwn" }
+math = { path = "../../math" }
 gl = "0.14.0"
 log = "0.4"
 env_logger = "0.11" 
