@@ -23,6 +23,7 @@ It gives the user the ability to create and add custom assets, components and sy
 
 - Instead of rendering the whole UI as one big function or such maybe creating some kind of Frames similar to some of the demos would be better
 - Inspector Frame, Assets Frame, World Frame?
+- Update the Editor and Engine to be static singletons? this would make developing and debugging a lot easier?
 
 ### Tips for scaleability and a clean workspace
 
