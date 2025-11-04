@@ -29,10 +29,10 @@ impl<T: Clone> Event<T> {
   pub fn unsubscribe<F>() {}
 
   pub fn invoke(&mut self, data: &T) {
-    let callbacks = self.subscribers.iter().cloned();
+    // let callbacks = self.subscribers.iter().cloned();
 
-    for cb in callbacks {
-      cb(data.clone());
-    }
+    // for cb in callbacks {
+    //   cb(data.clone());
+    // }
   }
 }
