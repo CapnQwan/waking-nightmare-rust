@@ -16,9 +16,21 @@ impl<T> SparseSet<T> {
     }
   }
 
-  pub fn get() {}
+  pub fn get(&self, sparse_index: usize) -> Option<&T> {
+    let Some(dense_index) = self.sparse[sparse_index] else {
+      return None;
+    };
 
-  pub fn get_mut() {}
+    Some(&self.dense[dense_index])
+  }
+
+  pub fn get_mut(&self, sparse_index: usize) -> Option<&mut T> {
+    let Some(Some(dense_index)) = self.sparse.get(sparse_index) else {
+      return None;
+    };
+
+    self.dense.get_mut(dense_index)
+  }
 
   pub fn insert(&mut self, sparse_index: usize, data: T) {
     let dense_index = self.dense.len();
