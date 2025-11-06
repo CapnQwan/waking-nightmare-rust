@@ -120,7 +120,7 @@ impl<T> SparseSet<T> {
   }
 }
 
-impl IntoIterator for SparseSet<T> {
+impl<T> IntoIterator for SparseSet<T> {
   type Item = T;
   type IntoIter = std::vec::IntoIter<Self::Item>;
 
