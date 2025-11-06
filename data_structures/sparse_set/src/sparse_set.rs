@@ -1,3 +1,5 @@
+use std::mem;
+
 /**
  * The SparseSet is a data structure that give both the benifits of a hashmap with O(1) lookups
  * whilst also keeping the benifits of a Vec by storing all of the data contiguous in memory at
@@ -24,10 +26,6 @@ pub struct SparseSet<T> {
    */
   inverse: Vec<usize>,
 }
-
-// @todo - updating / replacing a value at index x?
-// @todo - interating over dense
-// @todo - iterating with threading?
 
 impl<T> SparseSet<T> {
   pub fn new() -> Self {
@@ -66,38 +64,67 @@ impl<T> SparseSet<T> {
     self.dense.push(value);
   }
 
+  /**
+   * Removes and returns the value at sparse_index, if it exists.
+   * Maintains the sparse set invariants.
+   */
   pub fn extract(&mut self, sparse_index: usize) -> Option<T> {
     if self.dense.is_empty() || sparse_index >= self.sparse.len() {
       return None;
     };
 
-    let last_items_index = self.dense.len() - 1;
-    // last_items_sparse_index = 16
-    let Some(last_items_sparse_index) = self.inverse.get(last_items_index) else {
-      return None;
-    };
-    // dense_index = 3
-    let Some(dense_index) = self.sparse.get(sparse_index).and_then(|opt| opt.as_ref()) else {
+    let last_dense_index = self.dense.len() - 1;
+    let last_sparse_index = self.inverse[last_dense_index];
+
+    let Some(dense_index) = self.sparse[sparse_index] else {
       return None;
     };
 
-    self.dense.swap(*dense_index, last_items_index);
-    self.inverse.swap(*dense_index, last_items_index);
+    // Swap item to be removed to the back of the vectors
+    self.inverse.swap(dense_index, last_dense_index);
+    self.dense.swap(dense_index, last_dense_index);
 
-    self.sparse[*last_items_sparse_index] = Some(*dense_index);
+    // Update the swapped item that was last in the vector to now point to it's swapped position
+    self.sparse[last_sparse_index] = Some(dense_index);
+    // Remove the sparse index of the removed item
     self.sparse[sparse_index] = None;
+
+    // Remove the now last items from the vector
+    self.inverse.pop();
     self.dense.pop()
   }
 
-  pub fn replace(&mut self, sparse_index: usize, value: T) {
+  /**
+   * Replaces the value at sparse_index, otherwise creating the entry.
+   * Returns the value that was previously stored in the dense vector
+   */
+  pub fn replace(&mut self, sparse_index: usize, value: T) -> Option<T> {
     if self.dense.is_empty() || sparse_index >= self.sparse.len() {
-      return;
+      self.insert(sparse_index, value);
+      return None;
     };
 
-    self
-      .sparse
-      .get(sparse_index)
-      .and_then(|opt| opt.as_ref())
-      .and_then(|&dense_index| Some(self.dense[dense_index] = value));
+    let Some(dense_index) = self.sparse[sparse_index] else {
+      return None;
+    };
+
+    Some(mem::replace(&mut self.dense[dense_index], value))
+  }
+
+  pub fn iter(&self) -> std::slice::Iter<'_, T> {
+    self.dense.iter()
+  }
+
+  pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, T> {
+    self.dense.iter_mut()
+  }
+}
+
+impl IntoIterator for SparseSet<T> {
+  type Item = T;
+  type IntoIter = std::vec::IntoIter<Self::Item>;
+
+  fn into_iter(self) -> Self::IntoIter {
+    self.dense.into_iter()
   }
 }
