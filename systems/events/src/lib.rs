@@ -1,5 +1,5 @@
-mod event;
-mod event_bus;
+pub mod event;
+pub mod event_bus;
 
 // static EVENT_BUS: Lazy<std::sync::Mutex<EventBus::EventBus>> = Lazy::new(|| {
 //   std::sync::Mutex::new(Editor {

@@ -13,7 +13,7 @@ pub struct Event<T: Clone> {
 }
 
 impl<T: Clone> Event<T> {
-  fn new() -> Self {
+  pub fn new() -> Self {
     Event {
       subscribers: Vec::new(),
     }

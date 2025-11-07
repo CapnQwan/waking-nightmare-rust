@@ -17,4 +17,5 @@ members = [
   "modules/kinematics",
   "modules/lighting",
   "systems/events",
+  "testing",
 ]
