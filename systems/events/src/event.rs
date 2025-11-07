@@ -1,3 +1,5 @@
+use sparse_set::sparse_set::SparseSet;
+
 /**
  * The Event struct is used to create events allowing logic to subscribe to
  * the event and fire certain logic once the event has been invoked
@@ -9,13 +11,13 @@
  * Then subscribers will need to be wrapped in Arc<Refcell>
  */
 pub struct Event<T: Clone> {
-  subscribers: Vec<Box<dyn Fn(&T) + 'static>>,
+  subscribers: SparseSet<Box<dyn Fn(&T) + 'static>>,
 }
 
 impl<T: Clone> Event<T> {
   pub fn new() -> Self {
     Event {
-      subscribers: Vec::new(),
+      subscribers: SparseSet::new(),
     }
   }
 

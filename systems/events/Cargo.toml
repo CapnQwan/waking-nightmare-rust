@@ -3,3 +3,6 @@ name = "events"
 version = "0.0.1"
 edition = "2024"
 rust-version = "1.90.0"
+
+[dependencies]
+sparse_set = { path = "../../data_structures/sparse_set" }
