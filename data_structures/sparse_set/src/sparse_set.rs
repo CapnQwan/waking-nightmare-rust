@@ -118,6 +118,12 @@ impl<T> SparseSet<T> {
   pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, T> {
     self.dense.iter_mut()
   }
+
+  pub fn clear(&mut self) {
+    self.dense.clear();
+    self.sparse.clear();
+    self.inverse.clear();
+  }
 }
 
 impl<T> IntoIterator for SparseSet<T> {
