@@ -1,28 +1,39 @@
-use events::event::Event;
+use std::{any::Any, collections::HashMap, fmt::Debug};
+
+#[derive(Clone, Debug, PartialEq, Hash)]
+enum AppEvent {
+  UserLoggedIn { user_id: u64 },
+  UserLoggedOut { user_id: u64 },
+  OrderPlaced { order_id: u64, amount: f64 },
+  OrderShipped { order_id: u64, tracking: String },
+}
 
 fn main() {
-  let mut event: Event<i32> = Event::new();
+  let events: HashMap<AppEvent, Box<dyn Fn(&AppEvent) + 'static>> = HashMap::new();
 
-  event.subscribe(|index| print!("\n\nThis was emited {} \n", index));
-  let event_id = event.subscribe(|index| print!("This was two {} \n", index));
+  events.insert();
 
-  event.emit(&11);
-
-  event.subscribe(|index| print!("This was emited later {} \n", index));
-
-  event.emit(&23);
-
-  event.unsubscribe(event_id);
-
-  event.emit(&35);
-
-  event.clear();
-
-  event.emit(&42);
-
-  event.subscribe(|index| print!("New sub {} \n", index));
-
-  event.emit(&66);
-
-  print!("test complete");
+  println!("test complete");
 }
+
+//
+// HashMap of AppEvent
+//
+// UserLoggedIn - Vec<> of { user_id }
+// UserLoggedOut - Vec<> of { user_id }
+// OrderPlaced - Vec<> of { order_id, amount }
+// OrderShipped - Vec<> of { user_id }
+//
+
+// fn main() {
+//   let enum_val_a = AppEvent::UserLoggedIn { user_id: 1 };
+//   let type_id_a = enum_val_a.type_id();
+
+//   println!("type id a - {:?}", type_id_a);
+
+//   let drink = Drinks::Tea;
+
+//   println!("drink - {}", drink.);
+
+//   println!("test complete");
+// }

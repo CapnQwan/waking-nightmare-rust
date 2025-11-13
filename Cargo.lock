@@ -2135,9 +2135,6 @@ dependencies = [
 [[package]]
 name = "testing"
 version = "0.0.1"
-dependencies = [
- "events",
-]
 
 [[package]]
 name = "thiserror"
