@@ -1,6 +1,6 @@
-pub mod event;
+pub mod signal;
 pub mod event_bus;
-
+mod event;
 // static EVENT_BUS: Lazy<std::sync::Mutex<EventBus::EventBus>> = Lazy::new(|| {
 //   std::sync::Mutex::new(Editor {
 //     ui: egui::CtxRef::default(),
