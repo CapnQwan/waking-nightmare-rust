@@ -1,2 +1,2 @@
-pub trait Event: Any + Send + Sync {}
-impl<T: Any + Send + Sync> Event for T {}
+pub trait Event: Send + Sync {}
+impl<T:  Send + Sync> Event for T {}

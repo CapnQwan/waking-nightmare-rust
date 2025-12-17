@@ -1,4 +1,5 @@
 use sparse_set::sparse_set::SparseSet;
+use crate::event::Event;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
 pub struct CallbackId(usize);
@@ -11,13 +12,13 @@ pub struct CallbackId(usize);
 /// when adding threading support look to Arc but also look at updating the
 /// emit logic to clone the callbacks and the data to prevent issues with adding to
 /// the subscribers during iteration
-pub struct Signal<T: Clone> {
-  subscribers: SparseSet<Box<dyn Fn(T) + 'static>>,
+pub struct Signal<T: Event> {
+  subscribers: SparseSet<Box<dyn FnMut(&T) + 'static>>,
   free_list: Vec<usize>,
   next_id: usize,
 }
 
-impl<T: Clone> Signal<T> {
+impl<T: Event> Signal<T> {
   pub fn new() -> Self {
     Signal {
       subscribers: SparseSet::new(),
@@ -28,7 +29,7 @@ impl<T: Clone> Signal<T> {
 
   pub fn subscribe<F>(&mut self, callback: F) -> CallbackId
   where
-    F: Fn(T) + 'static,
+    F: FnMut(&T) + 'static,
   {
     let id = self.free_list.pop().unwrap_or_else(|| {
       let id = self.next_id;
@@ -51,8 +52,8 @@ impl<T: Clone> Signal<T> {
   ///
   /// ### Note
   /// clone is used here purely for future reference so that this supports threading
-  pub fn emit(&self, data: &T) {
-    self.subscribers.iter().for_each(|callback| callback(data.clone()));
+  pub fn emit(&mut self, data: &T) {
+    self.subscribers.iter_mut().for_each(|callback| callback(data));
   }
 
   /// Removed all subscribers and resets the indices

@@ -1,5 +1,6 @@
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
+use crate::event::Event;
 use crate::signal::Signal;
 
 pub struct EventBus {
@@ -13,7 +14,7 @@ impl EventBus {
     }
   }
 
-  pub fn signal<T: Clone + 'static>(&mut self) -> &mut Signal<T> {
+  pub fn signal<T: Event + 'static>(&mut self) -> &mut Signal<T> {
     self.signals
         .entry(TypeId::of::<T>())
         .or_insert_with(|| Box::new(Signal::<T>::new()))
@@ -21,10 +22,10 @@ impl EventBus {
         .unwrap()
   }
 
-  pub fn emit<T: Clone + 'static>(&self, event: &T) {
-    if let Some(signal) = self.signals.get(&TypeId::of::<T>()) {
+  pub fn emit<T: Event + 'static>(&mut self, event: &T) {
+    if let Some(signal) = self.signals.get_mut(&TypeId::of::<T>()) {
       signal
-          .downcast_ref::<Signal<T>>()
+          .downcast_mut::<Signal<T>>()
           .unwrap()
           .emit(event);
     }
