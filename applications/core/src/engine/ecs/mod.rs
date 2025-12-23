@@ -7,4 +7,6 @@ pub use systems::*;
 mod worlds;
 pub use worlds::*;
 mod resources;
+mod ecs;
+
 pub use resources::*;

@@ -15,25 +15,3 @@ fn main() {
 
   println!("test complete");
 }
-
-//
-// HashMap of AppEvent
-//
-// UserLoggedIn - Vec<> of { user_id }
-// UserLoggedOut - Vec<> of { user_id }
-// OrderPlaced - Vec<> of { order_id, amount }
-// OrderShipped - Vec<> of { user_id }
-//
-
-// fn main() {
-//   let enum_val_a = AppEvent::UserLoggedIn { user_id: 1 };
-//   let type_id_a = enum_val_a.type_id();
-
-//   println!("type id a - {:?}", type_id_a);
-
-//   let drink = Drinks::Tea;
-
-//   println!("drink - {}", drink.);
-
-//   println!("test complete");
-// }

@@ -1,7 +1,7 @@
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
 
-use crate::traits::Update;
+use crate::traits::Updatable;
 
 pub struct Resources {
   resources: HashMap<TypeId, Box<dyn Any>>,
@@ -35,7 +35,7 @@ impl Resources {
   pub fn update_resources(&mut self) {
     for resource in self.resources.values_mut() {
       // Try to downcast to something that implements SystemUpdate
-      if let Some(updatable) = resource.downcast_mut::<Box<dyn Update>>() {
+      if let Some(updatable) = resource.downcast_mut::<Box<dyn Updatable>>() {
         updatable.update();
       }
     }
