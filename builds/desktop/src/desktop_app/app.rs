@@ -15,7 +15,7 @@ pub struct App {
 impl App {
   pub fn new(event_loop: &EventLoop<()>) -> Self {
     let window_context = GlWindowContext::new(event_loop);
-    let engine = create_engine_instance(window_context.get_gl_instance());
+    let engine = create_engine_instance();
 
     Self {
       window_context,

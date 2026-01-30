@@ -13,9 +13,13 @@ members = [
   "graphics/glwn",
   "graphics/gl_window_context",
   "math",
+  "modules/ecs",
+  "modules/gl_renderer",
   "modules/inputs",
   "modules/kinematics",
   "modules/lighting",
+  "modules/time",
+  "modules/vulkan_renderer",
   "systems/events",
   "testing",
 ]

@@ -1,8 +1,5 @@
-mod core;
-pub use core::*;
-
 mod registry;
-mod command;
-mod query;
+mod plugin;
+mod message;
+mod system;
 
-pub use registry::*;

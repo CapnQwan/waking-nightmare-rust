@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use crate::traits::Updatable;
+use crate::traits::Update;
 
 pub struct Time {
   previous_frame: Instant,
@@ -16,7 +16,7 @@ impl Time {
   }
 }
 
-impl Updatable for Time {
+impl Update for Time {
   fn update(&mut self) {
     let now = Instant::now();
     let duration = now.duration_since(self.previous_frame);

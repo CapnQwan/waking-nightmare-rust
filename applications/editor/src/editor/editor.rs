@@ -25,7 +25,8 @@ impl Editor {
     let window = window_context.get_window();
     window.set_maximized(true);
 
-    let engine = create_engine_instance(window_context.get_gl_instance());
+    let engine = create_engine_instance();
+    // @todo - bind plugins here
 
     let egui = EguiGlowSupport::new(window, |symbol| {
       let symbol = CString::new(symbol).unwrap();
