@@ -1,7 +1,5 @@
 use std::time::Instant;
 
-use crate::traits::Update;
-
 pub struct Time {
   previous_frame: Instant,
   delta_time: f32,
@@ -16,7 +14,7 @@ impl Time {
   }
 }
 
-impl Update for Time {
+impl System for Time {
   fn update(&mut self) {
     let now = Instant::now();
     let duration = now.duration_since(self.previous_frame);

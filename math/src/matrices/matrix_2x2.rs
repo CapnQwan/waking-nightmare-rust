@@ -1,4 +1,4 @@
-// /src/math/matricies/matrix2x2.rs
+// /src/math/matrices/matrix2x2.rs
 use std::ops::{Deref, DerefMut};
 
 /** A row major 2x2 matrix */

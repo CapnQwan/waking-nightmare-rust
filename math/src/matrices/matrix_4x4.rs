@@ -1,7 +1,7 @@
-// /src/math/matricies/matrix4x4.rs
+// /src/math/matrices/matrix4x4.rs
 use std::{fmt::Display, ops::{Deref, DerefMut, Mul}};
 
-use crate::{Matrix, Matrix3x3, Quaternion, Transform, Vector3};
+use crate::{Matrix3x3, Quaternion, Transform, Vector3};
 
 /** A row major 4x4 matrix */
 #[derive(Clone, Copy)]

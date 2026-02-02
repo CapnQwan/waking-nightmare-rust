@@ -10,7 +10,7 @@ pub trait Plugin {
   fn register(core: &mut Core);
 }
 
-trait System {
+pub trait System {
   fn phase(&self) -> Phase;
   fn run(&mut self, ctx: &mut dyn SystemContext);
   fn access(&self) -> AccessPattern;
