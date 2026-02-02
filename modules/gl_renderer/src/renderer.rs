@@ -2,8 +2,7 @@ use std::{mem, sync::Arc};
 
 use crate::{
   engine::{
-    MaterialId, MaterialRegistry, MaterialRenderer, MeshId, MeshRegistry, MeshRenderer,
-    ProgramRegistry, ProgramRenderer, UniformValue,
+    MaterialId, UniformValue,
   },
   traits::Registry,
 };
@@ -43,42 +42,15 @@ impl RenderCommand {
   }
 }
 
-// @Todo / Note
-// would it be better to switch the registries and maybe even the renderers to
-// be stored in some sort of registry to make development and itteration easier?
-//
-// Maybe this would be better depending on how the engine continues to develop
-// for example if a texture registry or other registries end up being added this
-// idea might be better.
-//
-// Maybe even seperating this logic off so that all Assets are stored in a seperate struct
-// might be better that way other non redering assets like audio can be stored all in one clean
-// little abstraction
 pub struct Renderer {
   gl: Arc<Gl>,
-  material_renderer: MaterialRenderer,
-  material_registry: MaterialRegistry,
-  mesh_renderer: MeshRenderer,
-  mesh_registry: MeshRegistry,
-  program_renderer: ProgramRenderer,
-  program_registry: ProgramRegistry,
   queued_render_calls: Vec<RenderCommand>,
 }
 
 impl Renderer {
   pub fn new(gl: Arc<Gl>) -> Self {
-    let material_renderer = MaterialRenderer::new(gl.clone());
-    let mesh_renderer = MeshRenderer::new(gl.clone());
-    let program_renderer = ProgramRenderer::new(gl.clone());
-
     Self {
       gl,
-      material_renderer,
-      mesh_renderer,
-      program_renderer,
-      material_registry: MaterialRegistry::new(),
-      mesh_registry: MeshRegistry::new(),
-      program_registry: ProgramRegistry::new(),
       queued_render_calls: Vec::new(),
     }
   }
@@ -164,21 +136,5 @@ impl Renderer {
     unsafe {
       self.gl.Viewport(0, 0, width, height);
     }
-  }
-
-  pub fn program_registry_mut(&mut self) -> &mut ProgramRegistry {
-    &mut self.program_registry
-  }
-
-  pub fn program_renderer_mut(&mut self) -> &mut ProgramRenderer {
-    &mut self.program_renderer
-  }
-
-  pub fn material_registry_mut(&mut self) -> &mut MaterialRegistry {
-    &mut self.material_registry
-  }
-
-  pub fn mesh_registry_mut(&mut self) -> &mut MeshRegistry {
-    &mut self.mesh_registry
   }
 }

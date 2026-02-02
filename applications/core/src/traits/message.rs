@@ -1,5 +1,5 @@
 pub trait Message {
-    type Response;
+  type Response;
 }
 
 // struct GetAsset<T> { id: AssetId }

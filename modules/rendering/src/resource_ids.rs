@@ -1,7 +1,4 @@
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
-pub struct Entity(pub u32);
-
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct MaterialId(pub u32);
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]

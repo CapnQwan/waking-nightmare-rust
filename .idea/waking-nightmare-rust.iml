@@ -17,6 +17,11 @@
       <sourceFolder url="file://$MODULE_DIR$/modules/lighting/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/systems/events/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/testing/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/ecs/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/gl_renderer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/rendering/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/time/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/vulkan_renderer/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

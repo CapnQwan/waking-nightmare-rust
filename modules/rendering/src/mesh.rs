@@ -1,27 +1,26 @@
 #![allow(dead_code)]
 use math::{Vector2, Vector3};
-
-use crate::engine::MeshId;
+use crate::MeshId;
 
 pub struct Mesh {
-  id: Option<MeshId>,
+  pub id: MeshId,
 
-  pub(crate) triangles: Vec<u32>,
-  pub(crate) verticies: Vec<Vector3>,
-  pub(crate) uvs: Vec<Vector2>,
-  pub(crate) normals: Vec<Vector3>,
+  pub triangles: Vec<u32>,
+  pub vertices: Vec<Vector3>,
+  pub uvs: Vec<Vector2>,
+  pub normals: Vec<Vector3>,
 
-  pub(crate) vao: gl::types::GLuint,
-  pub(crate) vbo: gl::types::GLuint,
-  pub(crate) uvbo: gl::types::GLuint,
-  pub(crate) nbo: gl::types::GLuint,
-  pub(crate) ibo: gl::types::GLuint,
+  pub vao: gl::types::GLuint,
+  pub vbo: gl::types::GLuint,
+  pub uvbo: gl::types::GLuint,
+  pub nbo: gl::types::GLuint,
+  pub ibo: gl::types::GLuint,
 
-  pub(crate) has_changed: bool,
+  pub has_changed: bool,
 }
 
 impl Mesh {
-  pub fn new() -> Mesh {
+  pub fn new(id: MeshId) -> Mesh {
     let vao: gl::types::GLuint = 0;
     let ibo: gl::types::GLuint = 0;
     let vbo: gl::types::GLuint = 0;
@@ -29,9 +28,9 @@ impl Mesh {
     let nbo: gl::types::GLuint = 0;
 
     Mesh {
-      id: None,
+      id,
       triangles: Vec::new(),
-      verticies: Vec::new(),
+      vertices: Vec::new(),
       uvs: Vec::new(),
       normals: Vec::new(),
       vao,
@@ -59,21 +58,32 @@ impl Mesh {
     self.ibo
   }
 
+  pub fn mut_vao(&self) -> &gl::types::GLuint {
+    &mut self.vao
+  }
+  pub fn mut_vbo(&self) -> gl::types::GLuint {
+    self.vbo
+  }
+  pub fn mut_uvbo(&self) -> gl::types::GLuint {
+    self.uvbo
+  }
+  pub fn mut_nbo(&self) -> gl::types::GLuint {
+    self.nbo
+  }
+  pub fn mut_ibo(&self) -> gl::types::GLuint {
+    self.ibo
+  }
+
   pub fn has_changed(&self) -> bool {
     self.has_changed
   }
 
-  pub fn id(&self) -> Option<MeshId> {
+  pub fn id(&self) -> MeshId {
     self.id
   }
 
-  pub fn set_id(&mut self, id: MeshId) -> &mut Self {
-    self.id = Some(id);
-    self
-  }
-
-  pub fn set_vertices(&mut self, verticies: Vec<Vector3>) -> &mut Self {
-    self.verticies = verticies;
+  pub fn set_vertices(&mut self, vertices: Vec<Vector3>) -> &mut Self {
+    self.vertices = vertices;
     self.has_changed = true;
     self
   }

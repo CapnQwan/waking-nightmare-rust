@@ -1,7 +1,8 @@
 use std::collections::HashMap;
-use crate::engine::Schedular;
+use crate::plugins::SystemContext;
+use crate::schedular::Schedular;
 
-enum Phase {
+pub enum Phase {
   Startup,
   AssetLoad,
   Input,
@@ -16,7 +17,7 @@ pub struct Core {
   phases: Vec<Phase>,
   schedular: Schedular,
   // @todo - this should be switched to something more like HashMap<TypeId, Vec<Box<dyn SystemContext>>>
-  resources: HashMap<String, Vec<u8>>,
+  resources: HashMap<String, Box<dyn SystemContext>>,
   // messageBus: MessageBus,
   // eventBus: EventBus,
 }

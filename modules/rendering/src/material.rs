@@ -1,7 +1,5 @@
-#![allow(dead_code)]
 use std::collections::HashMap;
-
-use crate::engine::{MaterialId, ProgramId};
+use crate::{MaterialId, ProgramId};
 
 pub enum UniformValue {
   Float(f32),
@@ -11,31 +9,26 @@ pub enum UniformValue {
 }
 
 pub struct Material {
-  id: Option<MaterialId>,
+  id: MaterialId,
   program_id: ProgramId,
   pub uniforms: HashMap<String, UniformValue>,
 }
 
 impl Material {
-  pub fn new(program_id: ProgramId) -> Self {
+  pub fn new(program_id: ProgramId, material_id: MaterialId) -> Self {
     Material {
-      id: None,
+      id: material_id,
       program_id,
       uniforms: HashMap::new(),
     }
   }
 
-  pub fn id(&self) -> Option<MaterialId> {
+  pub fn id(&self) -> MaterialId {
     self.id
   }
 
   pub fn program_id(&self) -> &ProgramId {
     &self.program_id
-  }
-
-  pub fn set_id(&mut self, id: MaterialId) -> &mut Self {
-    self.id = Some(id);
-    self
   }
 
   pub fn set_uniform(&mut self, name: &str, value: UniformValue) {

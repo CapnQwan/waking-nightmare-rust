@@ -6,3 +6,5 @@ mod mesh;
 pub use mesh::*;
 mod shader_program;
 pub use shader_program::*;
+mod resource_ids;
+pub use resource_ids::*;
