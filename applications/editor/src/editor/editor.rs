@@ -1,4 +1,5 @@
-use core::{Core, create_engine_instance};
+use core::engine::Core;
+use core::create_engine_instance;
 use gl_window_context::GlWindowContext;
 use glutin::prelude::GlDisplay;
 use std::ffi::CString;
@@ -46,12 +47,12 @@ impl Editor {
   fn draw(&mut self) {
     // @Todo
     // Only update when the game is running
-    self.engine.update();
+    self.engine.tick();
 
     let window = self.window_context.get_window();
     self.egui.begin_frame(window);
 
-    self.engine.draw();
+    self.engine.tick();
 
     self.egui.ui(|ctx| {
       self.editor_window.render_window(ctx);

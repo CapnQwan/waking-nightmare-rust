@@ -7,3 +7,4 @@ rust-version = "1.90.0"
 
 [dependencies]
 core = { path = "../../applications/core" }
+log = "0.4.29"

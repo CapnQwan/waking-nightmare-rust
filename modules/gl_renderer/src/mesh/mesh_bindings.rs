@@ -1,8 +1,8 @@
 use glwn::gl::Gl;
-use math::Vector3;
+use math::{Vector2, Vector3};
 use rendering::Mesh;
 
-fn bind_mesh_vertex_array(gl: &Gl, mesh: &Mesh) {
+fn bind_mesh_vertex_array(gl: &Gl, mesh: &mut Mesh) {
   unsafe {
     // @todo - perf test
     // does the GenVertexArrays need to run every time the mesh is bound?
@@ -13,14 +13,14 @@ fn bind_mesh_vertex_array(gl: &Gl, mesh: &Mesh) {
   }
 }
 
-fn bind_mesh_vertex_buffers(gl: &Gl, mesh: &Mesh) {
+fn bind_mesh_vertex_buffers(gl: &Gl, mesh: &mut Mesh) {
   unsafe {
     gl.GenBuffers(1, &mut mesh.vbo);
     gl.BindBuffer(gl::ARRAY_BUFFER, mesh.vbo);
     gl.BufferData(
       gl::ARRAY_BUFFER,
-      (mesh.verticies.len() * std::mem::size_of::<Vector3>()) as isize,
-      mesh.verticies.as_ptr() as *const _,
+      (mesh.vertices.len() * std::mem::size_of::<Vector3>()) as isize,
+      mesh.vertices.as_ptr() as *const _,
       gl::STATIC_DRAW,
     );
     gl.EnableVertexAttribArray(0);
@@ -35,7 +35,7 @@ fn bind_mesh_vertex_buffers(gl: &Gl, mesh: &Mesh) {
   }
 }
 
-fn bind_mesh_uv_buffers(gl: &Gl, mesh: &Mesh) {
+fn bind_mesh_uv_buffers(gl: &Gl, mesh: &mut Mesh) {
   unsafe {
     if !mesh.uvs.is_empty() {
       gl.GenBuffers(1, &mut mesh.uvbo);
@@ -59,7 +59,7 @@ fn bind_mesh_uv_buffers(gl: &Gl, mesh: &Mesh) {
   }
 }
 
-fn bind_mesh_normal_buffers(gl: &Gl, mesh: &Mesh) {
+fn bind_mesh_normal_buffers(gl: &Gl, mesh: &mut Mesh) {
   unsafe {
     if !mesh.normals.is_empty() {
       gl.GenBuffers(1, &mut mesh.nbo);
@@ -83,7 +83,7 @@ fn bind_mesh_normal_buffers(gl: &Gl, mesh: &Mesh) {
   }
 }
 
-fn bind_mesh_index_buffer(gl: &Gl, mesh: &Mesh) {
+fn bind_mesh_index_buffer(gl: &Gl, mesh: &mut Mesh) {
   unsafe {
     gl.GenBuffers(1, &mut mesh.ibo);
     gl.BindBuffer(gl::ELEMENT_ARRAY_BUFFER, mesh.ibo);

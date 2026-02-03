@@ -1,10 +1,9 @@
 use std::collections::HashMap;
 use std::ffi::CString;
-use std::sync::Arc;
 use glwn::gl::Gl;
 use crate::{ShaderAttribute, ShaderReflection, ShaderUniform};
 
-pub fn create_program_reflection(gl: Arc<Gl>, program: u32) -> ShaderReflection {
+pub fn create_program_reflection(gl: Gl, program: u32) -> ShaderReflection {
   unsafe {
     let mut reflection = ShaderReflection {
       uniforms: HashMap::new(),

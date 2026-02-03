@@ -1,8 +1,7 @@
-use std::sync::Arc;
 use glwn::gl::Gl;
 
 pub unsafe fn create_shader(
-  gl: Arc<Gl>,
+  gl: &Gl,
   shader: gl::types::GLenum,
   source: &[u8],
 ) -> gl::types::GLuint {
@@ -20,7 +19,7 @@ pub unsafe fn create_shader(
   }
 }
 
-unsafe fn check_shader_compile(gl: Arc<Gl>, shader: u32) {
+unsafe fn check_shader_compile(gl: &Gl, shader: u32) {
   unsafe {
     let mut status = 0;
     gl.GetShaderiv(shader, gl::COMPILE_STATUS, &mut status);
@@ -39,7 +38,7 @@ unsafe fn check_shader_compile(gl: Arc<Gl>, shader: u32) {
       let log = String::from_utf8_lossy(&buffer);
       log::error!("Shader compile failed:\n{}", log);
     } else {
-      log::info!("Shader compiled successfully.");
+      println!("Shader compiled successfully.");
     }
   }
 }

@@ -1,8 +1,6 @@
 use std::collections::HashMap;
-
 use math::Transform;
-
-use crate::engine::{Component, Components, Entity, Resources};
+use crate::{Component, Components, Entity, Resources};
 
 pub struct World {
   next_id: u32,
@@ -14,8 +12,8 @@ pub struct World {
 // Implement a way of destroying entities
 //
 // @Note
-// When implementing a way of destorying entities consider adding a way of
-// prioratizing using destroyed entities when creating new entities over just using
+// When implementing a way of destroying entities consider adding a way of
+// prioritizing using destroyed entities when creating new entities over just using
 // a new entity
 impl World {
   pub fn new() -> Self {
@@ -33,8 +31,7 @@ impl World {
   }
 
   pub fn spawn_object(&mut self) -> Entity {
-    let entity = Entity(self.next_id);
-    self.next_id += 1;
+    let entity = self.spawn_entity();
     self
       .components
       .add_component::<Transform>(entity, Transform::default());
@@ -52,11 +49,5 @@ impl World {
 
   pub fn add_resource<T: 'static>(&mut self, resource: T) {
     self.resources.add_resource::<T>(resource);
-  }
-
-  // @Todo
-  // Add threading support
-  pub fn update_resources(&mut self) {
-    self.resources.update_resources();
   }
 }

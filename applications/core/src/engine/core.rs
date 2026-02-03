@@ -1,10 +1,13 @@
+use crate::engine::Schedular;
+use crate::traits::{System, SystemContext, SystemResources};
+use std::any::TypeId;
 use std::collections::HashMap;
-use crate::plugins::SystemContext;
-use crate::schedular::Schedular;
 
+#[derive(Eq, Hash, PartialEq, Copy, Clone, Debug)]
 pub enum Phase {
   Startup,
   AssetLoad,
+  FrameStart,
   Input,
   Simulation,
   PostSimulation,
@@ -16,8 +19,7 @@ pub enum Phase {
 pub struct Core {
   phases: Vec<Phase>,
   schedular: Schedular,
-  // @todo - this should be switched to something more like HashMap<TypeId, Vec<Box<dyn SystemContext>>>
-  resources: HashMap<String, Box<dyn SystemContext>>,
+  resources: SystemResources,
   // messageBus: MessageBus,
   // eventBus: EventBus,
 }
@@ -28,6 +30,7 @@ impl Core {
       phases: vec![
         Phase::Startup,
         Phase::AssetLoad,
+        Phase::FrameStart,
         Phase::Input,
         Phase::Simulation,
         Phase::PostSimulation,
@@ -35,22 +38,22 @@ impl Core {
         Phase::Render,
         Phase::Editor,
       ],
-      schedular: Schedular {},
+      schedular: Schedular::new(),
       resources: HashMap::new(),
     }
   }
 
   pub fn tick(&mut self) {
     for phase in &self.phases {
-
+      self.schedular.tick(&mut self.resources, *phase);
     }
   }
 
-  pub fn add_system(&mut self) {
-
+  pub fn add_system<T: System + 'static>(&mut self, phase: Phase, system: T) {
+    self.schedular.add_system(phase, Box::new(system));
   }
 
-  pub fn add_resource(&mut self) {
-
+  pub fn add_resource<T: SystemContext + 'static>(&mut self, ctx: T) {
+    self.resources.insert(TypeId::of::<T>(), Box::new(ctx));
   }
 }

@@ -5,6 +5,9 @@ use crate::desktop_app::App;
 pub mod desktop_app;
 
 pub fn init() {
+  let _ = env_logger::Builder::from_default_env().try_init();
+  println!("Starting desktop app...");
+
   let event_loop = EventLoop::new().unwrap();
   event_loop.set_control_flow(ControlFlow::Poll);
 

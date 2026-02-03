@@ -1,4 +1,8 @@
-use crate::core::{Core, Phase};
+use crate::engine::Core;
+use std::any::{Any, TypeId};
+use std::collections::HashMap;
+
+pub type SystemResources = HashMap<TypeId, Box<dyn SystemContext>>;
 
 pub enum AccessPattern {
   ReadWorld,
@@ -11,11 +15,31 @@ pub trait Plugin {
 }
 
 pub trait System {
-  fn phase(&self) -> Phase;
-  fn run(&mut self, ctx: &mut dyn SystemContext);
+  fn run(&mut self, ctx: &mut SystemResources);
   fn access(&self) -> AccessPattern;
 }
 
-pub trait SystemContext {
+pub trait SystemContext: Any {
+  fn as_any(&self) -> &dyn Any;
+  fn as_any_mut(&mut self) -> &mut dyn Any;
+}
 
+impl dyn SystemContext {
+  pub fn downcast_ref<T: SystemContext>(&self) -> Option<&T> {
+    self.as_any().downcast_ref()
+  }
+
+  pub fn downcast_mut<T: SystemContext>(&mut self) -> Option<&mut T> {
+    self.as_any_mut().downcast_mut()
+  }
+}
+
+impl<T: Any> SystemContext for T {
+  fn as_any(&self) -> &dyn Any {
+    self
+  }
+
+  fn as_any_mut(&mut self) -> &mut dyn Any {
+    self
+  }
 }

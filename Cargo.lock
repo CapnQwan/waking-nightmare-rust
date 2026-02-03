@@ -425,10 +425,13 @@ version = "0.0.1"
 dependencies = [
  "cfg_aliases",
  "core",
+ "env_logger",
  "gl_window_context",
  "glutin",
  "glutin-winit",
+ "log",
  "raw-window-handle",
+ "time",
  "winit",
 ]
 
@@ -500,6 +503,11 @@ dependencies = [
 [[package]]
 name = "ecs"
 version = "0.0.1"
+dependencies = [
+ "core",
+ "math",
+ "sparse_set",
+]
 
 [[package]]
 name = "editor"
@@ -2195,6 +2203,7 @@ name = "time"
 version = "0.0.1"
 dependencies = [
  "core",
+ "log",
 ]
 
 [[package]]

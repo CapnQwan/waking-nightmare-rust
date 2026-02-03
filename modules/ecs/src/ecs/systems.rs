@@ -1,4 +1,4 @@
-use crate::engine::World;
+use crate::World;
 
 pub struct Systems {
   systems: Vec<Box<dyn FnMut(&mut World)>>,

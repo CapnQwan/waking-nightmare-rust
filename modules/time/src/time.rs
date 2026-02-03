@@ -1,3 +1,5 @@
+use core::engine::Phase;
+use core::traits::{AccessPattern, System, SystemResources};
 use std::time::Instant;
 
 pub struct Time {
@@ -15,10 +17,15 @@ impl Time {
 }
 
 impl System for Time {
-  fn update(&mut self) {
+  fn run(&mut self, ctx: &mut SystemResources) {
     let now = Instant::now();
     let duration = now.duration_since(self.previous_frame);
+    println!("Delta time: {}", self.delta_time);
     self.delta_time = duration.as_secs_f32();
     self.previous_frame = now;
+  }
+
+  fn access(&self) -> AccessPattern {
+    AccessPattern::ReadOnly
   }
 }

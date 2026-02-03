@@ -1,9 +1,8 @@
-use std::sync::Arc;
 use glwn::gl::Gl;
-use rendering::UniformValue;
-use crate::{Material, ShaderReflection};
+use rendering::{Material, UniformValue};
+use crate::ShaderReflection;
 
-pub fn bind_material(gl: Arc<Gl>, material: &Material, reflection: &ShaderReflection) {
+pub fn bind_material(gl: &Gl, material: &Material, reflection: &ShaderReflection) {
   unsafe {
     for (name, value) in &material.uniforms {
       if let Some(uniform) = reflection.uniforms.get(name) {

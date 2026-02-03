@@ -58,21 +58,11 @@ impl Mesh {
     self.ibo
   }
 
-  pub fn mut_vao(&self) -> &gl::types::GLuint {
-    &mut self.vao
-  }
-  pub fn mut_vbo(&self) -> gl::types::GLuint {
-    self.vbo
-  }
-  pub fn mut_uvbo(&self) -> gl::types::GLuint {
-    self.uvbo
-  }
-  pub fn mut_nbo(&self) -> gl::types::GLuint {
-    self.nbo
-  }
-  pub fn mut_ibo(&self) -> gl::types::GLuint {
-    self.ibo
-  }
+  pub fn vao_mut(&mut self) -> &mut gl::types::GLuint { &mut self.vao }
+  pub fn vbo_mut(&mut self) -> &mut gl::types::GLuint { &mut self.vbo }
+  pub fn uvbo_mut(&mut self) -> &mut gl::types::GLuint { &mut self.uvbo }
+  pub fn nbo_mut(&mut self) -> &mut gl::types::GLuint { &mut self.nbo }
+  pub fn ibo_mut(&mut self) -> &mut gl::types::GLuint { &mut self.ibo }
 
   pub fn has_changed(&self) -> bool {
     self.has_changed

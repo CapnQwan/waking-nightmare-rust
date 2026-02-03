@@ -1,8 +1,7 @@
-use std::sync::Arc;
 use glwn::gl::Gl;
 use rendering::Mesh;
 
-pub fn draw_mesh(gl: Arc<Gl>, mesh: &Mesh) {
+pub fn draw_mesh(gl: &Gl, mesh: &Mesh) {
   unsafe {
     gl.BindVertexArray(mesh.vao);
     gl.DrawElements(

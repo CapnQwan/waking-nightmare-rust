@@ -1,8 +1,7 @@
-use std::sync::Arc;
 use glwn::gl::Gl;
 
 pub fn create_gl_program(
-  gl: Arc<Gl>,
+  gl: &Gl,
   vertex_shader: gl::types::GLuint,
   fragment_shader: gl::types::GLuint,
 ) -> u32 {
@@ -14,7 +13,7 @@ pub fn create_gl_program(
 
     gl.LinkProgram(program);
 
-    check_program_link(program);
+    check_program_link(gl, program);
 
     gl.UseProgram(program);
 
@@ -25,7 +24,7 @@ pub fn create_gl_program(
   }
 }
 
-unsafe fn check_program_link(gl: Arc<Gl>, program: u32) {
+unsafe fn check_program_link(gl: &Gl, program: u32) {
   unsafe {
     let mut status = 0;
     gl.GetProgramiv(program, gl::LINK_STATUS, &mut status);
@@ -44,7 +43,7 @@ unsafe fn check_program_link(gl: Arc<Gl>, program: u32) {
       let log = String::from_utf8_lossy(&buffer);
       log::error!("Program link failed:\n{}", log);
     } else {
-      log::info!("Program linked successfully.");
+      println!("Program linked successfully.");
     }
   }
 }

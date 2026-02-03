@@ -1,4 +1,6 @@
-pub mod registry;
-pub mod plugins;
-pub mod message;
-
+mod registry;
+pub use registry::*;
+mod plugins;
+pub use plugins::*;
+mod message;
+pub use message::*;
