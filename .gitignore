@@ -27,3 +27,5 @@ target
 
 .vscode/
 .vscode/*
+/.idea/vcs.xml
+/.idea/workspace.xml
