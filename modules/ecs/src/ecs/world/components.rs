@@ -1,5 +1,6 @@
 use crate::{ComponentStorage, Entity, ErasedStorage};
 use std::{any::TypeId, collections::HashMap};
+use std::any::Any;
 
 pub trait Component: 'static {}
 impl<T: 'static> Component for T {}
@@ -25,19 +26,13 @@ impl Components {
       .components
       .get_mut(&TypeId::of::<T>())
       .unwrap()
-      .as_mut()
+      .as_any_mut()
       .downcast_mut::<ComponentStorage<T>>()
       .expect("ComponentStorage type mismatch")
-
-    // self
-    //   .components
-    //   .get_mut(&TypeId::of::<T>())
-    //   .unwrap()
-    //   .as_mut()
   }
 
-  pub fn add_component<T: Component>(&mut self, e: Entity, comp: T) {
-    self.storage::<T>().insert(e, comp);
+  pub fn add_component<T: Component>(&mut self, entity: &Entity, component: T) {
+    self.storage::<T>().insert(entity, component);
   }
 
   pub fn get_component<T: Component>(&self, e: &Entity) -> Option<&T> {
@@ -45,30 +40,30 @@ impl Components {
     self
       .components
       .get(&TypeId::of::<T>())
-      .and_then(|boxed| boxed.downcast_ref::<ComponentStorage<T>>())
-      .and_then(|storage| storage.components.get(e.id()))
+      .and_then(|boxed| boxed.as_any().downcast_ref::<ComponentStorage<T>>())
+      .and_then(|storage| storage.get(e))
   }
 
   pub fn get_component_mut<T: Component>(&mut self, e: &Entity) -> Option<&mut T> {
     self
       .components
       .get_mut(&TypeId::of::<T>())
-      .and_then(|boxed| boxed.downcast_mut::<ComponentStorage<T>>())
-      .and_then(|storage| storage.components.get_mut(e.id()))
+      .and_then(|boxed| boxed.as_any_mut().downcast_mut::<ComponentStorage<T>>())
+      .and_then(|storage| storage.get_mut(e))
   }
 
-  pub fn get_components<T: Component>(&self) -> Option<&HashMap<Entity, T>> {
+  pub fn get_components<T: Component>(&self) -> Option<&ComponentStorage<T>> {
     self
       .components
       .get(&TypeId::of::<T>())
-      .and_then(|boxed| boxed.downcast_ref::<HashMap<Entity, T>>())
+      .and_then(|boxed| boxed.as_any().downcast_ref::<ComponentStorage<T>>())
   }
 
-  pub fn get_components_mut<T: Component>(&mut self) -> Option<&mut HashMap<Entity, T>> {
+  pub fn get_components_mut<T: Component>(&mut self) -> Option<&mut ComponentStorage<T>> {
     self
       .components
       .get_mut(&TypeId::of::<T>())
-      .and_then(|boxed| boxed.downcast_mut::<HashMap<Entity, T>>())
+      .and_then(|boxed| boxed.as_any_mut().downcast_mut::<ComponentStorage<T>>())
   }
 
   // @Todo
