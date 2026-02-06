@@ -14,15 +14,25 @@ impl Time {
       delta_time: 0.0,
     }
   }
+
+  /// Delta time (seconds) measured between the two most recent ticks
+  pub fn delta_time(&self) -> f32 {
+    self.delta_time
+  }
+
+  /// Updates internal timing state (called by the ECS `run()`).
+  pub fn tick(&mut self) {
+    let now = Instant::now();
+    let duration = now.duration_since(self.previous_frame);
+
+    self.delta_time = duration.as_secs_f32();
+    self.previous_frame = now;
+  }
 }
 
 impl System for Time {
-  fn run(&mut self, ctx: &mut SystemResources) {
-    let now = Instant::now();
-    let duration = now.duration_since(self.previous_frame);
-    println!("Delta time: {}", self.delta_time);
-    self.delta_time = duration.as_secs_f32();
-    self.previous_frame = now;
+  fn run(&mut self, _ctx: &mut SystemResources) {
+    self.tick();
   }
 
   fn access(&self) -> AccessPattern {

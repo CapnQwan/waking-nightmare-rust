@@ -21,7 +21,7 @@ impl ECS {
 
 impl System for ECS {
   fn run(&mut self, ctx: &mut SystemResources) {
-    self.systems.update(&mut self.world);
+    self.systems.update(&self.world);
   }
 
   fn access(&self) -> AccessPattern {

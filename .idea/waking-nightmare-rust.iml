@@ -22,6 +22,9 @@
       <sourceFolder url="file://$MODULE_DIR$/modules/rendering/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/modules/time/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/modules/vulkan_renderer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/data_structures/sparse_set/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/ecs/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/time/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
