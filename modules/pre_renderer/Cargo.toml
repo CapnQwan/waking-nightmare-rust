@@ -1,12 +1,11 @@
 [package]
-name = "gl_renderer"
+name = "pre_renderer"
 version = "0.0.1"
 edition = "2024"
 # MSRV. Also update in ci.yml
 rust-version = "1.90.0"
 
 [dependencies]
-glwn = { path = "../../graphics/glwn" }
-math = { path = "../../math" }
-gl = "0.14.0"
+core = { path = "../../applications/core" }
+rendering = { path = "../../rendering" }
 log = "0.4.29"

@@ -813,7 +813,6 @@ dependencies = [
  "glwn",
  "log",
  "math",
- "rendering",
 ]
 
 [[package]]
@@ -1829,6 +1828,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e5a7c30837279ca13e7c867e9e40053bc68740f988cb07f7ca6df43cc734b585"
 dependencies = [
  "zerovec",
+]
+
+[[package]]
+name = "pre_renderer"
+version = "0.0.1"
+dependencies = [
+ "core",
+ "log",
+ "rendering",
 ]
 
 [[package]]

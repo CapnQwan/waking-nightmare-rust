@@ -6,5 +6,5 @@ edition = "2024"
 rust-version = "1.90.0"
 
 [dependencies]
-math = { path = "../../math" }
+math = { path = "../math" }
 gl = "0.14.0"
