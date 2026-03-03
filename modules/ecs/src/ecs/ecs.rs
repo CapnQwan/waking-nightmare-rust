@@ -5,16 +5,12 @@ use crate::{Systems, World};
 
 
 pub struct ECS {
-  world: World,
   systems: Systems,
 }
 
 impl ECS {
   pub fn new() -> Self {
-    let world = World::new();
-    let systems = Systems::new();
-
-    ECS { world, systems }
+    ECS { systems: Systems::new() }
   }
 }
 

@@ -1,4 +1,3 @@
-use core::engine::Phase;
 use core::traits::{AccessPattern, System, SystemResources};
 
 pub struct PreRenderer {}
@@ -10,7 +9,6 @@ impl PreRenderer {
 
   pub fn tick(&mut self) {
     // Pull all render data from the shared context
-    
   }
 }
 
