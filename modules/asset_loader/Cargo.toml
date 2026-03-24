@@ -1,0 +1,8 @@
+[package]
+name = "asset_loader"
+version = "0.0.1"
+edition = "2024"
+# MSRV. Also update in ci.yml
+rust-version = "1.90.0"
+
+[dependencies]

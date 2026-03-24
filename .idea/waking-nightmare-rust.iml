@@ -28,6 +28,12 @@
       <sourceFolder url="file://$MODULE_DIR$/modules/pre_renderer/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/rendering/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/rendering/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/asset_loader/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/asset_loader/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_loader/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_loader/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_manager/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_manager/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

@@ -1,12 +1,21 @@
+/// @todo
+/// So apparently just using WASM will not solve TBT issues from creating shader programs.
+/// But apparently using offscreen canvases can solve this issue
+///
+/// Also note apparently there are several issues with offscreen canvases in safari
+///
+/// Potentially add support for handling shaders in webgl via offscreen canvases except for in
+/// safari?
+
 #[allow(dead_code)]
 pub fn init() {
   #[cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))]
   {
     use core;
     use glow::*;
-    use web_sys;
     use wasm_bindgen;
     use wasm_bindgen::JsCast;
+    use web_sys;
 
     let canvas = web_sys::window()
       .unwrap()
