@@ -1,0 +1,10 @@
+[package]
+name = "time"
+version = "0.0.1"
+edition = "2024"
+# MSRV. Also update in ci.yml
+rust-version = "1.90.0"
+
+[dependencies]
+core = { path = "../../applications/core" }
+log = "0.4.29"

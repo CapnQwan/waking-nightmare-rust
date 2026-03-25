@@ -1,0 +1,10 @@
+[package]
+name = "rendering"
+version = "0.0.1"
+edition = "2024"
+# MSRV. Also update in ci.yml
+rust-version = "1.90.0"
+
+[dependencies]
+math = { path = "../math" }
+gl = "0.14.0"

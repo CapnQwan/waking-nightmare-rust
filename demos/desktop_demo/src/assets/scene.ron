@@ -1,0 +1,84 @@
+(
+    version: "0.1.0",
+    world: (
+        name: "TestScene",
+        ambient_light: (r: 0.1, g: 0.1, b: 0.15),
+
+        entities: [
+            (
+                id: 1,
+                name: "Player",
+                components: {
+                    "Transform": (
+                        translation: (x: 0.0, y: 1.0, z: 0.0),
+                        rotation: (x: 0.0, y: 0.0, z: 0.0, w: 1.0),
+                        scale: (x: 1.0, y: 1.0, z: 1.0),
+                    ),
+                    "Velocity": (
+                        linear: (x: 0.0, y: 0.0, z: 0.0),
+                        angular: (x: 0.0, y: 0.0, z: 0.0),
+                    ),
+                    "Health": (
+                        current: 100,
+                        max: 100,
+                        regen_per_second: 1.5,
+                    ),
+                    "SpriteRenderer": (
+                        texture: "textures/player.png",
+                        layer: 10,
+                        visible: true,
+                    ),
+                    "PlayerController": (
+                        move_speed: 6.5,
+                        jump_force: 12.0,
+                        input_map: "default",
+                    ),
+                },
+            ),
+
+            (
+                id: 2,
+                name: "Enemy_Grunt",
+                components: {
+                    "Transform": (
+                        translation: (x: 5.0, y: 0.0, z: 0.0),
+                        rotation: (x: 0.0, y: 0.0, z: 0.0, w: 1.0),
+                        scale: (x: 1.0, y: 1.0, z: 1.0),
+                    ),
+                    "Health": (
+                        current: 40,
+                        max: 40,
+                        regen_per_second: 0.0,
+                    ),
+                    "AI": (
+                        behavior_tree: "bt/grunt.ron",
+                        aggression_radius: 8.0,
+                        attack_cooldown: 1.25,
+                    ),
+                    "Collider": (
+                        shape: Cuboid(half_extents: (x: 0.5, y: 1.0, z: 0.5)),
+                        is_trigger: false,
+                    ),
+                },
+            ),
+
+            (
+                id: 3,
+                name: "PointLight_01",
+                components: {
+                    "Transform": (
+                        translation: (x: 2.0, y: 3.0, z: -1.0),
+                        rotation: (x: 0.0, y: 0.0, z: 0.0, w: 1.0),
+                        scale: (x: 1.0, y: 1.0, z: 1.0),
+                    ),
+                    "PointLight": (
+                        color: (r: 1.0, g: 0.8, b: 0.6),
+                        intensity: 4.5,
+                        range: 12.0,
+                        cast_shadows: true,
+                    ),
+                },
+            ),
+        ],
+    ),
+)

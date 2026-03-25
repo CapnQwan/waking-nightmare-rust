@@ -1,4 +1,4 @@
-// /src/math/matricies/matrix3x3.rs
+// /src/math/matrices/matrix3x3.rs
 use std::{fmt::Display, ops::{Deref, DerefMut}};
 
 /** A row major 3x3 matrix */

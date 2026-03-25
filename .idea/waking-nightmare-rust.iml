@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="EMPTY_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/applications/core/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/applications/editor/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/builds/desktop/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/builds/wasm/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/data_structures/sparse_set/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/demos/desktop_demo/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/demos/wasm_demo/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graphics/gl_window_context/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graphics/glwn/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/math/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/inputs/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/kinematics/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/lighting/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/systems/events/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/testing/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/ecs/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/gl_renderer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/time/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/vulkan_renderer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/data_structures/sparse_set/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/ecs/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/time/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/pre_renderer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/pre_renderer/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/rendering/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/rendering/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/asset_loader/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/asset_loader/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_loader/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_loader/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_manager/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/scene_manager/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
